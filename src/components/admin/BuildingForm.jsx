@@ -12,6 +12,10 @@ const FIELD =
 
 const EMPTY = {
   address: '',
+  property_type: 'residential',
+  deal_type: 'sale',
+  price: '',
+  area: '',
   district: '',
   street: '',
   house_number: '',
@@ -88,6 +92,10 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
     try {
       const payload = {
         address: draft.address.trim(),
+        property_type: draft.property_type || 'residential',
+        deal_type: draft.deal_type || 'sale',
+        price: draft.price ? Number(draft.price) : null,
+        area: draft.area ? Number(draft.area) : null,
         district: draft.district,
         street: draft.street,
         house_number: draft.house_number,
@@ -150,6 +158,67 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
               onChange={(event) => setDraft({ ...draft, address: event.target.value })}
               className={FIELD}
             />
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-4">
+            <div>
+              <label htmlFor="b-property-type" className="eyebrow mb-2 block">
+                {t.common.type}
+              </label>
+              <select
+                id="b-property-type"
+                value={draft.property_type || 'residential'}
+                onChange={(event) => setDraft({ ...draft, property_type: event.target.value })}
+                className={FIELD}
+              >
+                {Object.entries(t.propertyTypes).map(([value, label]) => (
+                  <option key={value} value={value} className="bg-[#1f272b]">
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="b-deal-type" className="eyebrow mb-2 block">
+                {t.common.deal}
+              </label>
+              <select
+                id="b-deal-type"
+                value={draft.deal_type || 'sale'}
+                onChange={(event) => setDraft({ ...draft, deal_type: event.target.value })}
+                className={FIELD}
+              >
+                {Object.entries(t.deals).map(([value, label]) => (
+                  <option key={value} value={value} className="bg-[#1f272b]">
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="b-price" className="eyebrow mb-2 block">
+                {t.common.price}
+              </label>
+              <input
+                id="b-price"
+                type="number"
+                value={draft.price ?? ''}
+                onChange={(event) => setDraft({ ...draft, price: event.target.value })}
+                className={FIELD}
+              />
+            </div>
+            <div>
+              <label htmlFor="b-area" className="eyebrow mb-2 block">
+                {t.common.area}
+              </label>
+              <input
+                id="b-area"
+                type="number"
+                value={draft.area ?? ''}
+                onChange={(event) => setDraft({ ...draft, area: event.target.value })}
+                className={FIELD}
+              />
+            </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3">

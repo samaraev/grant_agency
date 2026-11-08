@@ -9,6 +9,7 @@ import SectionHeading from '@/components/SectionHeading';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useBuildingList } from '@/hooks/useBuildings';
 import { useLead } from '@/components/LeadProvider';
+import { PROPERTY_GROUPS } from '@/lib/price';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
@@ -25,6 +26,8 @@ export default function Search() {
   const q = params.get('q') || '';
   const district = params.get('district') || '';
   const street = params.get('street') || '';
+  const group = params.get('group') || '';
+  const deal = params.get('deal') || '';
 
   useEffect(() => {
     return applySeo({ ...t.meta.search, path: '/search' });
@@ -50,9 +53,11 @@ export default function Search() {
       if (query && !haystack.includes(query)) return false;
       if (district && item.district !== district) return false;
       if (street && item.street !== street) return false;
+      if (group && !(PROPERTY_GROUPS[group] || []).includes(item.property_type)) return false;
+      if (deal && (item.deal_type || 'sale') !== deal) return false;
       return true;
     });
-  }, [buildings, q, district, street]);
+  }, [buildings, q, district, street, group, deal]);
 
   const update = (key, value) => {
     const next = new URLSearchParams(params);
@@ -61,7 +66,7 @@ export default function Search() {
     setParams(next, { replace: true });
   };
 
-  const hasFilters = Boolean(q || district || street);
+  const hasFilters = Boolean(q || district || street || group || deal);
 
   return (
     <div className="mx-auto max-w-[1240px] px-5 py-12 lg:px-8 lg:py-16">
@@ -72,13 +77,57 @@ export default function Search() {
         subtitle={t.search.subtitle}
       />
 
-      <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_auto_auto_auto] lg:items-center">
-        <AddressSearch
-          buildings={buildings}
-          size="sm"
-          label={t.search.inputLabel}
-          placeholder={t.search.inputPlaceholder}
-        />
+      <div className="mt-10 flex flex-wrap items-end gap-4">
+        <div className="min-w-[240px] flex-1 basis-full lg:basis-[300px]">
+          <AddressSearch
+            buildings={buildings}
+            size="sm"
+            label={t.search.inputLabel}
+            placeholder={t.search.inputPlaceholder}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="filter-group" className="eyebrow mb-2 block">
+            {t.common.type}
+          </label>
+          <select
+            id="filter-group"
+            value={group}
+            onChange={(event) => update('group', event.target.value)}
+            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[230px]"
+          >
+            <option value="" className="bg-[#263033]">
+              {t.search.groupAll}
+            </option>
+            {Object.entries(t.groups).map(([value, label]) => (
+              <option key={value} value={value} className="bg-[#263033]">
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="filter-deal" className="eyebrow mb-2 block">
+            {t.common.deal}
+          </label>
+          <select
+            id="filter-deal"
+            value={deal}
+            onChange={(event) => update('deal', event.target.value)}
+            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[180px]"
+          >
+            <option value="" className="bg-[#263033]">
+              {t.search.dealAll}
+            </option>
+            {Object.entries(t.deals).map(([value, label]) => (
+              <option key={value} value={value} className="bg-[#263033]">
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div>
           <label htmlFor="filter-district" className="eyebrow mb-2 block">
@@ -122,7 +171,7 @@ export default function Search() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 lg:pt-6">
+        <div className="flex items-center gap-2">
           <div className="flex border border-white/15">
             <button
               type="button"

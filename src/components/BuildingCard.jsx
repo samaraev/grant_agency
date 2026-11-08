@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { dealLabel, formatArea, formatPrice, propertyTypeLabel } from '@/lib/price';
 import { t } from '@/lib/i18n';
 
 export default function BuildingCard({ building }) {
@@ -26,16 +27,26 @@ export default function BuildingCard({ building }) {
             {building.district}
           </span>
         ) : null}
+        <span className="absolute right-0 top-0 border-b border-l border-white/15 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white">
+          {dealLabel(building)}
+        </span>
       </Link>
 
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-[19px] font-bold leading-snug text-white">
           <Link to={`/house/${building.id}`}>{building.address}</Link>
         </h3>
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="text-[15px] font-semibold text-[#c9b28c]">{formatPrice(building)}</span>
+          {building.area ? (
+            <span className="text-[11.5px] uppercase tracking-[0.12em] text-[#778287]">
+              {formatArea(building)}
+            </span>
+          ) : null}
+        </div>
         <p className="mt-2 text-[12px] uppercase tracking-[0.14em] text-[#778287]">
-          {building.year_built ? `${building.year_built} · ` : ''}
-          {building.floors ? `${building.floors} ${t.common.floorShort} · ` : ''}
-          {building.series_or_type || ''}
+          {propertyTypeLabel(building)}
+          {building.series_or_type ? ` · ${building.series_or_type}` : ''}
         </p>
         {building.features?.[0] ? (
           <p className="mt-4 line-clamp-2 text-[13px] leading-relaxed text-[#b0b8bc]">

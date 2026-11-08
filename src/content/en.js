@@ -90,6 +90,32 @@ const en = {
     no: 'No',
     optional: 'optional',
     required: 'required',
+    type: 'Property type',
+    deal: 'Sale or rent',
+    area: 'Area',
+    price: 'Price',
+    priceOnRequest: 'Price on request',
+    perMonth: 'per month',
+    sqm: 'm²',
+    allObjects: 'All properties',
+  },
+  deals: {
+    sale: 'For sale',
+    rent: 'For rent',
+  },
+  propertyTypes: {
+    residential: 'House',
+    apartment: 'Apartment',
+    penthouse: 'Penthouse',
+    office: 'Office',
+    corporate_housing: 'Corporate housing',
+    dacha: 'Country house',
+    estate: 'Estate',
+  },
+  groups: {
+    offices: 'Offices and corporate housing',
+    residences: 'Apartments and penthouses',
+    estates: 'Country houses and estates',
   },
   home: {
     hero: {
@@ -111,6 +137,29 @@ const en = {
       trustLine: 'You speak to a person who knows this house and its history personally.',
       primaryCta: 'Discuss my house',
       secondaryCta: 'Open the portfolio',
+    },
+    collections: {
+      offices: {
+        marker: 'COMMERCIAL',
+        title: 'Offices and corporate housing',
+        subtitle:
+          'Mansions for company headquarters and residences for executives, for sale and for rent. We show the whole property: services, parking, surroundings.',
+        cta: 'See offices',
+      },
+      residences: {
+        marker: 'RESIDENCES',
+        title: 'Apartments and penthouses',
+        subtitle:
+          'Residences in the historic centre: enfilade layouts, roof terraces and views of the Kremlin. Some addresses are shown on request only.',
+        cta: 'See residences',
+      },
+      estates: {
+        marker: 'OUT OF TOWN',
+        title: 'Country houses and estates',
+        subtitle:
+          'Houses in pine forests and estates with a park across the Tula region, for those a city residence is not enough for.',
+        cta: 'See country houses',
+      },
     },
     trust: {
       marker: '02 / WHY US',
@@ -221,6 +270,8 @@ const en = {
     filters: 'Filters',
     districtAll: 'All districts',
     streetAll: 'All streets',
+    groupAll: 'All categories',
+    dealAll: 'Sale and rent',
     found: 'Addresses found',
     clear: 'Reset',
     emptyTitle: 'This address is not in the portfolio yet',

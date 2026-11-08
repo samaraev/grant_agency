@@ -5,7 +5,9 @@ import { Image } from '@/components/ui/image';
 import AddressSearch from '@/components/AddressSearch';
 import BuildingCard from '@/components/BuildingCard';
 import BuildingsMap from '@/components/BuildingsMap';
+import PropertyCollection from '@/components/PropertyCollection';
 import SectionHeading from '@/components/SectionHeading';
+import { PROPERTY_GROUPS } from '@/lib/price';
 import { useLead } from '@/components/LeadProvider';
 import { useLang } from '@/components/LanguageProvider';
 import { useBuildingList } from '@/hooks/useBuildings';
@@ -17,7 +19,11 @@ import { t } from '@/lib/i18n';
 export default function Home() {
   const { buildings } = useBuildingList();
   const published = buildings.filter((item) => item.is_published !== false);
-  const featured = published.slice(0, 6);
+  const featured = published
+    .filter((item) => (item.property_type || 'residential') === 'residential')
+    .slice(0, 6);
+  const collect = (group) =>
+    published.filter((item) => PROPERTY_GROUPS[group].includes(item.property_type));
   const { openLead } = useLead();
   const { lang } = useLang();
 
@@ -173,6 +179,32 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* COLLECTIONS */}
+      <PropertyCollection
+        marker={t.home.collections.offices.marker}
+        title={t.home.collections.offices.title}
+        subtitle={t.home.collections.offices.subtitle}
+        linkLabel={t.home.collections.offices.cta}
+        linkTo="/search?group=offices"
+        items={collect('offices')}
+      />
+      <PropertyCollection
+        marker={t.home.collections.residences.marker}
+        title={t.home.collections.residences.title}
+        subtitle={t.home.collections.residences.subtitle}
+        linkLabel={t.home.collections.residences.cta}
+        linkTo="/search?group=residences"
+        items={collect('residences')}
+      />
+      <PropertyCollection
+        marker={t.home.collections.estates.marker}
+        title={t.home.collections.estates.title}
+        subtitle={t.home.collections.estates.subtitle}
+        linkLabel={t.home.collections.estates.cta}
+        linkTo="/search?group=estates"
+        items={collect('estates')}
+      />
 
       {/* MAP */}
       <section className="border-y border-white/10 bg-[#1f272b]">

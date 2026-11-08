@@ -7,6 +7,7 @@ import { Image } from '@/components/ui/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLead } from '@/components/LeadProvider';
 import { useBuilding } from '@/hooks/useBuildings';
+import { dealLabel, formatArea, formatPrice, propertyTypeLabel } from '@/lib/price';
 import { base44 } from '@/api/base44Client';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
@@ -132,6 +133,18 @@ export default function House() {
             <h1 className="mt-3 text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-white sm:text-[46px]">
               {building.address}
             </h1>
+            <div className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <span className="border border-[#c9b28c]/40 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-[#c9b28c]">
+                {dealLabel(building)}
+              </span>
+              <span className="text-[12px] uppercase tracking-[0.14em] text-[#b0b8bc]">
+                {propertyTypeLabel(building)}
+              </span>
+              <span className="text-[16px] font-semibold text-white">{formatPrice(building)}</span>
+              {building.area ? (
+                <span className="text-[12px] text-[#778287]">{formatArea(building)}</span>
+              ) : null}
+            </div>
           </div>
           {building.updated_at ? (
             <p className="text-[11.5px] uppercase tracking-[0.16em] text-[#778287]">
@@ -146,7 +159,9 @@ export default function House() {
             { label: t.common.year, value: building.year_built },
             { label: t.common.floors, value: building.floors },
             { label: t.common.entrances, value: building.entrances },
-            { label: t.common.apartments, value: building.apartments_count },
+            building.property_type && building.property_type !== 'residential'
+              ? { label: t.common.area, value: building.area ? formatArea(building) : '' }
+              : { label: t.common.apartments, value: building.apartments_count },
           ].map((item) => (
             <div key={item.label} className="bg-[#1a2025] px-4 py-4">
               <dt className="text-[10px] uppercase tracking-[0.18em] text-[#778287]">{item.label}</dt>
@@ -208,6 +223,10 @@ export default function House() {
               <h2 className="text-[20px] font-bold text-white">{t.house.characteristics}</h2>
               <dl className="mt-4 divide-y divide-white/10 border-y border-white/10">
                 {[
+                  { label: t.common.type, value: propertyTypeLabel(building) },
+                  { label: t.common.deal, value: dealLabel(building) },
+                  { label: t.common.area, value: building.area ? formatArea(building) : '' },
+                  { label: t.common.price, value: formatPrice(building) },
                   { label: t.common.series, value: building.series_or_type },
                   { label: t.common.district, value: building.district },
                   { label: t.common.street, value: building.street },

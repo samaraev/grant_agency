@@ -8,6 +8,10 @@ import { t } from '@/lib/i18n';
 
 const CSV_COLUMNS = [
   'address',
+  'property_type',
+  'deal_type',
+  'price',
+  'area',
   'district',
   'street',
   'house_number',
@@ -73,6 +77,10 @@ export default function BuildingsAdmin() {
         if (!row.address) return;
         const payload = {
           address: row.address,
+          property_type: row.property_type || 'residential',
+          deal_type: row.deal_type || 'sale',
+          price: row.price ? Number(row.price) : null,
+          area: row.area ? Number(row.area) : null,
           district: row.district || '',
           street: row.street || '',
           house_number: row.house_number || '',
