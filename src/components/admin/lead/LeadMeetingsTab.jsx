@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
+import { normalizeStatus } from '@/lib/leadStatus';
+import { downloadIcs } from '@/lib/ics';
 
 const FIELD =
   'h-[38px] w-full border border-white/10 bg-[#1f272b] px-3 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none';
 
 const EMPTY = { type: 'in_apartment', startsAt: '', address: '', responsible: '', status: 'planned' };
+const CHANNELS = ['sms', 'email', 'telegram'];
 
 export default function LeadMeetingsTab({ lead }) {
   const copy = t.admin.leads.workspace.meetings;
+  const comms = t.admin.leads.workspace.comms;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
+  const [pending, setPending] = useState(null);
+  const [channel, setChannel] = useState('sms');
+  const [message, setMessage] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
 
   const load = () => {
     base44.entities.Meeting.filter({ lead_id: lead.id }, { sort: '-starts_at', limit: 100 })
@@ -23,28 +32,94 @@ export default function LeadMeetingsTab({ lead }) {
 
   useEffect(load, [lead.id]);
 
+  const advance = async (status) => {
+    try {
+      await base44.functions.invoke('changeLeadStatus', {
+        lead_id: lead.id,
+        status,
+        note: status === 'meeting_held' ? copy.heldNote : copy.scheduledNote,
+      });
+      setNotice(status === 'meeting_held' ? copy.heldNotice : copy.scheduledNotice);
+    } catch (error) {
+      setNotice(error?.response?.data?.error || t.admin.leads.transition.error);
+    }
+  };
+
   const add = async () => {
     if (!form.startsAt) return;
     setSaving(true);
     try {
-      await base44.entities.Meeting.create({
+      const startsAt = new Date(form.startsAt).toISOString();
+      const record = await base44.entities.Meeting.create({
         lead_id: lead.id,
         type: form.type,
-        starts_at: new Date(form.startsAt).toISOString(),
+        starts_at: startsAt,
         address: form.address,
         responsible: form.responsible,
         status: form.status,
       });
       setForm(EMPTY);
+      setPending(record);
+      setChannel(lead.phone ? 'sms' : lead.email ? 'email' : 'telegram');
+      setMessage(
+        copy.confirmTemplate
+          .replace('{date}', new Date(startsAt).toLocaleString(dateLocale(), {
+            day: '2-digit',
+            month: 'long',
+            hour: '2-digit',
+            minute: '2-digit',
+          }))
+          .replace('{address}', form.address || lead.address_text || '')
+      );
       load();
     } finally {
       setSaving(false);
     }
   };
 
+  const sendConfirmation = async () => {
+    if (!pending) return;
+    setBusy(true);
+    setNotice('');
+    try {
+      if (channel === 'sms' && lead.phone) {
+        const response = await base44.functions.invoke('sendSms', { lead_id: lead.id, body: message });
+        if (!response?.data?.ok) setNotice(response?.data?.error || comms.manualHint);
+      } else if (channel === 'email' && lead.email) {
+        const response = await base44.functions.invoke('sendEmail', {
+          lead_id: lead.id,
+          subject: copy.confirmSubject,
+          body: message,
+        });
+        if (!response?.data?.ok) setNotice(response?.data?.error || comms.manualHint);
+      } else if (channel === 'telegram' && lead.telegram_username) {
+        window.open(`https://t.me/${lead.telegram_username.replace('@', '')}`, '_blank', 'noopener');
+        await base44.entities.Communication.create({
+          lead_id: lead.id,
+          channel: 'telegram',
+          direction: 'out',
+          body: message,
+          status: 'sent',
+        });
+      }
+      await advance('meeting_scheduled');
+      setPending(null);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const update = async (meeting, patch) => {
     const updated = await base44.entities.Meeting.update(meeting.id, patch);
     setItems((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
+    if (patch.status === 'held' && normalizeStatus(lead.status) === 'meeting_scheduled') {
+      await advance('meeting_held');
+    }
+  };
+
+  const skipConfirmation = async () => {
+    setPending(null);
+    await advance('meeting_scheduled');
   };
 
   return (
@@ -91,6 +166,56 @@ export default function LeadMeetingsTab({ lead }) {
         </button>
       </div>
 
+      {pending ? (
+        <div className="border border-[#c9b28c]/40 bg-[#1f272b] p-4">
+          <div className="text-[11px] uppercase tracking-[0.14em] text-[#c9b28c]">{copy.confirmTitle}</div>
+          <p className="mt-1 text-[11.5px] text-[#8f9a9f]">{copy.confirmHint}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {CHANNELS.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setChannel(item)}
+                className={
+                  channel === item
+                    ? 'min-h-[32px] bg-[#c8102e] px-3 text-[11.5px] text-white'
+                    : 'min-h-[32px] border border-white/15 px-3 text-[11.5px] text-[#b0b8bc]'
+                }
+              >
+                {comms[item] || item}
+              </button>
+            ))}
+          </div>
+          <textarea
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            rows={4}
+            aria-label={copy.confirmTitle}
+            className="mt-3 w-full resize-none border border-white/10 bg-[#263033] p-2.5 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none"
+          />
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={sendConfirmation}
+              disabled={busy || !message.trim()}
+              className="min-h-[34px] bg-[#c8102e] px-3 text-[12px] font-semibold text-white disabled:opacity-50"
+            >
+              {busy ? copy.sending : copy.confirmSend}
+            </button>
+            <button
+              type="button"
+              onClick={skipConfirmation}
+              disabled={busy}
+              className="min-h-[34px] border border-white/15 px-3 text-[12px] text-white disabled:opacity-40"
+            >
+              {copy.confirmSkip}
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {notice ? <p className="text-[12px] text-[#c9b28c]">{notice}</p> : null}
+
       {loading ? (
         <p className="text-[13px] text-[#8f9a9f]">{t.admin.common.loading}</p>
       ) : items.length ? (
@@ -129,6 +254,13 @@ export default function LeadMeetingsTab({ lead }) {
                 placeholder={copy.result}
                 className="mt-2 w-full resize-none border border-white/10 bg-[#263033] p-2.5 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => downloadIcs(meeting, lead)}
+                className="mt-2 min-h-[30px] border border-white/15 px-3 text-[11.5px] text-[#c9b28c]"
+              >
+                {copy.ics}
+              </button>
             </li>
           ))}
         </ul>

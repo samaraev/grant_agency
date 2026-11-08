@@ -34,6 +34,10 @@ import TeamAdmin from '@/pages/admin/TeamAdmin';
 import SettingsAdmin from '@/pages/admin/SettingsAdmin';
 import Analytics from '@/pages/admin/Analytics';
 import IntegrationsAdmin from '@/pages/admin/IntegrationsAdmin';
+import Today from '@/pages/admin/Today';
+import MeetingsAdmin from '@/pages/admin/MeetingsAdmin';
+import Reports from '@/pages/admin/Reports';
+import LaunchChecklist from '@/pages/admin/LaunchChecklist';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -86,8 +90,12 @@ const AuthenticatedApp = () => {
       >
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path="today" element={<Today />} />
           <Route path="leads" element={<Leads />} />
           <Route path="leads/:id" element={<LeadWorkspace />} />
+          <Route path="meetings" element={<MeetingsAdmin />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="launch" element={<LaunchChecklist />} />
           <Route path="buildings" element={<BuildingsAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="team" element={<TeamAdmin />} />

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
+  Sun,
   Inbox,
+  CalendarDays,
+  FileText,
+  ListChecks,
   Building2,
   Wrench,
   Users,
@@ -24,12 +28,16 @@ export default function AdminLayout() {
 
   const nav = [
     { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
+    { to: '/admin/today', label: t.admin.nav.today, icon: Sun },
     { to: '/admin/leads', label: t.admin.nav.leads, icon: Inbox },
+    { to: '/admin/meetings', label: t.admin.nav.meetings, icon: CalendarDays },
+    { to: '/admin/reports', label: t.admin.nav.reports, icon: FileText },
     { to: '/admin/buildings', label: t.admin.nav.buildings, icon: Building2 },
     { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
     { to: '/admin/team', label: t.admin.nav.team, icon: Users },
     { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
     { to: '/admin/integrations', label: t.admin.nav.integrations, icon: Plug },
+    { to: '/admin/launch', label: t.admin.nav.launch, icon: ListChecks },
     { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
   ];
 

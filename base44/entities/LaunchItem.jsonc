@@ -1,0 +1,100 @@
+{
+  "name": "LaunchItem",
+  "type": "object",
+  "properties": {
+    "group": {
+      "type": "string",
+      "enum": [
+        "contract",
+        "edo",
+        "access",
+        "developer",
+        "ads_history",
+        "buildings",
+        "youtube",
+        "terms",
+        "claims",
+        "backup",
+        "crm",
+        "plan"
+      ],
+      "enumColors": [
+        "blue",
+        "blue",
+        "purple",
+        "gray",
+        "gray",
+        "yellow",
+        "purple",
+        "green",
+        "green",
+        "pink",
+        "blue",
+        "yellow"
+      ],
+      "default": "contract",
+      "description": "\u0411\u043b\u043e\u043a \u0447\u0435\u043a-\u043b\u0438\u0441\u0442\u0430 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u043f\u0440\u043e\u0435\u043a\u0442\u0430"
+    },
+    "title": {
+      "type": "string",
+      "description": "\u0417\u0430\u0434\u0430\u0447\u0430 \u0438\u043b\u0438 \u043f\u0443\u043d\u043a\u0442"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "todo",
+        "in_progress",
+        "done",
+        "blocked"
+      ],
+      "enumColors": [
+        "gray",
+        "blue",
+        "green",
+        "red"
+      ],
+      "default": "todo"
+    },
+    "owner": {
+      "type": "string",
+      "description": "\u041e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439"
+    },
+    "due_date": {
+      "type": "string",
+      "description": "\u0421\u0440\u043e\u043a (ISO, \u0434\u0430\u0442\u0430)"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "group",
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

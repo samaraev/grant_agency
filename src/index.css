@@ -194,6 +194,28 @@
     border: 1px solid #cfcfcf !important;
     background: #fff !important;
   }
+  #report-print,
+  #report-print * {
+    visibility: visible;
+  }
+  #report-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 24px;
+    background: #fff !important;
+    border: 0 !important;
+  }
+  #report-print * {
+    color: #111 !important;
+    border-color: #d5d5d5 !important;
+    background: transparent !important;
+  }
+  #report-print textarea {
+    border: 1px solid #cfcfcf !important;
+    background: #fff !important;
+  }
 }
 
 @keyframes fade-up {

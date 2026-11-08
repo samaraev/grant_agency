@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
-import { normalizeStatus, reachedQualified } from '@/lib/leadStatus';
+import { STATUS_KEYS, reachedQualified } from '@/lib/leadStatus';
+import { slaList } from '@/lib/sla';
 
-function Metric({ label, value, hint }) {
+function Metric({ label, value, hint, tone }) {
   return (
     <div className="border border-white/10 bg-[#263033] p-5">
       <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">{label}</div>
-      <div className="mt-2 text-[30px] font-bold leading-none text-white">{value}</div>
+      <div className={`mt-2 text-[30px] font-bold leading-none ${tone || 'text-white'}`}>{value}</div>
       {hint ? <div className="mt-2 text-[11px] text-[#6f7a7f]">{hint}</div> : null}
     </div>
   );
@@ -28,12 +29,18 @@ function BarRow({ label, value, max }) {
 
 export default function Dashboard() {
   const [leads, setLeads] = useState([]);
+  const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Lead.list({ sort: '-created_date', limit: 300 })
-      .then((page) => setLeads(page?.items || []))
-      .catch(() => setLeads([]))
+    Promise.all([
+      base44.entities.Lead.list({ sort: '-created_date', limit: 300 }).catch(() => ({ items: [] })),
+      base44.entities.AdminSettings.list({ limit: 1 }).catch(() => ({ items: [] })),
+    ])
+      .then(([leadPage, settingsPage]) => {
+        setLeads(leadPage?.items || []);
+        setSettings(settingsPage?.items?.[0] || {});
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -49,19 +56,11 @@ export default function Dashboard() {
     });
     const owners = leads.filter((lead) => String(lead.type).startsWith('owner')).length;
     const buyers = leads.filter((lead) => String(lead.type).startsWith('buyer')).length;
-    const byStatus = (status) =>
-      leads.filter((lead) => normalizeStatus(lead.status) === status).length;
-    const funnel = {
-      new_inquiry: byStatus('new_inquiry'),
-      contact_made: byStatus('contact_made'),
-      target_inquiry: byStatus('target_inquiry'),
-      qualified_conversation: byStatus('qualified_conversation'),
-      meeting_scheduled:
-        byStatus('meeting_scheduled') + byStatus('meeting_held'),
-      contract_signed: byStatus('contract_signed') + byStatus('listed_or_search_started'),
-      deal_closed: byStatus('deal_closed'),
-      non_target: byStatus('non_target'),
-    };
+    const byStatus = (status) => leads.filter((lead) => lead.status === status).length;
+    const funnel = Object.fromEntries(STATUS_KEYS.map((key) => [key, byStatus(key)]));
+    const open = leads.filter(
+      (lead) => !['non_target', 'deal_closed'].includes(lead.status)
+    );
     return {
       total: leads.length,
       week: week.length,
@@ -69,11 +68,12 @@ export default function Dashboard() {
       buyers,
       khamovniki: leads.filter((lead) => lead.cluster === 'khamovniki').length,
       meaningful: leads.filter((lead) => reachedQualified(lead.status)).length,
+      overdue: slaList(open, settings).length,
       byType,
       bySource,
       funnel,
     };
-  }, [leads]);
+  }, [leads, settings]);
 
   const maxType = Math.max(1, ...Object.values(stats.byType));
   const maxSource = Math.max(1, ...Object.values(stats.bySource));
@@ -88,12 +88,18 @@ export default function Dashboard() {
         <div className="mt-8 h-32 animate-pulse border border-white/10 bg-[#263033]" />
       ) : (
         <>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             <Metric label={t.admin.dashboard.weekLeads} value={stats.week} />
             <Metric label={t.admin.dashboard.totalLeads} value={stats.total} />
             <Metric label={t.admin.dashboard.owners} value={stats.owners} />
             <Metric label={t.admin.dashboard.buyers} value={stats.buyers} />
             <Metric label={t.admin.dashboard.khamovniki} value={stats.khamovniki} />
+            <Metric
+              label={t.admin.dashboard.slaOverdue}
+              value={stats.overdue}
+              hint={t.admin.dashboard.slaOverdueHint}
+              tone={stats.overdue > 0 ? 'text-[#ff8a96]' : 'text-white'}
+            />
           </div>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -102,24 +108,6 @@ export default function Dashboard() {
               value={`${stats.meaningful} / ${stats.total}`}
               hint={t.admin.dashboard.meaningfulHint}
             />
-            <div className="border border-white/10 bg-[#263033] p-5">
-              <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                {t.admin.dashboard.funnel}
-              </div>
-              <div className="mt-3">
-                {Object.entries(stats.funnel).map(([key, value]) => (
-                  <BarRow
-                    key={key}
-                    label={t.admin.dashboard.funnelStages[key]}
-                    value={value}
-                    max={funnelMax}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
             <div className="border border-white/10 bg-[#263033] p-5">
               <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
                 {t.admin.dashboard.byType}
@@ -134,22 +122,39 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            <div className="border border-white/10 bg-[#263033] p-5">
-              <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                {t.admin.dashboard.bySource}
-              </div>
-              <div className="mt-3">
-                {Object.keys(stats.bySource).length ? (
-                  Object.entries(stats.bySource)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 8)
-                    .map(([key, value]) => (
-                      <BarRow key={key} label={key} value={value} max={maxSource} />
-                    ))
-                ) : (
-                  <p className="text-[13px] text-[#8f9a9f]">{t.admin.dashboard.noData}</p>
-                )}
-              </div>
+          </div>
+
+          <div className="mt-4 border border-white/10 bg-[#263033] p-5">
+            <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
+              {t.admin.dashboard.funnel}
+            </div>
+            <div className="mt-3 gap-x-8 sm:columns-2">
+              {STATUS_KEYS.map((key) => (
+                <BarRow
+                  key={key}
+                  label={t.admin.leads.statuses[key]}
+                  value={stats.funnel[key]}
+                  max={funnelMax}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 border border-white/10 bg-[#263033] p-5">
+            <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
+              {t.admin.dashboard.bySource}
+            </div>
+            <div className="mt-3">
+              {Object.keys(stats.bySource).length ? (
+                Object.entries(stats.bySource)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 10)
+                  .map(([key, value]) => (
+                    <BarRow key={key} label={key} value={value} max={maxSource} />
+                  ))
+              ) : (
+                <p className="text-[13px] text-[#8f9a9f]">{t.admin.dashboard.noData}</p>
+              )}
             </div>
           </div>
         </>
