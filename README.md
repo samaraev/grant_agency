@@ -212,7 +212,7 @@ src/
   index.css        design tokens
 ```
 
-Stack: React 18 + Vite, React Router 7, Tailwind CSS + shadcn/ui, TanStack Query, react-leaflet (OpenStreetMap, no paid key), lucide-react, Base44 SDK (entities, auth, integrations), Deno for the backend function.
+Stack: React 18 + Vite, React Router 7, Tailwind CSS + shadcn/ui, TanStack Query, react-leaflet (Esri dark basemap, no API key), lucide-react, Base44 SDK (entities, auth, integrations), Deno for the backend function.
 
 ---
 

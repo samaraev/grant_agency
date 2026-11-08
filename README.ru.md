@@ -212,7 +212,7 @@ src/
   index.css        токены дизайна
 ```
 
-Стек: React 18 + Vite, React Router 7, Tailwind CSS + shadcn/ui, TanStack Query, react-leaflet (OpenStreetMap, без платного ключа), lucide-react, Base44 SDK (сущности, авторизация, интеграции), Deno для серверной функции.
+Стек: React 18 + Vite, React Router 7, Tailwind CSS + shadcn/ui, TanStack Query, react-leaflet (тёмная подложка Esri, без API-ключа), lucide-react, Base44 SDK (сущности, авторизация, интеграции), Deno для серверной функции.
 
 ---
 
