@@ -14,10 +14,11 @@ export default function LeadDialog({ open, onOpenChange, initial = {} }) {
         </div>
         <div className="px-5 py-6 sm:px-7">
           <LeadForm
-            key={`${initial.type || ''}-${initial.address || ''}-${initial.building_id || ''}`}
+            key={`${initial.type || ''}-${initial.address || ''}-${initial.building_id || ''}-${initial.cluster || ''}`}
             defaultType={initial.type}
             defaultAddress={initial.address}
             buildingId={initial.building_id}
+            cluster={initial.cluster || null}
             onSuccess={() => {}}
           />
         </div>

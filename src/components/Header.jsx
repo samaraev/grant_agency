@@ -16,6 +16,7 @@ export default function Header({ settings, onCta }) {
     { to: '/', label: t.nav.home, end: true },
     { to: '/search', label: t.nav.search },
     { to: '/sobstvennikam', label: t.nav.owners },
+    { to: '/khamovniki', label: t.nav.cluster },
     { to: '/pokupatelyam', label: t.nav.buyers },
     { to: '/uslugi', label: t.nav.services },
     { to: '/o-nas', label: t.nav.about },
@@ -43,7 +44,7 @@ export default function Header({ settings, onCta }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label={t.nav.menu}>
+        <nav className="hidden items-center gap-5 lg:flex" aria-label={t.nav.menu}>
           {links.map((link) => (
             <NavLink
               key={link.to}

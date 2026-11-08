@@ -51,7 +51,9 @@ export default function Dashboard() {
     const funnel = {
       new: leads.filter((lead) => lead.status === 'new').length,
       contacted: leads.filter((lead) => lead.status === 'contacted').length,
+      qualified: leads.filter((lead) => lead.status === 'qualified' || lead.is_meaningful).length,
       meeting_set: leads.filter((lead) => lead.status === 'meeting_set').length,
+      agreement: leads.filter((lead) => lead.status === 'agreement' || lead.agreement !== 'none').length,
       closed: leads.filter((lead) => lead.status === 'closed').length,
     };
     return {
@@ -59,6 +61,7 @@ export default function Dashboard() {
       week: week.length,
       owners,
       buyers,
+      khamovniki: leads.filter((lead) => lead.cluster === 'khamovniki').length,
       meaningful: leads.filter((lead) => lead.is_meaningful).length,
       byType,
       bySource,
@@ -79,11 +82,12 @@ export default function Dashboard() {
         <div className="mt-8 h-32 animate-pulse border border-white/10 bg-[#263033]" />
       ) : (
         <>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <Metric label={t.admin.dashboard.weekLeads} value={stats.week} />
             <Metric label={t.admin.dashboard.totalLeads} value={stats.total} />
             <Metric label={t.admin.dashboard.owners} value={stats.owners} />
             <Metric label={t.admin.dashboard.buyers} value={stats.buyers} />
+            <Metric label={t.admin.dashboard.khamovniki} value={stats.khamovniki} />
           </div>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">

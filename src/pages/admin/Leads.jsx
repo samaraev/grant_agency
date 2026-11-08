@@ -14,11 +14,18 @@ const STATUS_CLASS = {
   spam: 'bg-white/10 text-[#9aa4a8]',
 };
 
+const AGREEMENT_CLASS = {
+  none: 'bg-white/10 text-[#9aa4a8]',
+  agency: 'bg-blue-500/15 text-blue-300',
+  exclusive: 'bg-green-500/15 text-green-300',
+};
+
 export default function Leads() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const [type, setType] = useState('');
+  const [cluster, setCluster] = useState('');
   const [search, setSearch] = useState('');
   const [from, setFrom] = useState('');
   const [source, setSource] = useState('');
@@ -30,6 +37,7 @@ export default function Leads() {
     const query = {};
     if (status) query.status = status;
     if (type) query.type = type;
+    if (cluster) query.cluster = cluster;
     base44.entities.Lead.filter(query, {
       sort: sortDesc ? '-created_date' : 'created_date',
       limit: 300,
@@ -39,7 +47,7 @@ export default function Leads() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(load, [status, type, sortDesc]);
+  useEffect(load, [status, type, cluster, sortDesc]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -66,6 +74,8 @@ export default function Leads() {
       { key: 'phone', label: 'Телефон' },
       { key: 'address_text', label: 'Адрес' },
       { key: 'status', label: 'Статус' },
+      { key: 'cluster', label: 'Кластер' },
+      { key: 'agreement', label: 'Договор' },
       { key: 'source', label: 'Источник' },
       { key: 'is_meaningful', label: 'Содержательный' },
       { key: 'message', label: 'Сообщение' },
@@ -100,7 +110,7 @@ export default function Leads() {
         </button>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
         <div className="relative sm:col-span-2">
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#6f7a7f]" aria-hidden="true" />
           <input
@@ -147,6 +157,19 @@ export default function Leads() {
             </option>
           ))}
         </select>
+        <select
+          value={cluster}
+          onChange={(event) => setCluster(event.target.value)}
+          aria-label={t.admin.leads.allClusters}
+          className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
+        >
+          <option value="">{t.admin.leads.allClusters}</option>
+          {Object.entries(t.admin.leads.clusters).map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
+        </select>
         <input
           type="date"
           value={from}
@@ -168,7 +191,7 @@ export default function Leads() {
       </div>
 
       <div className="mt-4 overflow-x-auto border border-white/10">
-        <table className="w-full min-w-[860px] text-left">
+        <table className="w-full min-w-[960px] text-left">
           <thead className="bg-[#1f272b] text-[10.5px] uppercase tracking-[0.14em] text-[#778287]">
             <tr>
               <th className="px-4 py-3 font-medium">{t.admin.leads.columns.created}</th>
@@ -178,13 +201,14 @@ export default function Leads() {
               <th className="px-4 py-3 font-medium">{t.admin.leads.columns.address}</th>
               <th className="px-4 py-3 font-medium">{t.admin.leads.columns.source}</th>
               <th className="px-4 py-3 font-medium">{t.admin.leads.columns.status}</th>
+              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.agreement}</th>
               <th className="px-4 py-3 font-medium">{t.admin.leads.columns.meaningful}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/8 text-[13px]">
             {loading ? (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-[#8f9a9f]">
+                <td colSpan={9} className="px-4 py-8 text-center text-[#8f9a9f]">
                   {t.admin.common.loading}
                 </td>
               </tr>
@@ -214,6 +238,16 @@ export default function Leads() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
+                    <span
+                      className={cn(
+                        'px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
+                        AGREEMENT_CLASS[lead.agreement] || 'bg-white/10 text-[#9aa4a8]'
+                      )}
+                    >
+                      {t.admin.leads.agreements[lead.agreement] || t.admin.leads.agreements.none}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
                     <button
                       type="button"
                       onClick={async (event) => {
@@ -238,7 +272,7 @@ export default function Leads() {
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-[#8f9a9f]">
+                <td colSpan={9} className="px-4 py-10 text-center text-[#8f9a9f]">
                   {t.admin.leads.empty}
                 </td>
               </tr>

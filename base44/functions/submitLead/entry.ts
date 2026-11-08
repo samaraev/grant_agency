@@ -2,6 +2,8 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 
 const ALLOWED_TYPES = ['owner_appraise', 'owner_sell', 'buyer_buy', 'buyer_check', 'general'];
 const ALLOWED_CONTACTS = ['phone', 'telegram', 'whatsapp'];
+const ALLOWED_CLUSTERS = ['khamovniki', 'other'];
+const ALLOWED_TIMELINES = ['asap', 'month', 'quarter', 'later', 'undecided'];
 
 // Простое ограничение частоты обращений: не более 5 с одного адреса за 10 минут.
 const attempts = new Map();
@@ -58,6 +60,8 @@ export default async function (req) {
       'direct';
 
     const addressText = clean(body.address_text, 200);
+    const cluster = ALLOWED_CLUSTERS.includes(body.cluster) ? body.cluster : 'other';
+    const sellTimeline = ALLOWED_TIMELINES.includes(body.sell_timeline) ? body.sell_timeline : null;
 
     // Если адрес совпал с домом в базе — сохраняем связь.
     let buildingId = null;
@@ -73,6 +77,9 @@ export default async function (req) {
 
     const lead = await base44.entities.Lead.create({
       type,
+      cluster,
+      sell_timeline: sellTimeline,
+      agreement: 'none',
       building_id: buildingId,
       address_text: addressText,
       name,
@@ -111,6 +118,8 @@ export default async function (req) {
             `Телефон: ${rawPhone}`,
             `Удобная связь: ${preferred}`,
             `Адрес: ${addressText || 'не указан'}`,
+            `Кластер: ${cluster === 'khamovniki' ? 'Хамовники' : 'другой район'}`,
+            `Сроки продажи: ${sellTimeline || 'не указаны'}`,
             buildingId ? `Дом в базе: ${buildingId}` : 'Дома нет в базе',
             `Сообщение: ${clean(body.message, 1500) || '—'}`,
             `Источник: ${source}`,

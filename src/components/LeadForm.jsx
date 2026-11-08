@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 
 const TYPES = ['owner_appraise', 'owner_sell', 'buyer_buy', 'buyer_check', 'general'];
 const CONTACTS = ['phone', 'telegram', 'whatsapp'];
+const TIMELINES = ['asap', 'month', 'quarter', 'later', 'undecided'];
 
 export function formatPhone(value) {
   let digits = String(value || '').replace(/\D/g, '');
@@ -28,6 +29,7 @@ export default function LeadForm({
   defaultType = 'owner_appraise',
   defaultAddress = '',
   buildingId = null,
+  cluster = null,
   onSuccess,
 }) {
   const { buildings } = useBuildingList({ limit: 200 });
@@ -38,6 +40,7 @@ export default function LeadForm({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [preferred, setPreferred] = useState('phone');
+  const [timeline, setTimeline] = useState('');
   const [message, setMessage] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
@@ -67,6 +70,8 @@ export default function LeadForm({
       const utm = getUtm();
       const response = await base44.functions.invoke('submitLead', {
         type,
+        cluster,
+        sell_timeline: timeline || null,
         building_id: matchedBuilding || null,
         address_text: address.trim(),
         name: name.trim(),
@@ -234,6 +239,29 @@ export default function LeadForm({
           ))}
         </div>
       </fieldset>
+
+      {String(type).startsWith('owner') ? (
+        <fieldset className="mt-6">
+          <legend className="eyebrow mb-3">{t.lead.timelineLabel}</legend>
+          <div className="flex flex-wrap gap-2">
+            {TIMELINES.map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setTimeline(timeline === value ? '' : value)}
+                className={cn(
+                  'min-h-[38px] border px-3 text-[12.5px] transition-colors',
+                  timeline === value
+                    ? 'border-[#c9b28c] text-[#c9b28c]'
+                    : 'border-white/15 text-[#8f9a9f] hover:border-white/35 hover:text-white'
+                )}
+              >
+                {t.lead.timelines[value]}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
 
       <div className="mt-6">
         <label htmlFor="lead-message" className="eyebrow mb-2 block">

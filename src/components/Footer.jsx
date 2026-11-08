@@ -31,6 +31,7 @@ export default function Footer({ settings }) {
               {[
                 { to: '/search', label: t.nav.search },
                 { to: '/sobstvennikam', label: t.nav.owners },
+                { to: '/khamovniki', label: t.nav.cluster },
                 { to: '/pokupatelyam', label: t.nav.buyers },
                 { to: '/uslugi', label: t.nav.services },
                 { to: '/o-nas', label: t.nav.about },

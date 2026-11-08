@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Check, ArrowRight } from 'lucide-react';
 import AddressSearch from '@/components/AddressSearch';
 import LeadForm from '@/components/LeadForm';
 import SectionHeading from '@/components/SectionHeading';
@@ -42,6 +43,24 @@ export default function Owners() {
               placeholder={t.home.hero.searchPlaceholder}
             />
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/10 bg-[#1f272b]">
+        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-5 py-6 lg:px-8">
+          <div>
+            <div className="eyebrow">{t.owners.clusterLink}</div>
+            <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-[#b0b8bc]">
+              {t.owners.clusterLinkText}
+            </p>
+          </div>
+          <Link
+            to="/khamovniki"
+            className="flex min-h-[42px] items-center gap-2 border border-[#c9b28c] px-4 text-[12.5px] font-semibold text-[#c9b28c] transition-colors hover:bg-[#c9b28c] hover:text-[#1a2025]"
+          >
+            {t.nav.cluster}
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Link>
         </div>
       </section>
 

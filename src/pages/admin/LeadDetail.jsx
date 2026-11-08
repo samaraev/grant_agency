@@ -8,6 +8,7 @@ const FIELD =
 
 export default function LeadDetail({ lead, onClose, onSaved }) {
   const [status, setStatus] = useState('new');
+  const [agreement, setAgreement] = useState('none');
   const [meaningful, setMeaningful] = useState(false);
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
@@ -16,6 +17,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
   useEffect(() => {
     if (!lead) return;
     setStatus(lead.status || 'new');
+    setAgreement(lead.agreement || 'none');
     setMeaningful(Boolean(lead.is_meaningful));
     setNotes(lead.admin_notes || '');
     setSaved(false);
@@ -27,6 +29,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
     try {
       const updated = await base44.entities.Lead.update(lead.id, {
         status,
+        agreement,
         is_meaningful: meaningful,
         admin_notes: notes,
       });
@@ -59,6 +62,22 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                     {t.admin.leads.columns.type}
                   </div>
                   <div className="mt-1 text-[13.5px] text-white">{t.lead.types[lead.type] || lead.type}</div>
+                </div>
+                <div>
+                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
+                    {t.admin.leads.columns.cluster}
+                  </div>
+                  <div className="mt-1 text-[13.5px] text-white">
+                    {t.admin.leads.clusters[lead.cluster] || t.admin.leads.clusters.other}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
+                    {t.admin.leads.detail.timeline}
+                  </div>
+                  <div className="mt-1 text-[13.5px] text-white">
+                    {t.lead.timelines[lead.sell_timeline] || '—'}
+                  </div>
                 </div>
                 <div>
                   <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
@@ -117,6 +136,24 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                 </select>
               </div>
 
+              <div>
+                <label htmlFor="lead-agreement" className="eyebrow mb-2 block">
+                  {t.admin.leads.detail.agreement}
+                </label>
+                <select
+                  id="lead-agreement"
+                  value={agreement}
+                  onChange={(event) => setAgreement(event.target.value)}
+                  className={FIELD}
+                >
+                  {Object.entries(t.admin.leads.agreements).map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
@@ -128,8 +165,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                   <span className="block text-[13px] text-white">{t.admin.leads.detail.meaningful}</span>
                   <span className="mt-0.5 block text-[11.5px] text-[#8f9a9f]">
                     {t.admin.leads.detail.meaningfulHint}
-                  </span>
-                </span>
+                  </span>                </span>
               </label>
 
               <div>
