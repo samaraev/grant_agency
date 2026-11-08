@@ -338,7 +338,7 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
             {t.admin.buildings.form.published}
           </label>
 
-          {error ? <p className="text-[12px] text-[#f4a7b0]">{error}</p> : null}
+          {error ? <p className="text-[12px] text-[#c9b28c]">{error}</p> : null}
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
@@ -360,7 +360,7 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
               <button
                 type="button"
                 onClick={remove}
-                className="ml-auto flex min-h-[42px] items-center gap-2 border border-white/10 px-4 text-[12.5px] text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#f4a7b0]"
+                className="ml-auto flex min-h-[42px] items-center gap-2 border border-white/10 px-4 text-[12.5px] text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#c9b28c]"
               >
                 <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 {t.admin.buildings.form.delete}

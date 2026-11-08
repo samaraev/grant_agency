@@ -162,7 +162,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                 >
                   {t.admin.leads.detail.close}
                 </button>
-                {saved ? <span className="text-[12px] text-[#f4a7b0]">{t.admin.leads.detail.saved}</span> : null}
+                {saved ? <span className="text-[12px] text-[#c9b28c]">{t.admin.leads.detail.saved}</span> : null}
               </div>
             </div>
           </>

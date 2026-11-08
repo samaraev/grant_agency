@@ -117,7 +117,7 @@ export default function BuildingsAdmin() {
           <button
             type="button"
             onClick={() => setImportOpen(true)}
-            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#f4a7b0]"
+            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
           >
             <Upload className="h-3.5 w-3.5" aria-hidden="true" />
             {t.admin.buildings.import}
@@ -125,7 +125,7 @@ export default function BuildingsAdmin() {
           <button
             type="button"
             onClick={exportCsv}
-            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#f4a7b0]"
+            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
           >
             <Download className="h-3.5 w-3.5" aria-hidden="true" />
             {t.admin.buildings.export}
@@ -257,7 +257,7 @@ export default function BuildingsAdmin() {
                 )
               )
             }
-            className="mt-3 text-[12px] text-[#f4a7b0] hover:text-white"
+            className="mt-3 text-[12px] text-[#c9b28c] hover:text-white"
           >
             {t.admin.buildings.importDialog.template}
           </button>

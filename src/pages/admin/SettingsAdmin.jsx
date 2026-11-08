@@ -83,7 +83,7 @@ export default function SettingsAdmin() {
             >
               {saving ? t.admin.common.loading : t.admin.settings.save}
             </button>
-            {saved ? <span className="text-[12px] text-[#f4a7b0]">{t.admin.settings.saved}</span> : null}
+            {saved ? <span className="text-[12px] text-[#c9b28c]">{t.admin.settings.saved}</span> : null}
           </div>
         </div>
       )}

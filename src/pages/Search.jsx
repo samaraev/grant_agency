@@ -160,7 +160,7 @@ export default function Search() {
           <button
             type="button"
             onClick={() => setParams({}, { replace: true })}
-            className="flex items-center gap-1.5 text-[12px] text-[#f4a7b0] hover:text-white"
+            className="flex items-center gap-1.5 text-[12px] text-[#c9b28c] hover:text-white"
           >
             <X className="h-3.5 w-3.5" aria-hidden="true" />
             {t.search.clear}
@@ -204,7 +204,7 @@ export default function Search() {
           <div className="grid gap-8 border border-white/10 bg-[#263033] p-6 lg:grid-cols-[1fr_1fr] lg:p-10">
             <div>
               <div className="flex h-11 w-11 items-center justify-center border border-white/15">
-                <SearchIcon className="h-5 w-5 text-[#f4a7b0]" aria-hidden="true" />
+                <SearchIcon className="h-5 w-5 text-[#c9b28c]" aria-hidden="true" />
               </div>
               <h3 className="mt-5 text-[24px] font-bold text-white">{t.search.emptyTitle}</h3>
               <p className="mt-3 text-[14px] leading-relaxed text-[#b0b8bc]">{t.search.emptyText}</p>

@@ -16,7 +16,7 @@ export default function Privacy() {
       <h1 className="mt-4 text-[30px] font-extrabold leading-tight text-white sm:text-[40px]">
         {t.privacy.title}
       </h1>
-      <p className="mt-4 border border-[#c8102e]/40 bg-[#c8102e]/10 px-4 py-3 text-[12.5px] text-[#f4a7b0]">
+      <p className="mt-4 border border-[#c8102e]/40 bg-[#c8102e]/10 px-4 py-3 text-[12.5px] text-[#c9b28c]">
         {t.privacy.updated}
       </p>
       <p className="mt-8 text-[14.5px] leading-[1.8] text-[#d7dcde]">{t.privacy.intro}</p>

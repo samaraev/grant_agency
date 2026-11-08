@@ -96,7 +96,7 @@ export default function About() {
                       className="h-16 w-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-16 w-16 items-center justify-center border border-white/15 bg-[#1f272b] text-[19px] font-bold text-[#f4a7b0]">
+                    <div className="flex h-16 w-16 items-center justify-center border border-white/15 bg-[#1f272b] text-[19px] font-bold text-[#c9b28c]">
                       {member.name
                         .split(' ')
                         .map((part) => part[0])
@@ -106,7 +106,7 @@ export default function About() {
                   )}
                   <div>
                     <h3 className="text-[17px] font-bold text-white">{member.name}</h3>
-                    <p className="mt-1 text-[12px] uppercase tracking-[0.12em] text-[#f4a7b0]">
+                    <p className="mt-1 text-[12px] uppercase tracking-[0.12em] text-[#c9b28c]">
                       {member.role}
                     </p>
                   </div>

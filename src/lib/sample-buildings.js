@@ -18,7 +18,8 @@ export const BUILDING_PHOTOS = [
   'https://media.base44.com/images/public/6af06e78e36d41720538fd27/14b78e0a5_generated_753831c9.png',
 ];
 
-export const HERO_IMAGE = BUILDING_PHOTOS[11];
+export const HERO_IMAGE =
+  'https://media.base44.com/images/public/6af06e78e36d41720538fd27/90892b436_generated_image.png';
 
 export const HOUSE_VIDEO =
   'https://media.base44.com/videos/public/6af06e78e36d41720538fd27/08a287b1c_House_Video.mp4';

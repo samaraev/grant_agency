@@ -82,7 +82,7 @@ export default function Header({ settings, onCta }) {
           <button
             type="button"
             onClick={handleCta}
-            className="hidden min-h-[44px] items-center bg-[#c8102e] px-5 text-[13px] font-semibold text-white transition-colors hover:bg-[#a80d26] sm:flex"
+            className="hidden min-h-[44px] items-center bg-[#eee7dc] px-5 text-[13px] font-semibold text-[#1a2025] transition-colors hover:bg-white sm:flex"
           >
             {t.nav.cta}
           </button>
@@ -118,7 +118,7 @@ export default function Header({ settings, onCta }) {
                 href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
                 className="flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-white"
               >
-                <Phone className="h-4 w-4 text-[#f4a7b0]" aria-hidden="true" />
+                <Phone className="h-4 w-4 text-[#c9b28c]" aria-hidden="true" />
                 {settings.phone}
               </a>
             ) : null}

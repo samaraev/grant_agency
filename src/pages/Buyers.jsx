@@ -70,7 +70,7 @@ export default function Buyers() {
           <ul className="mt-10 grid gap-px bg-white/10 sm:grid-cols-2">
             {t.buyers.checklist.items.map((item) => (
               <li key={item.title} className="flex gap-3 bg-[#1f272b] p-6">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#c8102e]" aria-hidden="true" />
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 <div>
                   <h3 className="text-[15.5px] font-semibold text-white">{item.title}</h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-[#b0b8bc]">{item.text}</p>

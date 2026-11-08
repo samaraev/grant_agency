@@ -92,7 +92,7 @@ export default function AddressSearch({
       {label ? (
         <label
           htmlFor="address-search"
-          className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f4a7b0]"
+          className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#c9b28c]"
         >
           {label}
         </label>

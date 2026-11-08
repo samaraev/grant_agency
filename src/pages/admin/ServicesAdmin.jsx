@@ -101,7 +101,7 @@ export default function ServicesAdmin() {
                   type="button"
                   onClick={() => remove(item.id)}
                   aria-label={t.admin.common.delete}
-                  className="flex min-h-[36px] items-center border border-white/10 px-3 text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#f4a7b0]"
+                  className="flex min-h-[36px] items-center border border-white/10 px-3 text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#c9b28c]"
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>

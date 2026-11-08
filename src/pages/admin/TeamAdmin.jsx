@@ -85,7 +85,7 @@ export default function TeamAdmin() {
                 {member.photo_url ? (
                   <Image src={member.photo_url} alt={member.name} className="h-12 w-12 rounded-full object-cover" />
                 ) : (
-                  <div className="flex h-12 w-12 items-center justify-center border border-white/15 text-[14px] font-bold text-[#f4a7b0]">
+                  <div className="flex h-12 w-12 items-center justify-center border border-white/15 text-[14px] font-bold text-[#c9b28c]">
                     {member.name.slice(0, 1)}
                   </div>
                 )}
@@ -109,7 +109,7 @@ export default function TeamAdmin() {
                   type="button"
                   onClick={() => remove(member.id)}
                   aria-label={t.admin.common.delete}
-                  className="flex min-h-[34px] items-center border border-white/10 px-3 text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#f4a7b0]"
+                  className="flex min-h-[34px] items-center border border-white/10 px-3 text-[#8f9a9f] hover:border-[#c8102e] hover:text-[#c9b28c]"
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>

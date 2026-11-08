@@ -5,7 +5,7 @@ export default function SectionHeading({ marker, title, subtitle, align = 'left'
   return (
     <div className={cn('max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
       {marker ? <div className="eyebrow mb-5">{marker}</div> : null}
-      <Heading className="text-[28px] leading-[1.12] font-bold text-white sm:text-[38px] lg:text-[46px]">
+      <Heading className="text-[32px] leading-[1.1] text-white sm:text-[44px] lg:text-[54px]">
         {title}
       </Heading>
       {subtitle ? (

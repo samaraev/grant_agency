@@ -47,32 +47,32 @@ export default function Contacts() {
         <div>
           <ul className="space-y-6 text-[14px] text-[#d7dcde]">
             <li className="flex gap-3.5">
-              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
               <div>
                 <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#778287]">
                   {t.common.phone}
                 </div>
                 <a
                   href={`tel:${String(info.phone).replace(/[^\d+]/g, '')}`}
-                  className="mt-1 block text-[17px] font-semibold text-white hover:text-[#f4a7b0]"
+                  className="mt-1 block text-[17px] font-semibold text-white hover:text-[#c9b28c]"
                 >
                   {info.phone}
                 </a>
               </div>
             </li>
             <li className="flex gap-3.5">
-              <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+              <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
               <div>
                 <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#778287]">
                   {t.common.email}
                 </div>
-                <a href={`mailto:${info.email}`} className="mt-1 block text-white hover:text-[#f4a7b0]">
+                <a href={`mailto:${info.email}`} className="mt-1 block text-white hover:text-[#c9b28c]">
                   {info.email}
                 </a>
               </div>
             </li>
             <li className="flex gap-3.5">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
               <div>
                 <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#778287]">
                   {t.common.office}
@@ -84,7 +84,7 @@ export default function Contacts() {
               </div>
             </li>
             <li className="flex gap-3.5">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
               <div>
                 <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#778287]">
                   {t.common.hours}
@@ -107,7 +107,7 @@ export default function Contacts() {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="flex min-h-[40px] items-center border border-white/15 px-4 text-[12.5px] text-[#d7dcde] transition-colors hover:border-[#f4a7b0] hover:text-white"
+                  className="flex min-h-[40px] items-center border border-white/15 px-4 text-[12.5px] text-[#d7dcde] transition-colors hover:border-[#c9b28c] hover:text-white"
                 >
                   {link.label}
                 </a>

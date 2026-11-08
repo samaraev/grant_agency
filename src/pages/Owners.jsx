@@ -88,7 +88,7 @@ export default function Owners() {
           <ul className="space-y-4">
             {t.owners.honest.items.map((item) => (
               <li key={item} className="flex gap-3 text-[14px] leading-relaxed text-[#d7dcde]">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 {item}
               </li>
             ))}

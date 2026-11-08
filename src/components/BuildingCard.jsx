@@ -22,7 +22,7 @@ export default function BuildingCard({ building }) {
           )}
         </div>
         {building.district ? (
-          <span className="absolute left-0 top-0 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[#f4a7b0]">
+          <span className="absolute left-0 top-0 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[#c9b28c]">
             {building.district}
           </span>
         ) : null}
@@ -44,7 +44,7 @@ export default function BuildingCard({ building }) {
         ) : null}
         <Link
           to={`/house/${building.id}`}
-          className="mt-5 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:text-[#f4a7b0]"
+          className="mt-5 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:text-[#c9b28c]"
         >
           {t.common.watchHouse}
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

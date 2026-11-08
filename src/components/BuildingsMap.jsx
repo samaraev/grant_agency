@@ -37,7 +37,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
               radius={selected?.id === building.id ? 11 : 7}
               pathOptions={{
                 color: '#c8102e',
-                fillColor: selected?.id === building.id ? '#c8102e' : '#f4a7b0',
+                fillColor: selected?.id === building.id ? '#c8102e' : '#c9b28c',
                 fillOpacity: 0.95,
                 weight: 2,
               }}
@@ -68,7 +68,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
                   className="h-full w-full object-cover"
                 />
               ) : null}
-              <span className="absolute bottom-0 left-0 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[#f4a7b0]">
+              <span className="absolute bottom-0 left-0 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[#c9b28c]">
                 {selected.district}
               </span>
             </div>
@@ -112,7 +112,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
                 ) : null}
                 <Link
                   to={`/house/${selected.id}`}
-                  className="flex min-h-[44px] items-center justify-center gap-2 border border-white/15 px-4 text-[13px] font-medium text-white transition-colors hover:border-[#f4a7b0] hover:text-[#f4a7b0]"
+                  className="flex min-h-[44px] items-center justify-center gap-2 border border-white/15 px-4 text-[13px] font-medium text-white transition-colors hover:border-[#c9b28c] hover:text-[#c9b28c]"
                 >
                   {t.home.map.openHouse}
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

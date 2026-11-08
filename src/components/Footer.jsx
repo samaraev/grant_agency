@@ -69,19 +69,19 @@ export default function Footer({ settings }) {
             <div className="eyebrow mb-4">{t.footer.contactsTitle}</div>
             <ul className="space-y-4 text-[13px] text-[#b0b8bc]">
               <li className="flex items-start gap-2.5">
-                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`} className="hover:text-white">
                   {settings.phone}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
-                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 <a href={`mailto:${settings.email}`} className="hover:text-white">
                   {settings.email}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 <span>
                   {settings.office_address}
                   {settings.office_landmark ? (
@@ -90,7 +90,7 @@ export default function Footer({ settings }) {
                 </span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#f4a7b0]" aria-hidden="true" />
+                <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c9b28c]" aria-hidden="true" />
                 <span>{settings.working_hours}</span>
               </li>
             </ul>

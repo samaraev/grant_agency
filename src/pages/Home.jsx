@@ -46,10 +46,10 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-[1240px] gap-12 px-5 pb-16 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:pb-24 lg:pt-20">
           <div className="fade-up">
             <div className="eyebrow">{t.home.hero.marker}</div>
-            <h1 className="mt-6 text-[34px] font-extrabold leading-[1.04] tracking-[-0.04em] text-white sm:text-[46px] lg:text-[62px]">
+            <h1 className="mt-6 font-heading text-[40px] font-medium leading-[1.05] tracking-[-0.02em] text-white sm:text-[54px] lg:text-[72px]">
               {t.home.hero.titleLead}
               <br className="hidden sm:block" /> {t.home.hero.titleTail}{' '}
-              <span className="text-[#f4a7b0]">{t.home.hero.titleAccent}</span>
+              <span className="text-[#c9b28c]">{t.home.hero.titleAccent}</span>
             </h1>
             <p className="mt-6 max-w-[34rem] text-[15px] leading-relaxed text-[#b0b8bc] sm:text-[17px]">
               {t.home.hero.subtitle}
@@ -68,14 +68,14 @@ export default function Home() {
               <Link
                 to="/sobstvennikam"
                 onClick={() => track(t.track.ctaClick, { cta: 'hero_owner' })}
-                className="flex min-h-[48px] items-center justify-center gap-2 bg-[#c8102e] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#a80d26]"
+                className="flex min-h-[48px] items-center justify-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white"
               >
                 {t.home.hero.primaryCta}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 to="/search"
-                className="flex min-h-[48px] items-center justify-center gap-2 border border-white/15 px-6 text-[14px] font-medium text-white transition-colors hover:border-[#f4a7b0] hover:text-[#f4a7b0]"
+                className="flex min-h-[48px] items-center justify-center gap-2 border border-white/15 px-6 text-[14px] font-medium text-white transition-colors hover:border-[#c9b28c] hover:text-[#c9b28c]"
               >
                 {t.home.hero.secondaryCta}
               </Link>
@@ -96,7 +96,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#1a2025] via-[#1a2025]/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5">
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#f4a7b0]">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-[#c9b28c]">
                     {published.length} {t.home.hero.addressesInDb}
                   </div>
                   <div className="mt-1 text-[14px] font-medium text-white">{t.home.hero.coverage}</div>
@@ -161,7 +161,7 @@ export default function Home() {
           />
           <Link
             to="/search"
-            className="flex shrink-0 items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#f4a7b0] transition-colors hover:text-white"
+            className="flex shrink-0 items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#c9b28c] transition-colors hover:text-white"
           >
             {t.common.allHouses}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -266,7 +266,7 @@ export default function Home() {
             <Link
               to="/sobstvennikam"
               onClick={() => track(t.track.ctaClick, { cta: 'final_owner' })}
-              className="mt-7 inline-flex min-h-[48px] items-center gap-2 bg-[#c8102e] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#a80d26]"
+              className="mt-7 inline-flex min-h-[48px] items-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white"
             >
               {t.home.hero.primaryCta}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />

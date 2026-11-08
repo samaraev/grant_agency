@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,9 +31,9 @@
     --chart-4: 195 14% 30%;
     --chart-5: 30 40% 55%;
     --radius: 0.25rem;
-    --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --sidebar-background: 195 15% 15%;
     --sidebar-foreground: 197 8% 78%;
@@ -61,7 +63,15 @@
 
   h1, h2, h3 {
     @apply font-heading;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2 {
+    font-weight: 400 !important;
+  }
+
+  h3 {
+    font-weight: 500 !important;
   }
 
   ::selection {
@@ -111,16 +121,16 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 600;
-  color: #f4a7b0;
+  color: #c9b28c;
 }
 
 .link-underline {
   text-decoration: none;
-  border-bottom: 1px solid rgba(244, 167, 176, 0.4);
+  border-bottom: 1px solid rgba(201, 178, 140, 0.45);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .link-underline:hover {
-  border-color: #f4a7b0;
+  border-color: #c9b28c;
   color: #fff;
 }
 

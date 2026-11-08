@@ -93,7 +93,7 @@ export default function Leads() {
         <button
           type="button"
           onClick={exportCsv}
-          className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#f4a7b0]"
+          className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
         >
           <Download className="h-3.5 w-3.5" aria-hidden="true" />
           {t.admin.leads.export}

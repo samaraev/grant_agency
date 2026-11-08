@@ -100,7 +100,7 @@ export default function LeadForm({
     return (
       <div className="text-left">
         <div className="flex h-12 w-12 items-center justify-center border border-[#c8102e] bg-[#c8102e]/15">
-          <Check className="h-5 w-5 text-[#f4a7b0]" aria-hidden="true" />
+          <Check className="h-5 w-5 text-[#c9b28c]" aria-hidden="true" />
         </div>
         <h3 className="mt-5 text-[22px] font-bold text-white">{t.lead.success.title}</h3>
         <p className="mt-3 text-[14px] leading-relaxed text-[#b0b8bc]">{t.lead.success.text}</p>
@@ -194,7 +194,7 @@ export default function LeadForm({
             placeholder={t.lead.namePlaceholder}
             className="w-full border-b border-white/20 bg-transparent pb-2.5 text-[15px] text-white placeholder:text-[#778287] focus:border-[#c8102e] focus:outline-none"
           />
-          {errors.name ? <p className="mt-1.5 text-[11.5px] text-[#f4a7b0]">{errors.name}</p> : null}
+          {errors.name ? <p className="mt-1.5 text-[11.5px] text-[#c9b28c]">{errors.name}</p> : null}
         </div>
         <div>
           <label htmlFor="lead-phone" className="eyebrow mb-2 block">
@@ -210,7 +210,7 @@ export default function LeadForm({
             placeholder={t.lead.phonePlaceholder}
             className="w-full border-b border-white/20 bg-transparent pb-2.5 text-[15px] text-white placeholder:text-[#778287] focus:border-[#c8102e] focus:outline-none"
           />
-          {errors.phone ? <p className="mt-1.5 text-[11.5px] text-[#f4a7b0]">{errors.phone}</p> : null}
+          {errors.phone ? <p className="mt-1.5 text-[11.5px] text-[#c9b28c]">{errors.phone}</p> : null}
         </div>
       </div>
 
@@ -225,7 +225,7 @@ export default function LeadForm({
               className={cn(
                 'min-h-[38px] border px-3 text-[12.5px] transition-colors',
                 preferred === value
-                  ? 'border-[#f4a7b0] text-[#f4a7b0]'
+                  ? 'border-[#c9b28c] text-[#c9b28c]'
                   : 'border-white/15 text-[#8f9a9f] hover:border-white/35 hover:text-white'
               )}
             >
@@ -280,10 +280,10 @@ export default function LeadForm({
           </a>
         </span>
       </label>
-      {errors.consent ? <p className="mt-1.5 text-[11.5px] text-[#f4a7b0]">{errors.consent}</p> : null}
+      {errors.consent ? <p className="mt-1.5 text-[11.5px] text-[#c9b28c]">{errors.consent}</p> : null}
 
       {errors.form ? (
-        <p className="mt-4 border border-[#c8102e]/50 bg-[#c8102e]/10 px-3 py-2 text-[12.5px] text-[#f4a7b0]">
+        <p className="mt-4 border border-[#c8102e]/50 bg-[#c8102e]/10 px-3 py-2 text-[12.5px] text-[#c9b28c]">
           {errors.form}
         </p>
       ) : null}
@@ -291,7 +291,7 @@ export default function LeadForm({
       <button
         type="submit"
         disabled={sending}
-        className="mt-6 flex min-h-[50px] w-full items-center justify-center gap-2 bg-[#c8102e] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#a80d26] disabled:opacity-60"
+        className="mt-6 flex min-h-[50px] w-full items-center justify-center gap-2 bg-[#eee7dc] px-5 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white disabled:opacity-60"
       >
         {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
         {sending ? t.lead.submitting : t.lead.submit}

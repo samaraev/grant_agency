@@ -15,9 +15,9 @@ import { useLang } from '@/components/LanguageProvider';
 import { cn } from '@/lib/utils';
 
 const DECISIONS = [
-  { type: 'owner_appraise', className: 'bg-[#c8102e] text-white hover:bg-[#a80d26]' },
-  { type: 'owner_sell', className: 'bg-[#f4a7b0] text-[#1a2025] hover:bg-white' },
-  { type: 'buyer_buy', className: 'border border-white/20 text-white hover:border-[#f4a7b0] hover:text-[#f4a7b0]' },
+  { type: 'owner_appraise', className: 'bg-[#eee7dc] text-[#1a2025] hover:bg-white' },
+  { type: 'owner_sell', className: 'border border-[#c9b28c] text-[#c9b28c] hover:bg-[#c9b28c] hover:text-[#1a2025]' },
+  { type: 'buyer_buy', className: 'border border-white/20 text-white hover:border-[#c9b28c] hover:text-[#c9b28c]' },
 ];
 
 export default function House() {
@@ -102,7 +102,7 @@ export default function House() {
           {t.search.emptyCta}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>
-        <Link to="/search" className="mt-6 block text-[13px] text-[#f4a7b0]">
+        <Link to="/search" className="mt-6 block text-[13px] text-[#c9b28c]">
           {t.house.backToSearch}
         </Link>
       </div>
@@ -253,7 +253,7 @@ export default function House() {
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <h3 className="text-[16px] font-semibold text-white">{note.layout_type}</h3>
                         {note.area_range ? (
-                          <span className="text-[12px] uppercase tracking-[0.14em] text-[#f4a7b0]">
+                          <span className="text-[12px] uppercase tracking-[0.14em] text-[#c9b28c]">
                             {note.area_range}
                           </span>
                         ) : null}
@@ -375,7 +375,7 @@ export default function House() {
           onClick={() =>
             openLead({ type: 'buyer_check', address: building.address, building_id: building.id })
           }
-          className="flex min-h-[48px] w-full items-center justify-center gap-2 bg-[#c8102e] text-[14px] font-semibold text-white"
+          className="flex min-h-[48px] w-full items-center justify-center gap-2 bg-[#eee7dc] text-[14px] font-semibold text-[#1a2025]"
         >
           {t.house.stickyCta}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
