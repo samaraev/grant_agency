@@ -23,11 +23,7 @@ export default function LanguageSwitcher({ className }) {
             lang={item.code}
             className={cn(
               'h-[36px] min-w-[38px] px-2 text-[11px] font-semibold tracking-[0.14em] transition-colors',
-              active
-                ? 'bg-white/12 text-white'
-                : dark
-                  ? 'text-[#6f7a7f] hover:text-white'
-                  : 'text-[#8b969b] hover:text-white'
+              active ? 'bg-white/12 text-white' : 'text-[#8b969b] hover:text-white'
             )}
           >
             {item.short}
