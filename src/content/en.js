@@ -95,6 +95,13 @@ const en = {
     hero: {
       marker: '01 / THE NEIGHBOURHOOD',
       title: 'The agency that knows the neighbourhood from within.',
+      titleLead: 'The agency that knows',
+      titleTail: 'the neighbourhood',
+      titleAccent: 'from within.',
+      addressesInDb: 'buildings in the database',
+      coverage: 'Tula and the district',
+      coverCaption: 'Photo from our building database',
+      imageAlt: 'Building facade in the centre of the neighbourhood at sunset',
       subtitle:
         'We work address by address: layouts, courtyards, the history of viewings and sales, the things listings never mention.',
       searchLabel: 'Enter your building address',
@@ -198,6 +205,9 @@ const en = {
           text: 'A specialist takes your building from the first conversation to the deal and stays in touch afterwards.',
         },
       ],
+    },
+    finalCta: {
+      title: 'Start with an address, and then we will talk specifics.',
     },
   },
   search: {

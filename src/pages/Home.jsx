@@ -7,6 +7,7 @@ import BuildingCard from '@/components/BuildingCard';
 import BuildingsMap from '@/components/BuildingsMap';
 import SectionHeading from '@/components/SectionHeading';
 import { useLead } from '@/components/LeadProvider';
+import { useLang } from '@/components/LanguageProvider';
 import { useBuildingList } from '@/hooks/useBuildings';
 import { HERO_IMAGE } from '@/lib/sample-buildings';
 import { applySeo, organizationJsonLd } from '@/lib/seo';
@@ -18,6 +19,7 @@ export default function Home() {
   const published = buildings.filter((item) => item.is_published !== false);
   const featured = published.slice(0, 6);
   const { openLead } = useLead();
+  const { lang } = useLang();
 
   useEffect(() => {
     const cleanup = applySeo({
@@ -26,8 +28,11 @@ export default function Home() {
       image: HERO_IMAGE,
       jsonLd: organizationJsonLd(t.settings),
     });
-    track(t.track.pageView, { page: 'home' });
     return cleanup;
+  }, [lang]);
+
+  useEffect(() => {
+    track(t.track.pageView, { page: 'home' });
   }, []);
 
   return (
@@ -42,9 +47,9 @@ export default function Home() {
           <div className="fade-up">
             <div className="eyebrow">{t.home.hero.marker}</div>
             <h1 className="mt-6 text-[34px] font-extrabold leading-[1.04] tracking-[-0.04em] text-white sm:text-[46px] lg:text-[62px]">
-              Агентство, которое
-              <br className="hidden sm:block" /> знает район{' '}
-              <span className="text-[#f4a7b0]">изнутри.</span>
+              {t.home.hero.titleLead}
+              <br className="hidden sm:block" /> {t.home.hero.titleTail}{' '}
+              <span className="text-[#f4a7b0]">{t.home.hero.titleAccent}</span>
             </h1>
             <p className="mt-6 max-w-[34rem] text-[15px] leading-relaxed text-[#b0b8bc] sm:text-[17px]">
               {t.home.hero.subtitle}
@@ -85,18 +90,18 @@ export default function Home() {
             <div className="relative aspect-[4/3] w-full overflow-hidden border border-white/10 bg-[#1f272b] lg:aspect-[5/6]">
               <Image
                 src={HERO_IMAGE}
-                alt="Фасад дома в центре района на закате"
+                alt={t.home.hero.imageAlt}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1a2025] via-[#1a2025]/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5">
                 <div>
                   <div className="text-[10px] uppercase tracking-[0.2em] text-[#f4a7b0]">
-                    {published.length} адресов в базе
+                    {published.length} {t.home.hero.addressesInDb}
                   </div>
-                  <div className="mt-1 text-[14px] font-medium text-white">Тула и район</div>
+                  <div className="mt-1 text-[14px] font-medium text-white">{t.home.hero.coverage}</div>
                 </div>
-                <span className="text-[11px] text-[#b0b8bc]">Фото из базы домов</span>
+                <span className="text-[11px] text-[#b0b8bc]">{t.home.hero.coverCaption}</span>
               </div>
             </div>
           </div>
@@ -253,7 +258,7 @@ export default function Home() {
           <div className="relative max-w-2xl">
             <div className="eyebrow">{t.home.hero.marker}</div>
             <h2 className="mt-4 text-[26px] font-bold leading-tight text-white sm:text-[36px]">
-              Начните с адреса — дальше поговорим по существу.
+              {t.home.finalCta.title}
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-[#b0b8bc]">
               {t.lead.disclaimer}
