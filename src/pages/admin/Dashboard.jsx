@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
-import { normalizeStatus } from '@/lib/leadStatus';
+import { normalizeStatus, reachedQualified } from '@/lib/leadStatus';
 
 function Metric({ label, value, hint }) {
   return (
@@ -68,7 +68,7 @@ export default function Dashboard() {
       owners,
       buyers,
       khamovniki: leads.filter((lead) => lead.cluster === 'khamovniki').length,
-      meaningful: byStatus('qualified_conversation'),
+      meaningful: leads.filter((lead) => reachedQualified(lead.status)).length,
       byType,
       bySource,
       funnel,

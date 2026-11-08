@@ -1,17 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Download, Search } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import LeadsTable from '@/components/admin/leads/LeadsTable';
+import LeadsKanban from '@/components/admin/leads/LeadsKanban';
+import StatusTransitionDialog from '@/components/admin/leads/StatusTransitionDialog';
 import LeadDetail from '@/pages/admin/LeadDetail';
 import { downloadCsv, toCsv } from '@/lib/csv';
-import { dateLocale, t } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
-import { STATUS_KEYS, STATUS_TONE, normalizeStatus, statusLabel } from '@/lib/leadStatus';
-
-const AGREEMENT_CLASS = {
-  none: 'bg-white/10 text-[#9aa4a8]',
-  agency: 'bg-blue-500/15 text-blue-300',
-  exclusive: 'bg-green-500/15 text-green-300',
-};
+import { STATUS_KEYS, needsTransitionData, reachedQualified, statusQuery } from '@/lib/leadStatus';
 
 export default function Leads() {
   const [leads, setLeads] = useState([]);
@@ -23,12 +20,16 @@ export default function Leads() {
   const [from, setFrom] = useState('');
   const [source, setSource] = useState('');
   const [sortDesc, setSortDesc] = useState(true);
+  const [view, setView] = useState('table');
   const [selected, setSelected] = useState(null);
+  const [transition, setTransition] = useState(null);
+  const [qualified, setQualified] = useState(null);
+  const [error, setError] = useState('');
 
-  const load = () => {
+  const load = useCallback(() => {
     setLoading(true);
     const query = {};
-    if (status) query.status = status;
+    if (status) Object.assign(query, statusQuery(status));
     if (type) query.type = type;
     if (cluster) query.cluster = cluster;
     base44.entities.Lead.filter(query, {
@@ -38,9 +39,22 @@ export default function Leads() {
       .then((page) => setLeads(page?.items || []))
       .catch(() => setLeads([]))
       .finally(() => setLoading(false));
-  };
+  }, [status, type, cluster, sortDesc]);
 
-  useEffect(load, [status, type, cluster, sortDesc]);
+  const loadKpi = useCallback(() => {
+    base44.entities.Lead.aggregate({ groupBy: 'status' })
+      .then((res) => {
+        const total = (res?.rows || []).reduce(
+          (acc, row) => acc + (reachedQualified(row.status) ? row.count || 0 : 0),
+          0
+        );
+        setQualified(total);
+      })
+      .catch(() => setQualified(null));
+  }, []);
+
+  useEffect(load, [load]);
+  useEffect(loadKpi, [loadKpi]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -59,18 +73,66 @@ export default function Leads() {
     [leads]
   );
 
+  const replaceLead = (updated) => {
+    if (!updated) return;
+    setLeads((prev) => prev.map((lead) => (lead.id === updated.id ? updated : lead)));
+    loadKpi();
+  };
+
+  const applyStatus = async (lead, nextStatus) => {
+    setError('');
+    try {
+      const res = await base44.functions.invoke('changeLeadStatus', {
+        lead_id: lead.id,
+        status: nextStatus,
+        payload: {},
+        note: '',
+      });
+      replaceLead(res?.data?.lead);
+      return true;
+    } catch (err) {
+      setError(err?.response?.data?.error || t.admin.leads.transition.error);
+      return false;
+    }
+  };
+
+  const onMove = (lead, nextStatus) => {
+    if (needsTransitionData(lead, nextStatus)) {
+      setTransition({ lead, status: nextStatus });
+      return;
+    }
+    applyStatus(lead, nextStatus);
+  };
+
   const exportCsv = () => {
     const columns = [
       { key: 'created_date', label: 'Дата' },
       { key: 'type', label: 'Тип' },
+      { key: 'person_role', label: 'Роль' },
+      { key: 'area_flag', label: 'Зона' },
+      { key: 'cluster', label: 'Кластер' },
+      { key: 'intent_rating', label: 'Намерение' },
+      { key: 'timeframe_hint', label: 'Срок' },
       { key: 'name', label: 'Имя' },
       { key: 'phone', label: 'Телефон' },
+      { key: 'email', label: 'Почта' },
       { key: 'address_text', label: 'Адрес' },
       { key: 'status', label: 'Статус' },
-      { key: 'cluster', label: 'Кластер' },
+      { key: 'qualified_at', label: 'Квалифицирован' },
       { key: 'agreement', label: 'Договор' },
+      { key: 'contract_type', label: 'Тип договора' },
+      { key: 'responsible', label: 'Ответственный' },
+      { key: 'next_action_date', label: 'Следующий шаг' },
+      { key: 'next_action_note', label: 'Что сделать' },
       { key: 'source', label: 'Источник' },
-      { key: 'is_meaningful', label: 'Содержательный' },
+      { key: 'utm_source', label: 'utm_source' },
+      { key: 'utm_medium', label: 'utm_medium' },
+      { key: 'utm_campaign', label: 'utm_campaign' },
+      { key: 'utm_term', label: 'utm_term' },
+      { key: 'utm_content', label: 'utm_content' },
+      { key: 'client_id', label: 'ClientID' },
+      { key: 'page_path', label: 'Страница входа' },
+      { key: 'is_meaningful', label: 'Содержательный (legacy)' },
       { key: 'message', label: 'Сообщение' },
       { key: 'admin_notes', label: 'Заметки' },
     ];
@@ -81,10 +143,6 @@ export default function Leads() {
     downloadCsv('leads.csv', toCsv(rows, columns));
   };
 
-  const onSaved = (updated) => {
-    setLeads((prev) => prev.map((lead) => (lead.id === updated.id ? updated : lead)));
-  };
-
   return (
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -92,15 +150,41 @@ export default function Leads() {
           <div className="eyebrow">{t.admin.marker}</div>
           <h1 className="mt-3 text-[26px] font-bold text-white">{t.admin.leads.title}</h1>
           <p className="mt-2 text-[13px] text-[#8f9a9f]">{t.admin.leads.subtitle}</p>
+          {qualified !== null ? (
+            <p className="mt-2 text-[12.5px] text-[#c9b28c]">
+              {t.admin.leads.kpi.qualified}: <span className="font-semibold text-white">{qualified}</span>
+            </p>
+          ) : null}
         </div>
-        <button
-          type="button"
-          onClick={exportCsv}
-          className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
-        >
-          <Download className="h-3.5 w-3.5" aria-hidden="true" />
-          {t.admin.leads.export}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex border border-white/15">
+            {['table', 'kanban'].map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => {
+                  setView(key);
+                  if (key === 'kanban') setStatus('');
+                }}
+                className={cn(
+                  'min-h-[40px] px-3 text-[12.5px]',
+                  view === key ? 'bg-[#c8102e] text-white' : 'text-[#9aa4a8] hover:text-white'
+                )}
+                aria-pressed={view === key}
+              >
+                {t.admin.leads.view[key]}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={exportCsv}
+            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
+          >
+            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+            {t.admin.leads.export}
+          </button>
+        </div>
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
@@ -113,21 +197,25 @@ export default function Leads() {
             className="h-[40px] w-full border border-white/10 bg-[#1f272b] pl-9 pr-3 text-[13px] text-white placeholder:text-[#6f7a7f] focus:border-[#c8102e] focus:outline-none"
           />
         </div>
-        <select
-          value={status}
-          onChange={(event) => setStatus(event.target.value)}
-          className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
-        >
-          <option value="">{t.admin.leads.allStatuses}</option>
-          {STATUS_KEYS.map((key) => (
-            <option key={key} value={key}>
-              {t.admin.leads.statuses[key]}
-            </option>
-          ))}
-        </select>
+        {view === 'table' ? (
+          <select
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+            aria-label={t.admin.leads.allStatuses}
+            className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
+          >
+            <option value="">{t.admin.leads.allStatuses}</option>
+            {STATUS_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {t.admin.leads.statuses[key]}
+              </option>
+            ))}
+          </select>
+        ) : null}
         <select
           value={type}
           onChange={(event) => setType(event.target.value)}
+          aria-label={t.admin.leads.allTypes}
           className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
         >
           <option value="">{t.admin.leads.allTypes}</option>
@@ -183,103 +271,24 @@ export default function Leads() {
         <span className="text-[11.5px] text-[#6f7a7f]">{filtered.length}</span>
       </div>
 
-      <div className="mt-4 overflow-x-auto border border-white/10">
-        <table className="w-full min-w-[960px] text-left">
-          <thead className="bg-[#1f272b] text-[10.5px] uppercase tracking-[0.14em] text-[#778287]">
-            <tr>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.created}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.name}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.phone}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.type}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.address}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.source}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.status}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.agreement}</th>
-              <th className="px-4 py-3 font-medium">{t.admin.leads.columns.meaningful}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/8 text-[13px]">
-            {loading ? (
-              <tr>
-                <td colSpan={9} className="px-4 py-8 text-center text-[#8f9a9f]">
-                  {t.admin.common.loading}
-                </td>
-              </tr>
-            ) : filtered.length ? (
-              filtered.map((lead) => (
-                <tr
-                  key={lead.id}
-                  onClick={() => setSelected(lead)}
-                  className="cursor-pointer bg-[#1a2025] hover:bg-white/[0.03]"
-                >
-                  <td className="whitespace-nowrap px-4 py-3 text-[#8f9a9f]">
-                    {new Date(lead.created_date).toLocaleDateString(dateLocale())}
-                  </td>
-                  <td className="px-4 py-3 text-white">{lead.name}</td>
-                  <td className="whitespace-nowrap px-4 py-3 text-[#d7dcde]">{lead.phone}</td>
-                  <td className="px-4 py-3 text-[#d7dcde]">{t.lead.types[lead.type] || lead.type}</td>
-                  <td className="px-4 py-3 text-[#b0b8bc]">{lead.address_text || '—'}</td>
-                  <td className="px-4 py-3 text-[#8f9a9f]">{lead.source || 'direct'}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={cn(
-                        'px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
-                        STATUS_TONE[normalizeStatus(lead.status)] || 'bg-white/10 text-[#9aa4a8]'
-                      )}
-                    >
-                      {statusLabel(lead.status, t)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={cn(
-                        'px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
-                        AGREEMENT_CLASS[lead.agreement] || 'bg-white/10 text-[#9aa4a8]'
-                      )}
-                    >
-                      {t.admin.leads.agreements[lead.agreement] || t.admin.leads.agreements.none}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <button
-                      type="button"
-                      onClick={async (event) => {
-                        event.stopPropagation();
-                        const updated = await base44.entities.Lead.update(lead.id, {
-                          is_meaningful: !lead.is_meaningful,
-                        });
-                        onSaved(updated);
-                      }}
-                      className={cn(
-                        'min-h-[26px] border px-2 text-[11px]',
-                        lead.is_meaningful
-                          ? 'border-[#c8102e] bg-[#c8102e] text-white'
-                          : 'border-white/15 text-[#8f9a9f]'
-                      )}
-                      aria-pressed={Boolean(lead.is_meaningful)}
-                    >
-                      {lead.is_meaningful ? '✓' : '—'}
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-[#8f9a9f]">
-                  {t.admin.leads.empty}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      {error ? <p className="mt-3 border border-[#c9b28c]/40 px-3 py-2 text-[12.5px] text-[#c9b28c]">{error}</p> : null}
+
+      <div className="mt-4">
+        {view === 'table' ? (
+          <LeadsTable leads={filtered} loading={loading} onOpen={setSelected} />
+        ) : (
+          <LeadsKanban leads={filtered} onMove={onMove} />
+        )}
       </div>
 
-      <LeadDetail
-        lead={selected}
-        onClose={() => setSelected(null)}
-        onSaved={(updated) => {
-          onSaved(updated);
-          setSelected(updated);
+      <LeadDetail lead={selected} onClose={() => setSelected(null)} />
+
+      <StatusTransitionDialog
+        transition={transition}
+        onClose={() => setTransition(null)}
+        onDone={(updated) => {
+          replaceLead(updated);
+          setTransition(null);
         }}
       />
     </div>

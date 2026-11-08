@@ -41,6 +41,42 @@ export function normalizeStatus(value) {
   return LEGACY_STATUS_MAP[value] || value || 'new_inquiry';
 }
 
+/** Первые девять ступеней воронки — колонки канбана. */
+export const FUNNEL_STAGES = STATUS_KEYS.filter((key) => key !== 'non_target');
+
+/** Позиция статуса в воронке; -1 для нецелевых. */
+export function statusIndex(value) {
+  return FUNNEL_STAGES.indexOf(normalizeStatus(value));
+}
+
+/** KPI: обращение дошло до квалифицированного разговора или дальше. */
+export function reachedQualified(value) {
+  return statusIndex(value) >= FUNNEL_STAGES.indexOf('qualified_conversation');
+}
+
+/** Чек-лист квалификации, согласованный с серверными правилами. */
+export const CHECKLIST_KEYS = [
+  'owner_need_confirmed',
+  'object_confirmed',
+  'real_intent',
+  'timeframe_recorded',
+  'meeting_agreed',
+  'terms_fit',
+];
+
+/** Переход требует данных: чек-лист, причина отказа или договор. */
+export function needsTransitionData(lead, status) {
+  if (['qualified_conversation', 'contract_signed', 'non_target'].includes(status)) return true;
+  return status === 'target_inquiry' && lead?.area_flag === 'outside';
+}
+
+/** Фильтр по статусу с учётом устаревших значений в старых записях. */
+export function statusQuery(value) {
+  const normalized = normalizeStatus(value);
+  const legacy = Object.keys(LEGACY_STATUS_MAP).filter((key) => LEGACY_STATUS_MAP[key] === normalized);
+  return { status: { $in: [normalized, ...legacy] } };
+}
+
 /** Подпись статуса: новые ключи, затем старые, затем сам ключ. */
 export function statusLabel(value, content) {
   if (!value) return '—';

@@ -27,6 +27,7 @@ import Mfa from '@/pages/Mfa';
 import AdminLayout from '@/pages/admin/AdminLayout';
 import Dashboard from '@/pages/admin/Dashboard';
 import Leads from '@/pages/admin/Leads';
+import LeadWorkspace from '@/pages/admin/LeadWorkspace';
 import BuildingsAdmin from '@/pages/admin/BuildingsAdmin';
 import ServicesAdmin from '@/pages/admin/ServicesAdmin';
 import TeamAdmin from '@/pages/admin/TeamAdmin';
@@ -85,6 +86,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="leads" element={<Leads />} />
+          <Route path="leads/:id" element={<LeadWorkspace />} />
           <Route path="buildings" element={<BuildingsAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="team" element={<TeamAdmin />} />

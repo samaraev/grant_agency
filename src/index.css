@@ -169,6 +169,33 @@
   line-height: 1.45;
 }
 
+/* Печать анализа для собственника: на лист уходит только блок #lead-print */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #lead-print,
+  #lead-print * {
+    visibility: visible;
+  }
+  #lead-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 24px;
+    background: #fff !important;
+    border: 0 !important;
+  }
+  #lead-print * {
+    color: #111 !important;
+  }
+  #lead-print textarea {
+    border: 1px solid #cfcfcf !important;
+    background: #fff !important;
+  }
+}
+
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
