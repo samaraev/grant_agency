@@ -17,14 +17,14 @@ const en = {
   },
   meta: {
     home: {
-      title: 'GRANT — Private real estate in central Tula',
+      title: 'GRANT — Private real estate in Moscow and the Moscow Region',
       description:
-        'A private portfolio of addresses in the historic centre: mansions, club houses and residences. A review of a specific house and a private consultation, without public advertising.',
+        'A private portfolio of addresses in Moscow and the Moscow Region: mansions, club houses, residences and country estates. A review of a specific house and a private consultation, without public advertising.',
     },
     search: {
       title: 'The portfolio — GRANT',
       description:
-        'Addresses in the historic centre: mansions, club houses and residences. Search by address or district, some properties are shown on a personal request.',
+        'Addresses in Moscow and the Moscow Region: mansions, club houses, residences and country houses. Search by address or district, some properties are shown on a personal request.',
     },
     owners: {
       title: 'For owners — GRANT. What is happening with your house',
@@ -37,7 +37,7 @@ const en = {
         'The history of the house, the state of the structure, original details, what to check before the deal. A buying checklist and a conversation about a specific address.',
     },
     about: {
-      title: 'About us — GRANT. Private real estate in central Tula',
+      title: 'About us — GRANT. Private real estate in Moscow and the Moscow Region',
       description:
         'An agency working with historic houses and club residences: archives, structure, neighbours, sales history. People you can come to with a question about your own house.',
     },
@@ -74,6 +74,7 @@ const en = {
     photoAlt: 'Building at',
     series: 'Series / type',
     district: 'District',
+    city: 'City',
     street: 'Street',
     address: 'Address',
     features: 'Features',
@@ -125,13 +126,13 @@ const en = {
       titleTail: 'appear',
       titleAccent: 'in advertising.',
       addressesInDb: 'addresses in the portfolio',
-      coverage: 'Tula, historic centre',
+      coverage: 'Moscow and the Moscow Region',
       coverCaption: 'A house from our portfolio',
-      imageAlt: 'Mansion facade in central Tula at dusk',
+      imageAlt: 'Mansion facade in Khamovniki at dusk',
       subtitle:
-        'Historic mansions, club houses and private residences in central Tula. We work with a limited number of properties and clients, and we know every house in our selection.',
+        'Historic mansions, club houses and private residences in central Moscow, country houses on Rublyovka and Novaya Riga. We work with a limited number of properties and clients, and we know every house in our selection.',
       searchLabel: 'The address you are interested in',
-      searchPlaceholder: 'For example: 12 Sofya Perovskaya St.',
+      searchPlaceholder: 'For example: 17 Prechistenka St.',
       searchHint: 'Start typing an address and we will show houses from our portfolio',
       searchButton: 'Find the address',
       trustLine: 'You speak to a person who knows this house and its history personally.',
@@ -157,7 +158,7 @@ const en = {
         marker: 'OUT OF TOWN',
         title: 'Country houses and estates',
         subtitle:
-          'Houses in pine forests and estates with a park across the Tula region, for those a city residence is not enough for.',
+          'Houses in the forest and estates with a park across the Moscow Region, on the Rublyovo-Uspenskoye, Novorizhskoye and Dmitrovskoye directions, for those a city residence is not enough for.',
         cta: 'See country houses',
       },
     },
@@ -381,7 +382,7 @@ const en = {
   about: {
     marker: 'ABOUT US',
     title: 'An agency for those who choose a house seriously',
-    lead: 'GRANT is a private real estate agency in central Tula. We work with historic houses and club residences and know them from the inside rather than from photographs: archives, structure, neighbours, sales history.',
+    lead: 'GRANT is a private real estate agency in Moscow and the Moscow Region. We work with historic houses, club residences and country estates and know them from the inside rather than from photographs: archives, structure, neighbours, sales history.',
     story: [
       'Our work started not with listings but with conversations: owners asked what was happening with their house, whether to sell now, why the neighbouring apartment went for more.',
       'Answering such questions takes more than general market knowledge: the architect, the year built, the state of the floors, the chain of ownership, which neighbours are selling.',
@@ -526,7 +527,7 @@ const en = {
     },
   },
   footer: {
-    about: 'A private real estate agency in central Tula: historic houses, club residences and a closed portfolio of addresses.',
+    about: 'A private real estate agency in Moscow and the Moscow Region: historic houses, club residences, country estates and a closed portfolio of addresses.',
     navTitle: 'Sections',
     contactsTitle: 'Contacts',
     legalTitle: 'Documents',
@@ -535,16 +536,16 @@ const en = {
     disclaimer:
       'The information on this website is not a public offer and does not constitute an automated valuation of a property.',
     adminLink: 'Administrator sign in',
-    city: 'Tula',
+    city: 'Moscow',
   },
   settings: {
-    phone: '+7 (4872) 70-00-00',
+    phone: '+7 (495) 70-00-00',
     email: 'info@rieltorcenter.ru',
-    office_address: 'Tula, 8 Metallistov St., office 4',
-    office_landmark: 'Next to the MFC building, entrance from the courtyard',
+    office_address: 'Moscow, 7 Nikitsky Boulevard, office 4',
+    office_landmark: 'Nikitsky Boulevard, five minutes from Arbatskaya station',
     working_hours: 'Mon–Fri 10:00–19:00, Sat by arrangement',
     telegram: 'https://t.me/grant_dom',
-    whatsapp: 'https://wa.me/74872700000',
+    whatsapp: 'https://wa.me/74957000000',
     vk: 'https://vk.com/grant_dom',
     admin_email: 'info@rieltorcenter.ru',
   },
@@ -639,6 +640,7 @@ const en = {
         createTitle: 'New building',
         editTitle: 'Edit building',
         address: 'Address (unique)',
+        city: 'City / region',
         district: 'District / microdistrict',
         street: 'Street',
         houseNumber: 'House number',

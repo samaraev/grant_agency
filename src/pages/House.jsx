@@ -61,7 +61,7 @@ export default function House() {
         address: {
           '@type': 'PostalAddress',
           streetAddress: `${building.street || ''}, ${building.house_number || ''}`,
-          addressLocality: 'Тула',
+          addressLocality: building.city || 'Москва',
           addressCountry: 'RU',
         },
         geo:
@@ -128,7 +128,7 @@ export default function House() {
           <div>
             <div className="eyebrow flex items-center gap-2">
               <MapPin className="h-3 w-3" aria-hidden="true" />
-              {building.district}
+              {[building.city, building.district].filter(Boolean).join(' · ')}
             </div>
             <h1 className="mt-3 text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-white sm:text-[46px]">
               {building.address}

@@ -71,11 +71,11 @@ export function organizationJsonLd(settings) {
     description: t.footer.about,
     telephone: settings?.phone,
     email: settings?.email,
-    areaServed: 'Тула и Тульская область',
+    areaServed: 'Москва и Московская область',
     address: {
       '@type': 'PostalAddress',
       streetAddress: settings?.office_address,
-      addressLocality: 'Тула',
+      addressLocality: 'Москва',
       addressCountry: 'RU',
     },
     openingHours: settings?.working_hours,

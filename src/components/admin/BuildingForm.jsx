@@ -16,6 +16,7 @@ const EMPTY = {
   deal_type: 'sale',
   price: '',
   area: '',
+  city: 'Москва',
   district: '',
   street: '',
   house_number: '',
@@ -96,6 +97,7 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
         deal_type: draft.deal_type || 'sale',
         price: draft.price ? Number(draft.price) : null,
         area: draft.area ? Number(draft.area) : null,
+        city: draft.city,
         district: draft.district,
         street: draft.street,
         house_number: draft.house_number,
@@ -221,7 +223,18 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <label htmlFor="b-city" className="eyebrow mb-2 block">
+                {t.admin.buildings.form.city}
+              </label>
+              <input
+                id="b-city"
+                value={draft.city}
+                onChange={(event) => setDraft({ ...draft, city: event.target.value })}
+                className={FIELD}
+              />
+            </div>
             <div>
               <label htmlFor="b-district" className="eyebrow mb-2 block">
                 {t.admin.buildings.form.district}
