@@ -1,0 +1,55 @@
+{
+  "name": "TeamMember",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "local_bio": {
+      "type": "string",
+      "description": "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0431\u0438\u043e\u0433\u0440\u0430\u0444\u0438\u044f: \u0433\u0434\u0435 \u0432\u044b\u0440\u043e\u0441, \u0433\u0434\u0435 \u0436\u0438\u0432\u0451\u0442, \u0447\u0442\u043e \u0437\u043d\u0430\u0435\u0442 \u043e \u0440\u0430\u0439\u043e\u043d\u0435"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.is_public": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

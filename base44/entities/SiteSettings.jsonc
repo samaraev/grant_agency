@@ -1,0 +1,52 @@
+{
+  "name": "SiteSettings",
+  "type": "object",
+  "properties": {
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "office_address": {
+      "type": "string"
+    },
+    "office_landmark": {
+      "type": "string"
+    },
+    "working_hours": {
+      "type": "string"
+    },
+    "telegram": {
+      "type": "string"
+    },
+    "whatsapp": {
+      "type": "string"
+    },
+    "vk": {
+      "type": "string"
+    },
+    "admin_email": {
+      "type": "string",
+      "description": "\u041f\u043e\u0447\u0442\u0430 \u0434\u043b\u044f \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439 \u043e\u0431 \u043e\u0431\u0440\u0430\u0449\u0435\u043d\u0438\u044f\u0445"
+    }
+  },
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
