@@ -548,6 +548,13 @@ const ru = {
     phonePlaceholder: '+7 (___) ___-__-__',
     contactLabel: 'Как удобнее связаться',
     timelineLabel: 'Когда планируете продажу',
+    timeframes: {
+      asap: 'Сразу',
+      '1_3_months': '1–3 месяца',
+      '3_6_months': '3–6 месяцев',
+      later: 'Позже',
+      unknown: 'Не решил',
+    },
     timelines: {
       asap: 'Готов сейчас',
       month: 'В течение месяца',
@@ -905,6 +912,11 @@ const ru = {
     buildingView: 'building_view',
     ctaClick: 'cta_click',
     leadSubmit: 'lead_submit',
+    formStart: 'form_start',
+    formSubmitSuccess: 'form_submit_success',
+    phoneClick: 'phone_click',
+    telegramClick: 'telegram_click',
+    whatsappClick: 'whatsapp_click',
   },
   notFound: {
     title: 'Такой страницы нет',

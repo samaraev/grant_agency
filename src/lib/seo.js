@@ -31,9 +31,13 @@ function upsertLink(rel, href) {
 export function applySeo({ title, description, image, path, jsonLd, robots = 'index, follow' }) {
   document.title = title;
   const canonical = `${SITE_URL}${path || '/'}`;
+  // Технический домен платформы закрываем от индексации, канонический адрес не меняем.
+  const isPlatformHost =
+    typeof window !== 'undefined' && window.location.hostname.endsWith('base44.app');
+  const robotsValue = isPlatformHost ? 'noindex, nofollow' : robots;
 
   upsertMeta('name', 'description', description);
-  upsertMeta('name', 'robots', robots);
+  upsertMeta('name', 'robots', robotsValue);
   upsertMeta('property', 'og:title', title);
   upsertMeta('property', 'og:description', description);
   upsertMeta('property', 'og:url', canonical);

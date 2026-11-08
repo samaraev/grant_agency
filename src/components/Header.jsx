@@ -5,6 +5,7 @@ import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { useLead } from '@/components/LeadProvider';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { track } from '@/lib/track';
 
 export default function Header({ settings, onCta }) {
   const [open, setOpen] = useState(false);
@@ -73,6 +74,7 @@ export default function Header({ settings, onCta }) {
           {settings?.phone ? (
             <a
               href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
+              onClick={() => track(t.track.phoneClick, { place: 'header' })}
               className="hidden items-center gap-2 text-[13px] text-[#b0b8bc] transition-colors hover:text-white xl:flex"
             >
               <Phone className="h-3.5 w-3.5" aria-hidden="true" />
@@ -117,6 +119,7 @@ export default function Header({ settings, onCta }) {
             {settings?.phone ? (
               <a
                 href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
+                onClick={() => track(t.track.phoneClick, { place: 'header-menu' })}
                 className="flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-white"
               >
                 <Phone className="h-4 w-4 text-[#c9b28c]" aria-hidden="true" />

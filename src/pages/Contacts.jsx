@@ -55,6 +55,7 @@ export default function Contacts() {
                 </div>
                 <a
                   href={`tel:${String(info.phone).replace(/[^\d+]/g, '')}`}
+                  onClick={() => track(t.track.phoneClick, { place: 'contacts' })}
                   className="mt-1 block text-[17px] font-semibold text-white hover:text-[#c9b28c]"
                 >
                   {info.phone}
@@ -108,6 +109,10 @@ export default function Contacts() {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer noopener"
+                  onClick={() => {
+                    if (link.label === 'Telegram') track(t.track.telegramClick, { place: 'contacts' });
+                    if (link.label === 'WhatsApp') track(t.track.whatsappClick, { place: 'contacts' });
+                  }}
                   className="flex min-h-[40px] items-center border border-white/15 px-4 text-[12.5px] text-[#d7dcde] transition-colors hover:border-[#c9b28c] hover:text-white"
                 >
                   {link.label}

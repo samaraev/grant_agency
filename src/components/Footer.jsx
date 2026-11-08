@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { t } from '@/lib/i18n';
+import { track } from '@/lib/track';
 
 export default function Footer({ settings }) {
   const year = new Date().getFullYear();
@@ -71,7 +72,11 @@ export default function Footer({ settings }) {
             <ul className="space-y-4 text-[13px] text-[#b0b8bc]">
               <li className="flex items-start gap-2.5">
                 <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c9b28c]" aria-hidden="true" />
-                <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`} className="hover:text-white">
+                <a
+                  href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
+                  onClick={() => track(t.track.phoneClick, { place: 'footer' })}
+                  className="hover:text-white"
+                >
                   {settings.phone}
                 </a>
               </li>

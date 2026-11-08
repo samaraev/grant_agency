@@ -2,13 +2,20 @@ import { useMemo, useState } from 'react';
 import { Check, Loader2, ArrowRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useBuildingList } from '@/hooks/useBuildings';
-import { getUtm, track } from '@/lib/track';
+import { getClientId, getUtm, track } from '@/lib/track';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 const TYPES = ['owner_appraise', 'owner_sell', 'buyer_buy', 'buyer_check', 'general'];
 const CONTACTS = ['phone', 'telegram', 'whatsapp'];
-const TIMELINES = ['asap', 'month', 'quarter', 'later', 'undecided'];
+const TIMEFRAMES = ['asap', '1_3_months', '3_6_months', 'later', 'unknown'];
+const SELL_BY_TIMEFRAME = {
+  asap: 'asap',
+  '1_3_months': 'month',
+  '3_6_months': 'quarter',
+  later: 'later',
+  unknown: 'undecided',
+};
 
 export function formatPhone(value) {
   let digits = String(value || '').replace(/\D/g, '');
@@ -40,7 +47,8 @@ export default function LeadForm({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [preferred, setPreferred] = useState('phone');
-  const [timeline, setTimeline] = useState('');
+  const [timeframe, setTimeframe] = useState('');
+  const [started, setStarted] = useState(false);
   const [message, setMessage] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
@@ -56,6 +64,12 @@ export default function LeadForm({
       .slice(0, 5);
   }, [address, buildings]);
 
+  const markStart = () => {
+    if (started) return;
+    setStarted(true);
+    track(t.track.formStart, { type });
+  };
+
   const submit = async (event) => {
     event.preventDefault();
     const nextErrors = {};
@@ -68,10 +82,12 @@ export default function LeadForm({
     setSending(true);
     try {
       const utm = getUtm();
+      const clientId = await getClientId();
       const response = await base44.functions.invoke('submitLead', {
         type,
         cluster,
-        sell_timeline: timeline || null,
+        timeframe_hint: timeframe || null,
+        sell_timeline: SELL_BY_TIMEFRAME[timeframe] || null,
         building_id: matchedBuilding || null,
         address_text: address.trim(),
         name: name.trim(),
@@ -79,6 +95,9 @@ export default function LeadForm({
         preferred_contact: preferred,
         message: message.trim(),
         consent: true,
+        consent_text_version: '152fz-form-v1',
+        consent_at: new Date().toISOString(),
+        client_id: clientId,
         honeypot,
         utm,
         referrer: document.referrer || '',
@@ -87,6 +106,7 @@ export default function LeadForm({
 
       if (response?.data?.ok) {
         track(t.track.leadSubmit, { type, building_id: matchedBuilding || null });
+        track(t.track.formSubmitSuccess, { type, building_id: matchedBuilding || null });
         setDone(true);
         onSuccess?.();
       } else if (response?.status === 429) {
@@ -125,7 +145,7 @@ export default function LeadForm({
   }
 
   return (
-    <form onSubmit={submit} noValidate>
+    <form onSubmit={submit} onFocus={markStart} noValidate>
       <fieldset>
         <legend className="eyebrow mb-3">{t.lead.typeLabel}</legend>
         <div className="flex flex-wrap gap-2">
@@ -241,26 +261,26 @@ export default function LeadForm({
       </fieldset>
 
       {String(type).startsWith('owner') ? (
-        <fieldset className="mt-6">
-          <legend className="eyebrow mb-3">{t.lead.timelineLabel}</legend>
-          <div className="flex flex-wrap gap-2">
-            {TIMELINES.map((value) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setTimeline(timeline === value ? '' : value)}
-                className={cn(
-                  'min-h-[38px] border px-3 text-[12.5px] transition-colors',
-                  timeline === value
-                    ? 'border-[#c9b28c] text-[#c9b28c]'
-                    : 'border-white/15 text-[#8f9a9f] hover:border-white/35 hover:text-white'
-                )}
-              >
-                {t.lead.timelines[value]}
-              </button>
+        <div className="mt-6">
+          <label htmlFor="lead-timeframe" className="eyebrow mb-2 block">
+            {t.lead.timelineLabel}
+          </label>
+          <select
+            id="lead-timeframe"
+            value={timeframe}
+            onChange={(event) => setTimeframe(event.target.value)}
+            className="h-[46px] w-full border border-white/15 bg-[#1f272b] px-3 text-[14px] text-white focus:border-[#c8102e] focus:outline-none"
+          >
+            <option value="" className="bg-[#1f272b]">
+              —
+            </option>
+            {TIMEFRAMES.map((value) => (
+              <option key={value} value={value} className="bg-[#1f272b]">
+                {t.lead.timeframes[value]}
+              </option>
             ))}
-          </div>
-        </fieldset>
+          </select>
+        </div>
       ) : null}
 
       <div className="mt-6">
