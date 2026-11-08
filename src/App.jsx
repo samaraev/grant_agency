@@ -33,6 +33,7 @@ import ServicesAdmin from '@/pages/admin/ServicesAdmin';
 import TeamAdmin from '@/pages/admin/TeamAdmin';
 import SettingsAdmin from '@/pages/admin/SettingsAdmin';
 import Analytics from '@/pages/admin/Analytics';
+import IntegrationsAdmin from '@/pages/admin/IntegrationsAdmin';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -91,6 +92,7 @@ const AuthenticatedApp = () => {
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="team" element={<TeamAdmin />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="integrations" element={<IntegrationsAdmin />} />
           <Route path="settings" element={<SettingsAdmin />} />
         </Route>
       </Route>

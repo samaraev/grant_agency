@@ -1,108 +1,111 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
+import { outsideWorkingHours } from '@/lib/mskTime';
+import CommsQuickActions from '@/components/admin/lead/CommsQuickActions';
 
-const FIELD =
-  'h-[38px] w-full border border-white/10 bg-[#1f272b] px-3 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none';
+const CHANNEL_LABEL_KEYS = ['email', 'sms', 'call', 'telegram', 'whatsapp', 'max', 'note'];
 
-const EMPTY = { channel: 'call', direction: 'out', subject: '', body: '', status: 'sent' };
-
-export default function LeadCommunicationsTab({ lead }) {
+export default function LeadCommunicationsTab({ lead, onLeadChange, onMeetings }) {
   const copy = t.admin.leads.workspace.communications;
+  const comms = t.admin.leads.workspace.comms;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState(EMPTY);
-  const [saving, setSaving] = useState(false);
+  const [offer, setOffer] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const load = () => {
+  const load = useCallback(() => {
     base44.entities.Communication.filter({ lead_id: lead.id }, { sort: '-created_date', limit: 100 })
       .then((page) => setItems(page?.items || []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
+  }, [lead.id]);
+
+  useEffect(load, [load]);
+
+  const onLogged = (record) => {
+    if (record) setItems((prev) => [record, ...prev.filter((item) => item.id !== record.id)]);
+    if (record?.direction === 'out' && !lead.first_response_at) setOffer(true);
   };
 
-  useEffect(load, [lead.id]);
-
-  const add = async () => {
-    if (!form.subject.trim() && !form.body.trim()) return;
-    setSaving(true);
+  const acceptContactMade = async () => {
+    setBusy(true);
     try {
-      await base44.entities.Communication.create({ lead_id: lead.id, ...form });
-      setForm(EMPTY);
-      load();
+      await base44.functions.invoke('changeLeadStatus', {
+        lead_id: lead.id,
+        status: 'contact_made',
+        payload: {},
+        note: 'Первый исходящий контакт',
+      });
+      const updated = await base44.entities.Lead.update(lead.id, {
+        first_response_at: new Date().toISOString(),
+      });
+      onLeadChange?.(updated);
+      setOffer(false);
     } finally {
-      setSaving(false);
+      setBusy(false);
     }
   };
 
   return (
     <div className="space-y-4">
       <div className="border border-white/10 bg-[#1f272b] p-4">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <select
-            value={form.channel}
-            onChange={(e) => setForm({ ...form, channel: e.target.value })}
-            aria-label={copy.channel}
-            className={FIELD}
-          >
-            {Object.entries(copy.channels).map(([key, label]) => (
-              <option key={key} value={key} className="bg-[#1f272b]">{label}</option>
-            ))}
-          </select>
-          <select
-            value={form.direction}
-            onChange={(e) => setForm({ ...form, direction: e.target.value })}
-            aria-label={copy.direction}
-            className={FIELD}
-          >
-            {Object.entries(copy.directions).map(([key, label]) => (
-              <option key={key} value={key} className="bg-[#1f272b]">{label}</option>
-            ))}
-          </select>
-          <select
-            value={form.status}
-            onChange={(e) => setForm({ ...form, status: e.target.value })}
-            aria-label={copy.status}
-            className={FIELD}
-          >
-            {Object.entries(copy.statuses).map(([key, label]) => (
-              <option key={key} value={key} className="bg-[#1f272b]">{label}</option>
-            ))}
-          </select>
-          <input
-            value={form.subject}
-            onChange={(e) => setForm({ ...form, subject: e.target.value })}
-            placeholder={copy.subject}
-            className={FIELD}
+        <div className="eyebrow">{t.admin.leads.workspace.tabs.communications}</div>
+        <div className="mt-3">
+          <CommsQuickActions
+            lead={lead}
+            onLogged={onLogged}
+            onLeadChange={onLeadChange}
+            onMeetings={onMeetings}
           />
         </div>
-        <textarea
-          value={form.body}
-          onChange={(e) => setForm({ ...form, body: e.target.value })}
-          rows={3}
-          placeholder={copy.body}
-          className="mt-3 w-full resize-none border border-white/10 bg-[#1f272b] p-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
-        />
-        <button
-          type="button"
-          onClick={add}
-          disabled={saving}
-          className="mt-3 min-h-[38px] bg-[#c8102e] px-4 text-[12.5px] font-semibold text-white disabled:opacity-60"
-        >
-          {saving ? copy.saving : copy.add}
-        </button>
+        {outsideWorkingHours() ? (
+          <p className="mt-3 text-[11.5px] text-[#c9b28c]">{comms.mskWarning}</p>
+        ) : null}
       </div>
+
+      {offer ? (
+        <div className="border border-[#c9b28c]/50 bg-[#1f272b] px-4 py-3">
+          <p className="text-[12.5px] text-white">{comms.contactMade}</p>
+          <div className="mt-2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={acceptContactMade}
+              disabled={busy}
+              className="min-h-[34px] bg-[#c8102e] px-3 text-[12px] font-semibold text-white disabled:opacity-60"
+            >
+              {comms.contactMadeYes}
+            </button>
+            <button
+              type="button"
+              onClick={() => setOffer(false)}
+              className="min-h-[34px] border border-white/15 px-3 text-[12px] text-[#d7dcde]"
+            >
+              {comms.contactMadeLater}
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {loading ? (
         <p className="text-[13px] text-[#8f9a9f]">{t.admin.common.loading}</p>
       ) : items.length ? (
-        <ul className="divide-y divide-white/8 border border-white/10">
+        <ol className="space-y-2 border-l border-white/10 pl-4">
           {items.map((item) => (
-            <li key={item.id} className="bg-[#1a2025] p-4">
+            <li key={item.id} className="relative border border-white/10 bg-[#1a2025] p-3.5">
+              <span
+                className="absolute -left-[22px] top-4 h-2 w-2 rounded-full bg-[#c8102e]"
+                aria-hidden="true"
+              />
               <div className="flex flex-wrap items-center gap-2 text-[10.5px] uppercase tracking-[0.1em] text-[#8f9a9f]">
-                <span className="text-[#c9b28c]">{copy.channels[item.channel] || item.channel}</span>
+                <span className="text-[#c9b28c]">
+                  {CHANNEL_LABEL_KEYS.includes(item.channel)
+                    ? copy.channels[item.channel]
+                    : item.channel}
+                </span>
                 <span>{copy.directions[item.direction] || item.direction}</span>
                 <span>· {copy.statuses[item.status] || item.status}</span>
+                {item.duration_seconds ? <span>· {item.duration_seconds} с</span> : null}
                 <span className="ml-auto text-[#6f7a7f]">
                   {new Date(item.created_date).toLocaleString(dateLocale())}
                 </span>
@@ -111,9 +114,19 @@ export default function LeadCommunicationsTab({ lead }) {
               {item.body ? (
                 <p className="mt-1 whitespace-pre-line text-[13px] leading-relaxed text-[#d7dcde]">{item.body}</p>
               ) : null}
+              {item.recording_url ? (
+                <a
+                  href={item.recording_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="link-underline mt-2 inline-block text-[12px] text-[#c9b28c]"
+                >
+                  {copy.recording}
+                </a>
+              ) : null}
             </li>
           ))}
-        </ul>
+        </ol>
       ) : (
         <p className="text-[13px] text-[#8f9a9f]">{copy.empty}</p>
       )}

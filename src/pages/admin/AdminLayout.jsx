@@ -8,6 +8,7 @@ import {
   Users,
   Settings,
   BarChart3,
+  Plug,
   LogOut,
   ExternalLink,
 } from 'lucide-react';
@@ -28,6 +29,7 @@ export default function AdminLayout() {
     { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
     { to: '/admin/team', label: t.admin.nav.team, icon: Users },
     { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
+    { to: '/admin/integrations', label: t.admin.nav.integrations, icon: Plug },
     { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
   ];
 

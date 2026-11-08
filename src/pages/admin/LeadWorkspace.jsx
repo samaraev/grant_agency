@@ -96,7 +96,9 @@ export default function LeadWorkspace() {
 
       <div className="mt-5">
         {tab === 'overview' ? <LeadOverviewTab lead={lead} onSaved={setLead} /> : null}
-        {tab === 'communications' ? <LeadCommunicationsTab lead={lead} /> : null}
+        {tab === 'communications' ? (
+          <LeadCommunicationsTab lead={lead} onLeadChange={setLead} onMeetings={() => setTab('meetings')} />
+        ) : null}
         {tab === 'analysis' ? <LeadAnalysisTab lead={lead} /> : null}
         {tab === 'meetings' ? <LeadMeetingsTab lead={lead} /> : null}
         {tab === 'history' ? <LeadHistoryTab lead={lead} /> : null}
