@@ -5,14 +5,7 @@ import LeadDetail from '@/pages/admin/LeadDetail';
 import { downloadCsv, toCsv } from '@/lib/csv';
 import { dateLocale, t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
-
-const STATUS_CLASS = {
-  new: 'bg-blue-500/15 text-blue-300',
-  contacted: 'bg-yellow-500/15 text-yellow-300',
-  meeting_set: 'bg-purple-500/15 text-purple-300',
-  closed: 'bg-green-500/15 text-green-300',
-  spam: 'bg-white/10 text-[#9aa4a8]',
-};
+import { STATUS_KEYS, STATUS_TONE, normalizeStatus, statusLabel } from '@/lib/leadStatus';
 
 const AGREEMENT_CLASS = {
   none: 'bg-white/10 text-[#9aa4a8]',
@@ -126,9 +119,9 @@ export default function Leads() {
           className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
         >
           <option value="">{t.admin.leads.allStatuses}</option>
-          {Object.entries(t.admin.leads.statuses).map(([key, label]) => (
+          {STATUS_KEYS.map((key) => (
             <option key={key} value={key}>
-              {label}
+              {t.admin.leads.statuses[key]}
             </option>
           ))}
         </select>
@@ -231,10 +224,10 @@ export default function Leads() {
                     <span
                       className={cn(
                         'px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
-                        STATUS_CLASS[lead.status] || 'bg-white/10 text-[#9aa4a8]'
+                        STATUS_TONE[normalizeStatus(lead.status)] || 'bg-white/10 text-[#9aa4a8]'
                       )}
                     >
-                      {t.admin.leads.statuses[lead.status] || lead.status}
+                      {statusLabel(lead.status, t)}
                     </span>
                   </td>
                   <td className="px-4 py-3">

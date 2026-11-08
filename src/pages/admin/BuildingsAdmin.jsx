@@ -24,6 +24,10 @@ const CSV_COLUMNS = [
   'features',
   'latitude',
   'longitude',
+  'is_priority',
+  'expert_verified',
+  'verified_at',
+  'verified_by',
 ];
 
 export default function BuildingsAdmin() {
@@ -96,6 +100,10 @@ export default function BuildingsAdmin() {
             .filter(Boolean),
           latitude: row.latitude ? Number(row.latitude) : null,
           longitude: row.longitude ? Number(row.longitude) : null,
+          ...(row.is_priority ? { is_priority: row.is_priority === 'true' } : {}),
+          ...(row.expert_verified ? { expert_verified: row.expert_verified === 'true' } : {}),
+          ...(row.verified_at ? { verified_at: row.verified_at } : {}),
+          ...(row.verified_by ? { verified_by: row.verified_by } : {}),
           updated_at: new Date().toISOString().slice(0, 10),
         };
         const existing = byAddress.get(row.address.toLowerCase());

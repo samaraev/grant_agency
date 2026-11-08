@@ -29,6 +29,14 @@
     "admin_email": {
       "type": "string",
       "description": "\u041f\u043e\u0447\u0442\u0430 \u0434\u043b\u044f \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439 \u043e\u0431 \u043e\u0431\u0440\u0430\u0449\u0435\u043d\u0438\u044f\u0445"
+    },
+    "metrica_counter_id": {
+      "type": "string",
+      "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0447\u0451\u0442\u0447\u0438\u043a\u0430 \u042f\u043d\u0434\u0435\u043a\u0441.\u041c\u0435\u0442\u0440\u0438\u043a\u0438"
+    },
+    "gsc_verification": {
+      "type": "string",
+      "description": "\u041a\u043e\u0434 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f Google Search Console"
     }
   },
   "rls": {

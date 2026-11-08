@@ -33,6 +33,10 @@ const EMPTY = {
   latitude: '',
   longitude: '',
   is_published: true,
+  is_priority: false,
+  expert_verified: false,
+  verified_at: '',
+  verified_by: '',
 };
 
 function ClickPicker({ value, onPick }) {
@@ -120,6 +124,10 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
         latitude: draft.latitude ? Number(draft.latitude) : null,
         longitude: draft.longitude ? Number(draft.longitude) : null,
         is_published: Boolean(draft.is_published),
+        is_priority: Boolean(draft.is_priority),
+        expert_verified: Boolean(draft.expert_verified),
+        verified_at: draft.verified_at || '',
+        verified_by: draft.verified_by || '',
         updated_at: new Date().toISOString().slice(0, 10),
       };
 
@@ -417,6 +425,50 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
             />
             {t.admin.buildings.form.published}
           </label>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="flex items-start gap-3 text-[13px] text-[#d7dcde]">
+              <input
+                type="checkbox"
+                checked={Boolean(draft.is_priority)}
+                onChange={(event) => setDraft({ ...draft, is_priority: event.target.checked })}
+                className="mt-0.5 h-4 w-4 accent-[#c8102e]"
+              />
+              {t.admin.buildings.form.isPriority}
+            </label>
+            <label className="flex items-start gap-3 text-[13px] text-[#d7dcde]">
+              <input
+                type="checkbox"
+                checked={Boolean(draft.expert_verified)}
+                onChange={(event) => setDraft({ ...draft, expert_verified: event.target.checked })}
+                className="mt-0.5 h-4 w-4 accent-[#c8102e]"
+              />
+              {t.admin.buildings.form.expertVerified}
+            </label>
+            <div>
+              <label htmlFor="b-verified-at" className="eyebrow mb-2 block">
+                {t.admin.buildings.form.verifiedAt}
+              </label>
+              <input
+                id="b-verified-at"
+                value={draft.verified_at ?? ''}
+                onChange={(event) => setDraft({ ...draft, verified_at: event.target.value })}
+                placeholder="2026-01-31"
+                className={FIELD}
+              />
+            </div>
+            <div>
+              <label htmlFor="b-verified-by" className="eyebrow mb-2 block">
+                {t.admin.buildings.form.verifiedBy}
+              </label>
+              <input
+                id="b-verified-by"
+                value={draft.verified_by ?? ''}
+                onChange={(event) => setDraft({ ...draft, verified_by: event.target.value })}
+                className={FIELD}
+              />
+            </div>
+          </div>
 
           {error ? <p className="text-[12px] text-[#c9b28c]">{error}</p> : null}
 

@@ -75,8 +75,25 @@ export default async function (req) {
       if (page?.items?.length) buildingId = page.items[0].id;
     }
 
+    const personRole =
+      type === 'owner_appraise' || type === 'owner_sell'
+        ? 'owner'
+        : type === 'buyer_buy' || type === 'buyer_check'
+          ? 'buyer'
+          : 'other';
+    const timeframeBySell = {
+      asap: 'asap',
+      month: '1_3_months',
+      quarter: '3_6_months',
+      later: 'later',
+      undecided: 'unknown',
+    };
+
     const lead = await base44.entities.Lead.create({
       type,
+      person_role: personRole,
+      area_flag: cluster === 'khamovniki' ? 'in_target' : 'unknown',
+      timeframe_hint: timeframeBySell[sellTimeline] || 'unknown',
       cluster,
       sell_timeline: sellTimeline,
       agreement: 'none',
@@ -86,11 +103,15 @@ export default async function (req) {
       phone: rawPhone,
       preferred_contact: preferred,
       message: clean(body.message, 1500),
-      status: 'new',
+      status: 'new_inquiry',
       source,
       utm_source: clean(utm.utm_source, 120),
       utm_medium: clean(utm.utm_medium, 120),
       utm_campaign: clean(utm.utm_campaign, 120),
+      utm_term: clean(utm.utm_term, 120),
+      utm_content: clean(utm.utm_content, 120),
+      consent_at: new Date().toISOString(),
+      consent_text_version: '152fz-form-v1',
       referrer: clean(body.referrer, 300),
       page_path: clean(body.page_path, 200),
       is_meaningful: false,

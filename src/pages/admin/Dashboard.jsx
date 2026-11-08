@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
+import { normalizeStatus } from '@/lib/leadStatus';
 
 function Metric({ label, value, hint }) {
   return (
@@ -48,13 +49,18 @@ export default function Dashboard() {
     });
     const owners = leads.filter((lead) => String(lead.type).startsWith('owner')).length;
     const buyers = leads.filter((lead) => String(lead.type).startsWith('buyer')).length;
+    const byStatus = (status) =>
+      leads.filter((lead) => normalizeStatus(lead.status) === status).length;
     const funnel = {
-      new: leads.filter((lead) => lead.status === 'new').length,
-      contacted: leads.filter((lead) => lead.status === 'contacted').length,
-      qualified: leads.filter((lead) => lead.status === 'qualified' || lead.is_meaningful).length,
-      meeting_set: leads.filter((lead) => lead.status === 'meeting_set').length,
-      agreement: leads.filter((lead) => lead.status === 'agreement' || lead.agreement !== 'none').length,
-      closed: leads.filter((lead) => lead.status === 'closed').length,
+      new_inquiry: byStatus('new_inquiry'),
+      contact_made: byStatus('contact_made'),
+      target_inquiry: byStatus('target_inquiry'),
+      qualified_conversation: byStatus('qualified_conversation'),
+      meeting_scheduled:
+        byStatus('meeting_scheduled') + byStatus('meeting_held'),
+      contract_signed: byStatus('contract_signed') + byStatus('listed_or_search_started'),
+      deal_closed: byStatus('deal_closed'),
+      non_target: byStatus('non_target'),
     };
     return {
       total: leads.length,
@@ -62,7 +68,7 @@ export default function Dashboard() {
       owners,
       buyers,
       khamovniki: leads.filter((lead) => lead.cluster === 'khamovniki').length,
-      meaningful: leads.filter((lead) => lead.is_meaningful).length,
+      meaningful: byStatus('qualified_conversation'),
       byType,
       bySource,
       funnel,

@@ -1,0 +1,76 @@
+{
+  "name": "AdminSettings",
+  "type": "object",
+  "properties": {
+    "target_districts": {
+      "type": "string",
+      "default": "\u0425\u0430\u043c\u043e\u0432\u043d\u0438\u043a\u0438",
+      "description": "\u0426\u0435\u043b\u0435\u0432\u044b\u0435 \u0440\u0430\u0439\u043e\u043d\u044b \u0440\u0430\u0431\u043e\u0442\u044b"
+    },
+    "target_streets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u0426\u0435\u043b\u0435\u0432\u044b\u0435 \u0443\u043b\u0438\u0446\u044b"
+    },
+    "first_response_sla_minutes": {
+      "type": "number",
+      "default": 30,
+      "description": "\u041d\u043e\u0440\u043c\u0430\u0442\u0438\u0432 \u043f\u0435\u0440\u0432\u043e\u0433\u043e \u043e\u0442\u0432\u0435\u0442\u0430, \u043c\u0438\u043d\u0443\u0442\u044b"
+    },
+    "working_hours_start": {
+      "type": "string",
+      "default": "10:00"
+    },
+    "working_hours_end": {
+      "type": "string",
+      "default": "20:00"
+    },
+    "timezone": {
+      "type": "string",
+      "default": "Europe/Moscow"
+    },
+    "default_responsible": {
+      "type": "string",
+      "description": "\u041e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e (email)"
+    },
+    "backup_responsible": {
+      "type": "string",
+      "description": "\u0420\u0435\u0437\u0435\u0440\u0432\u043d\u044b\u0439 \u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 (email)"
+    },
+    "sms_provider": {
+      "type": "string"
+    },
+    "telephony_provider": {
+      "type": "string"
+    },
+    "digest_enabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

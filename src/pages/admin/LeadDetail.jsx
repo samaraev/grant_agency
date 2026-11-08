@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import LeadFunnelPanel from '@/components/admin/LeadFunnelPanel';
 import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
+import { STATUS_TONE, normalizeStatus, statusLabel } from '@/lib/leadStatus';
+import { cn } from '@/lib/utils';
 
 const FIELD =
   'h-[40px] w-full border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none';
 
+function Row({ label, value }) {
+  return (
+    <div>
+      <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">{label}</div>
+      <div className="mt-1 text-[13.5px] text-white">{value}</div>
+    </div>
+  );
+}
+
 export default function LeadDetail({ lead, onClose, onSaved }) {
-  const [status, setStatus] = useState('new');
   const [agreement, setAgreement] = useState('none');
-  const [meaningful, setMeaningful] = useState(false);
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (!lead) return;
-    setStatus(lead.status || 'new');
     setAgreement(lead.agreement || 'none');
-    setMeaningful(Boolean(lead.is_meaningful));
     setNotes(lead.admin_notes || '');
     setSaved(false);
   }, [lead]);
@@ -28,9 +36,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
     setSaving(true);
     try {
       const updated = await base44.entities.Lead.update(lead.id, {
-        status,
         agreement,
-        is_meaningful: meaningful,
         admin_notes: notes,
       });
       onSaved(updated);
@@ -53,47 +59,38 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
               <p className="mt-1 text-[12px] text-[#8f9a9f]">
                 {new Date(lead.created_date).toLocaleString(dateLocale())} · {lead.source || 'direct'}
               </p>
+              <span
+                className={cn(
+                  'mt-3 inline-block px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
+                  STATUS_TONE[normalizeStatus(lead.status)] || 'bg-white/10 text-[#9aa4a8]'
+                )}
+              >
+                {statusLabel(lead.status, t)}
+              </span>
             </div>
 
             <div className="space-y-5 px-5 py-5">
               <div className="grid gap-3 sm:grid-cols-2">
-                <div>
-                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                    {t.admin.leads.columns.type}
-                  </div>
-                  <div className="mt-1 text-[13.5px] text-white">{t.lead.types[lead.type] || lead.type}</div>
-                </div>
-                <div>
-                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                    {t.admin.leads.columns.cluster}
-                  </div>
-                  <div className="mt-1 text-[13.5px] text-white">
-                    {t.admin.leads.clusters[lead.cluster] || t.admin.leads.clusters.other}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                    {t.admin.leads.detail.timeline}
-                  </div>
-                  <div className="mt-1 text-[13.5px] text-white">
-                    {t.lead.timelines[lead.sell_timeline] || '—'}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                    {t.admin.leads.detail.contact}
-                  </div>
-                  <div className="mt-1 text-[13.5px] text-white">
-                    {t.lead.contacts[lead.preferred_contact] || lead.preferred_contact}
-                  </div>
-                </div>
+                <Row label={t.admin.leads.columns.type} value={t.lead.types[lead.type] || lead.type} />
+                <Row
+                  label={t.admin.leads.columns.cluster}
+                  value={t.admin.leads.clusters[lead.cluster] || t.admin.leads.clusters.other}
+                />
+                <Row
+                  label={t.admin.leads.funnel.personRole}
+                  value={t.admin.leads.funnel.personRoles[lead.person_role] || t.admin.leads.funnel.notChosen}
+                />
+                <Row
+                  label={t.admin.leads.funnel.areaFlag}
+                  value={t.admin.leads.funnel.areas[lead.area_flag] || t.admin.leads.funnel.areas.unknown}
+                />
+                <Row label={t.admin.leads.detail.timeline} value={t.lead.timelines[lead.sell_timeline] || '—'} />
+                <Row
+                  label={t.admin.leads.detail.contact}
+                  value={t.lead.contacts[lead.preferred_contact] || lead.preferred_contact}
+                />
                 <div className="sm:col-span-2">
-                  <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">
-                    {t.admin.leads.columns.address}
-                  </div>
-                  <div className="mt-1 text-[13.5px] text-white">
-                    {lead.address_text || t.admin.leads.detail.noAddress}
-                  </div>
+                  <Row label={t.admin.leads.columns.address} value={lead.address_text || t.admin.leads.detail.noAddress} />
                 </div>
                 {lead.message ? (
                   <div className="sm:col-span-2">
@@ -118,23 +115,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="lead-status" className="eyebrow mb-2 block">
-                  {t.admin.leads.detail.status}
-                </label>
-                <select
-                  id="lead-status"
-                  value={status}
-                  onChange={(event) => setStatus(event.target.value)}
-                  className={FIELD}
-                >
-                  {Object.entries(t.admin.leads.statuses).map(([key, label]) => (
-                    <option key={key} value={key}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <LeadFunnelPanel lead={lead} onSaved={onSaved} />
 
               <div>
                 <label htmlFor="lead-agreement" className="eyebrow mb-2 block">
@@ -147,26 +128,12 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                   className={FIELD}
                 >
                   {Object.entries(t.admin.leads.agreements).map(([key, label]) => (
-                    <option key={key} value={key}>
+                    <option key={key} value={key} className="bg-[#1f272b]">
                       {label}
                     </option>
                   ))}
                 </select>
               </div>
-
-              <label className="flex cursor-pointer items-start gap-3">
-                <input
-                  type="checkbox"
-                  checked={meaningful}
-                  onChange={(event) => setMeaningful(event.target.checked)}
-                  className="mt-0.5 h-4 w-4 accent-[#c8102e]"
-                />
-                <span>
-                  <span className="block text-[13px] text-white">{t.admin.leads.detail.meaningful}</span>
-                  <span className="mt-0.5 block text-[11.5px] text-[#8f9a9f]">
-                    {t.admin.leads.detail.meaningfulHint}
-                  </span>                </span>
-              </label>
 
               <div>
                 <label htmlFor="lead-notes" className="eyebrow mb-2 block">

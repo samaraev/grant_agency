@@ -1,0 +1,109 @@
+{
+  "name": "Communication",
+  "type": "object",
+  "properties": {
+    "lead_id": {
+      "type": "string",
+      "description": "\u041e\u0431\u0440\u0430\u0449\u0435\u043d\u0438\u0435"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "sms",
+        "call",
+        "telegram",
+        "whatsapp",
+        "max",
+        "note"
+      ],
+      "enumColors": [
+        "blue",
+        "gray",
+        "purple",
+        "purple",
+        "green",
+        "yellow",
+        "gray"
+      ]
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "in",
+        "out"
+      ],
+      "enumColors": [
+        "blue",
+        "green"
+      ]
+    },
+    "subject": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "sent",
+        "delivered",
+        "failed",
+        "answered",
+        "missed"
+      ],
+      "enumColors": [
+        "gray",
+        "blue",
+        "green",
+        "red",
+        "green",
+        "red"
+      ]
+    },
+    "provider_id": {
+      "type": "string",
+      "description": "\u0418\u0434\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0442\u043e\u0440 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f \u0443 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u0430"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "description": "\u0414\u043b\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u0437\u0432\u043e\u043d\u043a\u0430"
+    },
+    "recording_url": {
+      "type": "string",
+      "description": "\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0437\u0430\u043f\u0438\u0441\u044c \u0440\u0430\u0437\u0433\u043e\u0432\u043e\u0440\u0430"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "\u041a\u0442\u043e \u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043b \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u044e"
+    }
+  },
+  "required": [
+    "lead_id",
+    "channel"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
