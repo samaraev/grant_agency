@@ -8,6 +8,14 @@ const FIELD =
   'h-[38px] w-full border border-white/10 bg-[#1f272b] px-3 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none';
 
 const EMPTY = { type: 'in_apartment', startsAt: '', address: '', responsible: '', status: 'planned' };
+
+// Ошибка от сервера может быть строкой или объектом {code, message, details}
+const errorText = (error, fallback) => {
+  const raw = error?.response?.data?.error ?? error?.response?.data?.message ?? error?.message;
+  if (typeof raw === 'string' && raw.trim()) return raw;
+  if (raw && typeof raw === 'object') return raw.message || raw.code || fallback;
+  return fallback;
+};
 const CHANNELS = ['sms', 'email', 'telegram'];
 
 export default function LeadMeetingsTab({ lead }) {
@@ -41,7 +49,7 @@ export default function LeadMeetingsTab({ lead }) {
       });
       setNotice(status === 'meeting_held' ? copy.heldNotice : copy.scheduledNotice);
     } catch (error) {
-      setNotice(error?.response?.data?.error || t.admin.leads.transition.error);
+      setNotice(errorText(error, t.admin.leads.transition.error));
     }
   };
 
@@ -84,14 +92,18 @@ export default function LeadMeetingsTab({ lead }) {
     try {
       if (channel === 'sms' && lead.phone) {
         const response = await base44.functions.invoke('sendSms', { lead_id: lead.id, body: message });
-        if (!response?.data?.ok) setNotice(response?.data?.error || comms.manualHint);
+        if (!response?.data?.ok) {
+          setNotice(errorText({ response }, comms.manualHint));
+        }
       } else if (channel === 'email' && lead.email) {
         const response = await base44.functions.invoke('sendEmail', {
           lead_id: lead.id,
           subject: copy.confirmSubject,
           body: message,
         });
-        if (!response?.data?.ok) setNotice(response?.data?.error || comms.manualHint);
+        if (!response?.data?.ok) {
+          setNotice(errorText({ response }, comms.manualHint));
+        }
       } else if (channel === 'telegram' && lead.telegram_username) {
         window.open(`https://t.me/${lead.telegram_username.replace('@', '')}`, '_blank', 'noopener');
         await base44.entities.Communication.create({

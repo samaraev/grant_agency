@@ -252,8 +252,8 @@ export default function Reports() {
             <div className="mt-4 text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">{copy.autoTitle}</div>
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {metricRows.map(([key, value]) => (
-                <div key={key} className="border border-white/10 px-3 py-2">
-                  <div className="text-[10px] uppercase tracking-[0.12em] text-[#778287]">
+                <div key={key} className="min-w-0 border border-white/10 px-3 py-2">
+                  <div className="break-words text-[10px] uppercase leading-snug tracking-[0.12em] text-[#778287]">
                     {copy.metrics[key]}
                   </div>
                   <div className="mt-1 text-[18px] font-bold text-white">{value}</div>

@@ -111,14 +111,15 @@ export default function LaunchChecklist() {
                   {groupItems.map((item) => (
                     <li key={item.id} className="px-4 py-3">
                       <div className="flex flex-wrap items-center gap-2">
-                        <input
+                        <textarea
                           defaultValue={item.title}
+                          rows={(item.title || '').length > 34 ? 2 : 1}
                           onBlur={(event) => {
                             const value = event.target.value.trim();
                             if (value && value !== item.title) patch(item, { title: value });
                           }}
                           className={cn(
-                            'min-w-[180px] flex-1 bg-transparent text-[13px] focus:outline-none',
+                            'w-full basis-full resize-none bg-transparent text-[13px] leading-snug focus:outline-none sm:min-w-[180px] sm:flex-1 sm:basis-0',
                             item.status === 'done' ? 'text-[#8f9a9f] line-through' : 'text-white'
                           )}
                           aria-label={copy.item}
