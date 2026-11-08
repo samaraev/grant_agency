@@ -4,7 +4,7 @@ import { Image } from '@/components/ui/image';
 import { dealLabel, formatArea, formatPrice, propertyTypeLabel } from '@/lib/price';
 import { t } from '@/lib/i18n';
 
-export default function BuildingCard({ building }) {
+export default function BuildingCard({ building, showFlags = false }) {
   return (
     <article className="group flex flex-col border border-white/10 bg-[#263033] transition-colors hover:border-[#c8102e]/60">
       <Link to={`/house/${building.id}`} className="relative block overflow-hidden">
@@ -36,6 +36,20 @@ export default function BuildingCard({ building }) {
         <h3 className="text-[19px] font-bold leading-snug text-white">
           <Link to={`/house/${building.id}`}>{building.address}</Link>
         </h3>
+        {showFlags && (building.is_priority || building.expert_verified) ? (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {building.is_priority ? (
+              <span className="bg-[#c9b28c] px-2 py-1 text-[9.5px] uppercase tracking-[0.16em] text-[#1a2025]">
+                {t.house.priorityBadge}
+              </span>
+            ) : null}
+            {building.expert_verified ? (
+              <span className="border border-white/15 px-2 py-1 text-[9.5px] uppercase tracking-[0.16em] text-[#b0b8bc]">
+                {t.house.verifiedBadge}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
         <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="text-[15px] font-semibold text-[#c9b28c]">{formatPrice(building)}</span>
           {building.area ? (

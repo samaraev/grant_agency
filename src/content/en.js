@@ -18,9 +18,9 @@ const en = {
   },
   meta: {
     home: {
-      title: 'GRANT — Private real estate in Moscow and the Moscow Region',
+      title: 'GRANT — Property in Khamovniki: the building, the price, the liquidity',
       description:
-        'A private portfolio of addresses in Moscow and the Moscow Region: mansions, club houses, residences and country estates. A review of a specific house and a private consultation, without public advertising.',
+        'A real estate agency in Khamovniki: a review of the price, liquidity and sale prospects of an apartment on the secondary market. Specific buildings and their characteristics. Separately, premium property in Moscow and the Moscow Region.',
     },
     search: {
       title: 'The portfolio — GRANT',
@@ -126,24 +126,27 @@ const en = {
   },
   home: {
     hero: {
-      marker: '01 / PRIVATE PORTFOLIO',
-      title: 'The agency that knows the district from the inside.',
-      titleLead: 'The agency that',
-      titleTail: 'knows the district',
-      titleAccent: 'from the inside.',
-      addressesInDb: 'addresses in the portfolio',
-      coverage: 'Moscow and the Moscow Region',
-      coverCaption: 'A house from our portfolio',
-      imageAlt: 'Mansion facade in Khamovniki at dusk',
+      marker: 'PROPERTY IN KHAMOVNIKI',
+      title: 'Khamovniki. We know the building, not just the address.',
       subtitle:
-        'Historic mansions, club houses and private residences in central Moscow, country houses on Rublyovka and Novaya Riga. We work with a limited number of properties and clients, and we know every house in our selection.',
-      searchLabel: 'The address you are interested in',
+        'We help owners understand the price, liquidity and sale prospects of an apartment on the Khamovniki secondary market. We work with specific buildings, their characteristics and the real state of the market.',
+      searchLabel: 'Find your building',
       searchPlaceholder: 'For example: 17 Prechistenka St.',
-      searchHint: 'Start typing an address and we will show houses from our portfolio',
+      searchHint: 'Start typing an address and we will show buildings from our database',
       searchButton: 'Find the address',
-      trustLine: 'You speak to a person who knows this house and its history personally.',
-      primaryCta: 'Discuss my house',
-      secondaryCta: 'Open the portfolio',
+      primaryCta: 'Get a price and liquidity review of the apartment',
+      secondaryCta: 'Browse all addresses',
+      addressesInDb: 'addresses in the database',
+      coverage: 'Moscow: Khamovniki and the centre',
+      coverCaption: 'A building from our database',
+      imageAlt: 'A building in Khamovniki: a facade on a quiet lane',
+      trustLine: 'You speak to a person who knows this building, its entrance and its sales history personally.',
+      contactsLabel: 'Get in touch',
+      callLabel: 'Call',
+      telegramLabel: 'Telegram',
+      whatsappLabel: 'WhatsApp',
+      hoursLabel: 'Opening hours',
+      hours: '10:00–20:00, Moscow time',
     },
     collections: {
       offices: {
@@ -169,7 +172,7 @@ const en = {
       },
     },
     trust: {
-      marker: '02 / WHY US',
+      marker: '08 / POSITION',
       items: [
         {
           title: 'A private portfolio',
@@ -185,62 +188,89 @@ const en = {
         },
       ],
     },
-    flow: {
-      marker: '03 / HOW WE WORK',
-      title: 'From introduction to completion',
-      subtitle: 'Four steps. We do not show everything available, we select what genuinely fits your brief.',
-      steps: [
-        { num: '01', title: 'Introduction', text: 'A conversation about the house, the budget and the timing. No forms, no scripts, no call centre.' },
-        { num: '02', title: 'Selection', text: 'Two or three addresses that truly fit: the history of the house, its condition, the neighbours, the view.' },
-        { num: '03', title: 'Viewing', text: 'We go together, at a time that suits you, without an audience. We discuss what you only notice up close.' },
-        { num: '04', title: 'Completion', text: 'Negotiation, document checks, settlement. One specialist takes you to the keys and stays in touch.' },
+    knowledge: {
+      marker: '02 / THE BUILDING, NOT JUST THE ADDRESS',
+      title: 'One district. Different buildings. Different possibilities.',
+      subtitle:
+        'Two apartments of similar size in neighbouring Khamovniki buildings can behave differently on the market. The difference is the building itself, its entrance, its courtyard and what the apartment competes with right now.',
+      factors: [
+        { title: 'Series and building characteristics', text: 'Year built, wall material, floors, the series or an individual design: the first things a buyer checks.' },
+        { title: 'Entrance and courtyard', text: 'Staircase, concierge, barrier, parking, a through courtyard: details a buyer sees before the square metres.' },
+        { title: 'Floor, layout and the apartment', text: 'Light, the view, ceiling height, load-bearing walls and the option to replan: what cannot be changed.' },
+        { title: 'Parking and infrastructure', text: 'Courtyard spaces, nearby car parks, schools, clinics, shops: in Khamovniki this comes up at every viewing.' },
+        { title: 'Competing offers', text: 'What is for sale in the same building and next door, at what price and for how long. Without that, a price is a guess.' },
+        { title: 'Demand and liquidity', text: 'How often apartments like this reach a deal, who buys them and where they are weak on the market.' },
       ],
+      examplesTitle: 'Khamovniki buildings in our database',
+      note: 'Building data is entered by hand: series, year, entrances, courtyard and apartment specifics. If a building is not in the database, leave the address and we will look into it.',
+      open: 'Open the building',
     },
-    featured: {
+    ownerBlock: {
+      marker: '03 / FOR OWNERS',
+      title: 'What is happening with your apartment?',
+      subtitle:
+        'Owners arrive with different questions but almost always for one reason: to understand what to do next with an apartment in Khamovniki. We start with the building and the competition, not with a promised selling timeline.',
+      questionsTitle: 'What owners ask us',
+      questions: [
+        'What can the apartment realistically be worth?',
+        'Why do similar apartments sell faster?',
+        'Who is competing with your property right now?',
+        'Is it worth renovating before selling?',
+        'Which market entry strategy to choose?',
+        'How liquid is your property?',
+      ],
+      getTitle: 'What the consultation gives you',
+      items: [
+        'A price and market positioning review.',
+        'A liquidity analysis.',
+        'An analysis of competing offers.',
+        'The main risks of the sale.',
+        'Recommendations on a market entry strategy.',
+      ],
+      cta: 'Get a price and liquidity review of your apartment',
+      formTitle: 'A review of your apartment',
+      formText: 'Leave an address and a phone number. Before we call we look at the building and nearby offers: that is preparation for the conversation, not an automated valuation.',
+      note: 'We do not promise a specific price, a guaranteed selling timeline or a number of viewings.',
+    },
+    priority: {
       marker: '04 / ADDRESSES',
-      title: 'Selected addresses',
-      subtitle: 'A limited selection: the historic centre, club houses, apartments with a view. Some properties are shown only on a personal request.',
+      title: 'Priority Khamovniki buildings',
+      subtitle: 'Buildings where we hold characteristics, layouts and a view of what is happening with apartments on the market. Priority and verified addresses come first.',
+      badgePriority: 'Priority building',
+      badgeVerified: 'Data verified',
+      all: 'All addresses',
+      cluster: 'Khamovniki cluster',
+      empty: 'No published Khamovniki buildings in the database yet. Leave an address and we will look into the building.',
     },
     map: {
       marker: '05 / MAP',
-      title: 'Addresses on the map',
-      subtitle: 'Choose a house: photographs, a short film and the option to discuss it in person.',
-      openHouse: 'Open the house',
+      title: 'Khamovniki addresses on the map',
+      subtitle: 'Buildings from the database on the map: photographs, video and the option to discuss a specific address.',
+      openHouse: 'Open the building',
       contactAbout: 'Discuss this address',
-      noVideo: 'The film for this house is still being shot',
+      noVideo: 'The film for this building is still being shot',
     },
-    audiences: {
-      marker: '06 / WHERE TO START',
-      title: 'Are you an owner or a buyer?',
-      subtitle: 'The questions differ, and so does the conversation.',
-      owner: {
-        title: 'I am an owner',
-        text: 'We will look at what is happening with your house and how to sell it without public advertising.',
-        questions: [
-          'How to value an apartment in a historic house without undervaluing it',
-          'What is worth restoring before a viewing, and what is not',
-          'Who the real buyer for such a property is and where to find them',
-          'How to arrange a private viewing without disclosing the address',
-          'A quiet sale or a public launch: what suits your house',
-        ],
-        cta: 'Review my house',
-      },
-      buyer: {
-        title: 'I am a buyer',
-        text: 'We will look at the house, its history and what is worth checking before the deal.',
-        questions: [
-          'How this house differs from its neighbours and why that affects the price',
-          'What here is original and what was rebuilt, and when',
-          'Which elements of the structure need attention first',
-          'What the asking price is actually based on',
-          'Which properties exist outside the open market',
-          'What to check in the documents before paying a deposit',
-        ],
-        cta: 'Discuss the house',
-      },
+    buyersBlock: {
+      marker: '06 / FOR BUYERS',
+      title: 'Buying an apartment in Khamovniki?',
+      subtitle: 'A separate line of work: understanding the building before the deal, not showing as many apartments as possible.',
+      points: [
+        'How buildings differ from each other and why that affects the price.',
+        'Which building and apartment characteristics to check before an offer.',
+        'What currently competes with the option you chose.',
+        'Which market risks are visible at the viewing.',
+        'Where there is room to negotiate on price.',
+      ],
+      cta: 'Discuss buying an apartment',
+      pageCta: 'More for buyers',
+    },
+    premium: {
+      marker: '07 / PREMIUM PROPERTY',
+      title: 'Premium property by GRANT',
+      subtitle: 'Alongside its focus on Khamovniki residential property, GRANT represents private residences, mansions and country properties in Moscow and the Moscow Region.',
     },
     foundation: {
-      marker: '07 / FOUNDATIONS',
+      marker: '09 / FOUNDATIONS',
       title: 'What this is built on',
       subtitle: 'No promises of being “the best agency”. Only what you can verify.',
       items: [
@@ -263,7 +293,8 @@ const en = {
       ],
     },
     finalCta: {
-      title: 'Let us discuss your house, without haste and without an audience.',
+      title: 'Let us review your Khamovniki apartment: no promises, no automated valuations.',
+      cta: 'Get a price and liquidity review',
     },
   },
   search: {
@@ -305,11 +336,13 @@ const en = {
     decisionTitle: 'What would you like to do?',
     decisionText: 'Choose an option and we will open the request form with this address.',
     decision: {
-      owner_appraise: 'Discuss the apartment',
+      owner_appraise: 'Get a price and liquidity review with the building and district expert',
       owner_sell: 'Sell',
       buyer_buy: 'Buy in this building',
     },
-    stickyCta: 'Discuss this address',
+    priorityBadge: 'Priority building',
+    verifiedBadge: 'Data verified by an expert',
+    stickyCta: 'Get a price and liquidity review',
     notFoundTitle: 'Building not found',
     notFoundText: 'This address may not be in our database yet. Leave it and we will prepare the details.',
     updated: 'Updated',
@@ -318,16 +351,17 @@ const en = {
     marker: 'FOR OWNERS',
     questionsMarker: '02 / QUESTIONS',
     honestMarker: '03 / HONESTY',
-    title: 'What is happening with your house?',
+    title: 'What is happening with your apartment?',
     subtitle:
-      'A conversation usually starts with one question. Below are the ones owners of historic houses and club residences bring to us.',
+      'Owners of Khamovniki apartments come with different questions: price, liquidity, competitors and selling strategy. Below are the ones the conversation starts with.',
     questionsTitle: 'What owners come with',
     questions: [
-      { title: 'What my house is worth', text: 'And what the price is based on: the architect, the state of the structure, original details, offers in neighbouring houses.' },
-      { title: 'Why viewings lead nowhere', text: 'We work out what is putting the buyer off: the price, the photographs, the condition of the house or the apartment itself.' },
-      { title: 'Who the real buyer is', text: 'Apartments like this are bought for character and address. We discuss exactly whom to show it to, and through which channels.' },
-      { title: 'What to restore before a viewing', text: 'We weigh up what adds value — a stove, parquet, joinery — and what only costs time and money.' },
-      { title: 'A quiet sale or a public launch', text: 'Each option has its own price and consequences. The decision is yours, but made with a clear picture of the market.' },
+      { title: 'What the apartment can realistically be worth', text: 'And what the price is based on: the building, its series, the state of the structure, the floor, the light and offers in neighbouring buildings, not a city average.' },
+      { title: 'Why similar apartments sell faster', text: 'We work out what is putting the buyer off: the price, the photographs, the condition of the apartment, the entrance or the building itself.' },
+      { title: 'Who is competing with your property now', text: 'What is for sale in the same building and next door, at what price and for how long, and what a buyer will compare your apartment with.' },
+      { title: 'Whether to renovate before selling', text: 'We weigh up what adds value and what only costs time and money: cosmetic work, services, windows, joinery.' },
+      { title: 'Which strategy to choose', text: 'A quiet sale or a public launch, the starting price and the first viewing: each option has its own price and consequences.' },
+      { title: 'How liquid your property is', text: 'How often apartments of this type reach a deal, who buys them and where they are weak on the market.' },
     ],
     how: {
       marker: '01 / HOW IT WORKS',
@@ -350,6 +384,7 @@ const en = {
     formTitle: 'Arrange a conversation',
     formText: 'Tell us the address and how to reach you. You will get a substantive answer, not a template.',
     searchTitle: 'Find your address',
+    primaryCta: 'Get a price and liquidity review of your apartment',
     clusterLink: 'Working in Khamovniki',
     clusterLinkText: 'Khamovniki is the first district we work systematically. If your apartment is there, start with that page.',
   },
@@ -462,6 +497,14 @@ const en = {
       subtitle: 'People you can meet in the office and on site.',
       empty: 'Team information is coming soon.',
     },
+    claims: {
+      marker: '03 / VERIFIED CLAIMS',
+      title: 'What we can back with documents',
+      subtitle:
+        'We publish claims about the agency only after they are checked. Below are the ones with documents behind them. Everything else stays in the conversation, not in advertising.',
+      verified: 'Verified',
+      empty: 'No verified claims yet: we publish only what we can prove.',
+    },
     photoAlt: 'A map of the neighbourhood on a desk',
   },
   services: {
@@ -528,6 +571,14 @@ const en = {
       {
         title: '6. Your rights',
         text: 'You may request information about the processing of your data, demand that it be corrected, blocked or deleted, and withdraw your consent. To do so, write to the email listed in the Contacts section.',
+      },
+      {
+        title: '7. Call recording',
+        text: 'Calls about enquiries may be recorded to control quality and keep agreements accurate. A recording is stored for a limited period, is available only to the staff working on the enquiry and is provided on your request.',
+      },
+      {
+        title: '8. Communication channels',
+        text: 'We contact you by phone, Telegram, WhatsApp or email, depending on the channel you chose. If you choose a messenger, data processing inside it is also governed by that service’s own rules.',
       },
     ],
     placeholderNote:

@@ -4,6 +4,7 @@ import { Check, ArrowRight } from 'lucide-react';
 import AddressSearch from '@/components/AddressSearch';
 import LeadForm from '@/components/LeadForm';
 import SectionHeading from '@/components/SectionHeading';
+import { useLead } from '@/components/LeadProvider';
 import { useBuildingList } from '@/hooks/useBuildings';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
@@ -12,6 +13,7 @@ import { useLang } from '@/components/LanguageProvider';
 
 export default function Owners() {
   const { buildings } = useBuildingList({ limit: 200 });
+  const { openLead } = useLead();
   const { lang } = useLang();
 
   useEffect(() => {
@@ -43,6 +45,17 @@ export default function Owners() {
               placeholder={t.home.hero.searchPlaceholder}
             />
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              track(t.track.ctaClick, { cta: 'owners_review' });
+              openLead({ type: 'owner_appraise', cluster: 'khamovniki' });
+            }}
+            className="mt-8 flex min-h-[50px] items-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white"
+          >
+            {t.owners.primaryCta}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
       </section>
 

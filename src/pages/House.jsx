@@ -134,6 +134,20 @@ export default function House() {
             <h1 className="mt-3 text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-white sm:text-[46px]">
               {building.address}
             </h1>
+            {building.is_priority || building.expert_verified ? (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {building.is_priority ? (
+                  <span className="bg-[#c9b28c] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-[#1a2025]">
+                    {t.house.priorityBadge}
+                  </span>
+                ) : null}
+                {building.expert_verified ? (
+                  <span className="border border-[#c9b28c]/40 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-[#c9b28c]">
+                    {t.house.verifiedBadge}
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
             <div className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
               <span className="border border-[#c9b28c]/40 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-[#c9b28c]">
                 {dealLabel(building)}

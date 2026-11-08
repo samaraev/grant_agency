@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Image } from '@/components/ui/image';
 import SectionHeading from '@/components/SectionHeading';
+import { Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { MAP_IMAGE } from '@/lib/sample-buildings';
 import { applySeo } from '@/lib/seo';
@@ -10,6 +11,7 @@ import { useLang } from '@/components/LanguageProvider';
 
 export default function About() {
   const [team, setTeam] = useState([]);
+  const [claims, setClaims] = useState([]);
   const { lang } = useLang();
 
   useEffect(() => {
@@ -21,6 +23,9 @@ export default function About() {
     base44.entities.TeamMember.filter({ is_public: true }, { limit: 20 })
       .then((page) => setTeam(page?.items || []))
       .catch(() => setTeam([]));
+    base44.entities.Claim.filter({ is_verified: true }, { limit: 20 })
+      .then((page) => setClaims(page?.items || []))
+      .catch(() => setClaims([]));
   }, []);
 
   return (
@@ -77,6 +82,32 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {claims.length ? (
+        <section className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
+          <SectionHeading
+            marker={t.about.claims.marker}
+            title={t.about.claims.title}
+            subtitle={t.about.claims.subtitle}
+          />
+          <ul className="mt-10 grid gap-px bg-white/10 sm:grid-cols-2">
+            {claims.map((claim) => (
+              <li key={claim.id} className="flex gap-3 bg-[#1a2025] p-6">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#c9b28c]" aria-hidden="true" />
+                <div>
+                  <p className="text-[15px] leading-relaxed text-white">{claim.text}</p>
+                  {claim.proof_note ? (
+                    <p className="mt-2 text-[12.5px] leading-relaxed text-[#8f9a9f]">{claim.proof_note}</p>
+                  ) : null}
+                  <span className="mt-2 inline-block text-[10px] uppercase tracking-[0.16em] text-[#c9b28c]">
+                    {t.about.claims.verified}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
         <SectionHeading
