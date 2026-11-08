@@ -15,6 +15,7 @@ const ru = {
     services: 'Услуги',
     about: 'О нас',
     contacts: 'Контакты',
+    admin: 'Админка',
     cta: 'Записаться',
     menu: 'Меню',
     close: 'Закрыть',

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, LayoutDashboard } from 'lucide-react';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { useLead } from '@/components/LeadProvider';
@@ -81,6 +81,14 @@ export default function Header({ settings, onCta }) {
               {settings.phone}
             </a>
           ) : null}
+          <Link
+            to="/admin"
+            aria-label={t.nav.admin}
+            title={t.nav.admin}
+            className="flex h-9 w-9 items-center justify-center border border-white/15 text-[#b0b8bc] transition-colors hover:border-white/40 hover:text-white"
+          >
+            <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
+          </Link>
           <LanguageSwitcher />
           <button
             type="button"
@@ -116,6 +124,13 @@ export default function Header({ settings, onCta }) {
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/admin"
+              className="flex min-h-[48px] items-center gap-2 border-b border-white/5 text-[15px] text-[#d7dcde]"
+            >
+              <LayoutDashboard className="h-4 w-4 text-[#c9b28c]" aria-hidden="true" />
+              {t.nav.admin}
+            </Link>
             {settings?.phone ? (
               <a
                 href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}

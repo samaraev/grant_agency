@@ -14,7 +14,7 @@ import {
   BarChart3,
   Plug,
   LogOut,
-  ExternalLink,
+  Home,
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
@@ -102,7 +102,16 @@ export default function AdminLayout() {
               </div>
             </div>
           </div>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex min-h-[40px] items-center gap-2 border border-white/15 px-3 text-[12px] text-white transition-colors hover:bg-white/10"
+            >
+              <Home className="h-3.5 w-3.5" aria-hidden="true" />
+              {t.admin.toSite}
+            </Link>
+            <LanguageSwitcher />
+          </div>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
           {nav.map((item) => (
@@ -125,13 +134,6 @@ export default function AdminLayout() {
           ))}
         </nav>
         <div className="hidden px-3 pb-5 lg:block">
-          <Link
-            to="/"
-            className="flex min-h-[38px] items-center gap-2 px-3 text-[12px] text-[#8f9a9f] hover:text-white"
-          >
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            {t.admin.toSite}
-          </Link>
           <button
             type="button"
             onClick={logout}
