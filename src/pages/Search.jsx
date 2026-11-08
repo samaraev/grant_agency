@@ -62,7 +62,12 @@ export default function Search() {
 
   return (
     <div className="mx-auto max-w-[1240px] px-5 py-12 lg:px-8 lg:py-16">
-      <SectionHeading marker={t.search.marker} title={t.search.title} subtitle={t.search.subtitle} />
+      <SectionHeading
+        level={1}
+        marker={t.search.marker}
+        title={t.search.title}
+        subtitle={t.search.subtitle}
+      />
 
       <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_auto_auto_auto] lg:items-center">
         <AddressSearch

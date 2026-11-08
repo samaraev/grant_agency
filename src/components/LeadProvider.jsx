@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import LeadDialog from '@/components/LeadDialog';
 
 const LeadContext = createContext(null);
@@ -6,6 +7,11 @@ const LeadContext = createContext(null);
 export function LeadProvider({ children }) {
   const [open, setOpen] = useState(false);
   const [initial, setInitial] = useState({});
+  const location = useLocation();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   const openLead = useCallback((params = {}) => {
     setInitial(params);
