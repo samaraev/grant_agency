@@ -76,7 +76,7 @@ export default function LeadWorkspace() {
         </span>
       </div>
 
-      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-white/10">
+      <div className="mt-6 flex flex-wrap gap-x-1 border-b border-white/10 sm:flex-nowrap sm:overflow-x-auto">
         {TABS.map((key) => (
           <button
             key={key}
