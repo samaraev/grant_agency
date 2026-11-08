@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import MapTiles from '@/components/map/MapTiles';
 import { ArrowRight, Play } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { t } from '@/lib/i18n';
@@ -26,10 +27,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
           className="h-full w-full"
           attributionControl
         >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          />
+          <MapTiles />
           {withCoords.map((building) => (
             <CircleMarker
               key={building.id}

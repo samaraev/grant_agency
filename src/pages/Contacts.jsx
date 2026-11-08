@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import MapTiles from '@/components/map/MapTiles';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import LeadForm from '@/components/LeadForm';
 import { applySeo, organizationJsonLd } from '@/lib/seo';
@@ -116,10 +117,7 @@ export default function Contacts() {
 
           <div className="mt-8 h-[280px] overflow-hidden border border-white/10">
             <MapContainer center={OFFICE} zoom={16} scrollWheelZoom={false} className="h-full w-full">
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              />
+              <MapTiles />
               <CircleMarker
                 center={OFFICE}
                 radius={10}

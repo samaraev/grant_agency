@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import MapTiles from '@/components/map/MapTiles';
 import { ArrowLeft, ArrowRight, MapPin, Play } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -328,10 +329,7 @@ export default function House() {
                     scrollWheelZoom={false}
                     className="h-full w-full"
                   >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    />
+                    <MapTiles />
                     <CircleMarker
                       center={[Number(building.latitude), Number(building.longitude)]}
                       radius={10}

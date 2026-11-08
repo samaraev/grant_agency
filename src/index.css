@@ -140,7 +140,8 @@
   font-family: 'Inter', sans-serif;
 }
 .leaflet-tile {
-  filter: grayscale(0.9) brightness(0.62) contrast(1.05);
+  /* CARTO dark tiles are already tuned to the theme: keep them legible */
+  filter: saturate(0.85) brightness(1.05);
 }
 .leaflet-control-attribution {
   background: rgba(26, 32, 37, 0.8) !important;

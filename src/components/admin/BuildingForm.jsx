@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker, useMapEvents } from 'react-leaflet';
+import { MapContainer, CircleMarker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import MapTiles from '@/components/map/MapTiles';
 import { Upload, X, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Image } from '@/components/ui/image';
@@ -399,10 +400,7 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
               scrollWheelZoom={false}
               className="h-full w-full"
             >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              />
+              <MapTiles />
               <ClickPicker
                 value={coords}
                 onPick={(lat, lng) => setDraft({ ...draft, latitude: lat, longitude: lng })}
