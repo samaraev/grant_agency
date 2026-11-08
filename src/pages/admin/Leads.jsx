@@ -21,6 +21,7 @@ export default function Leads() {
   const [type, setType] = useState('');
   const [search, setSearch] = useState('');
   const [from, setFrom] = useState('');
+  const [source, setSource] = useState('');
   const [sortDesc, setSortDesc] = useState(true);
   const [selected, setSelected] = useState(null);
 
@@ -44,12 +45,18 @@ export default function Leads() {
     const query = search.trim().toLowerCase();
     return leads.filter((lead) => {
       if (from && new Date(lead.created_date) < new Date(`${from}T00:00:00`)) return false;
+      if (source && (lead.source || 'direct') !== source) return false;
       if (!query) return true;
       return `${lead.name || ''} ${lead.phone || ''} ${lead.address_text || ''}`
         .toLowerCase()
         .includes(query);
     });
-  }, [leads, search, from]);
+  }, [leads, search, from, source]);
+
+  const sources = useMemo(
+    () => [...new Set(leads.map((lead) => lead.source || 'direct'))].sort(),
+    [leads]
+  );
 
   const exportCsv = () => {
     const columns = [
@@ -93,7 +100,7 @@ export default function Leads() {
         </button>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <div className="relative sm:col-span-2">
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#6f7a7f]" aria-hidden="true" />
           <input
@@ -124,6 +131,19 @@ export default function Leads() {
           {Object.entries(t.lead.types).map(([key, label]) => (
             <option key={key} value={key}>
               {label}
+            </option>
+          ))}
+        </select>
+        <select
+          value={source}
+          onChange={(event) => setSource(event.target.value)}
+          aria-label={t.admin.leads.allSources}
+          className="h-[40px] border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
+        >
+          <option value="">{t.admin.leads.allSources}</option>
+          {sources.map((value) => (
+            <option key={value} value={value}>
+              {value}
             </option>
           ))}
         </select>
