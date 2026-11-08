@@ -15,3 +15,10 @@ export function byPriority(a, b) {
 export function publishedKhamovniki(buildings = []) {
   return buildings.filter((item) => item.is_published !== false && isKhamovniki(item)).sort(byPriority);
 }
+
+/** Избранная подборка главной: шесть домов справочника в заданном порядке. */
+export function featuredBuildings(buildings = []) {
+  return buildings
+    .filter((item) => item.is_featured && item.is_published !== false)
+    .sort((a, b) => (a.featured_order || 99) - (b.featured_order || 99));
+}

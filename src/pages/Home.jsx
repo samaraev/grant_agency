@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import KhamovnikiHero from '@/components/home/KhamovnikiHero';
-import KnowledgeSection from '@/components/home/KnowledgeSection';
-import OwnerReviewSection from '@/components/home/OwnerReviewSection';
-import PriorityBuildings from '@/components/home/PriorityBuildings';
+import AgencySection from '@/components/home/AgencySection';
+import HelpSection from '@/components/home/HelpSection';
+import OwnerFormSection from '@/components/home/OwnerFormSection';
+import BuildingsDiscoverySection from '@/components/home/BuildingsDiscoverySection';
 import MapSection from '@/components/home/MapSection';
-import BuyersSection from '@/components/home/BuyersSection';
+import ServicesSection from '@/components/home/ServicesSection';
 import PremiumCollections from '@/components/home/PremiumCollections';
-import WhyGrant from '@/components/home/WhyGrant';
-import FinalCta from '@/components/home/FinalCta';
+import VideosSection from '@/components/home/VideosSection';
+import ContactsSection from '@/components/home/ContactsSection';
 import { useLang } from '@/components/LanguageProvider';
 import { useBuildingList } from '@/hooks/useBuildings';
-import { publishedKhamovniki } from '@/lib/khamovniki';
+import { featuredBuildings } from '@/lib/khamovniki';
 import { HERO_IMAGE } from '@/lib/sample-buildings';
 import { applySeo, organizationJsonLd } from '@/lib/seo';
 import { track } from '@/lib/track';
@@ -22,14 +23,15 @@ export default function Home() {
   const { settings } = useOutletContext() || {};
   const { lang } = useLang();
   const published = buildings.filter((item) => item.is_published !== false);
-  const khamovniki = publishedKhamovniki(published);
+  const featured = featuredBuildings(published);
+  const siteSettings = settings || t.settings;
 
   useEffect(() => {
     const cleanup = applySeo({
       ...t.meta.home,
       path: '/',
       image: HERO_IMAGE,
-      jsonLd: organizationJsonLd(settings || t.settings),
+      jsonLd: organizationJsonLd(siteSettings),
     });
     return cleanup;
   }, [lang, settings]);
@@ -40,15 +42,20 @@ export default function Home() {
 
   return (
     <>
-      <KhamovnikiHero buildings={khamovniki.length ? khamovniki : published} settings={settings || t.settings} />
-      <KnowledgeSection buildings={khamovniki} />
-      <OwnerReviewSection />
-      <PriorityBuildings buildings={published} />
+      <KhamovnikiHero
+        buildings={published}
+        settings={siteSettings}
+        cover={featured[0] || published[0]}
+      />
+      <AgencySection />
+      <HelpSection />
+      <OwnerFormSection />
+      <BuildingsDiscoverySection buildings={published} />
       <MapSection buildings={published} />
-      <BuyersSection />
+      <ServicesSection />
       <PremiumCollections buildings={published} />
-      <WhyGrant />
-      <FinalCta />
+      <VideosSection />
+      <ContactsSection settings={siteSettings} />
     </>
   );
 }

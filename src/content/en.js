@@ -1,4 +1,6 @@
 // English copy of the interface. Same structure as src/content/ru.js.
+import { homepageEn } from './homepage';
+
 const en = {
   locale: 'en',
   brand: { name: 'GRANT', sub: 'Private real estate' },
@@ -18,9 +20,9 @@ const en = {
   },
   meta: {
     home: {
-      title: 'GRANT — Property in Khamovniki: the building, the price, the liquidity',
+      title: 'GRANT — real estate agency in Khamovniki. Our neighbourhood. Your property.',
       description:
-        'A real estate agency in Khamovniki: a review of the price, liquidity and sale prospects of an apartment on the secondary market. Specific buildings and their characteristics. Separately, premium property in Moscow and the Moscow Region.',
+        'Grant real estate agency, since 1994: Khamovniki, knowledge of specific buildings, work with owners and buyers. A building directory, price and liquidity reviews, plus residential and commercial property, land and investment consulting in Moscow and the Moscow Region.',
     },
     search: {
       title: 'The portfolio — GRANT',
@@ -297,6 +299,7 @@ const en = {
       cta: 'Get a price and liquidity review',
     },
   },
+  homepage: homepageEn,
   search: {
     marker: 'SEARCH',
     title: 'The portfolio',
@@ -665,13 +668,13 @@ const en = {
     city: 'Moscow',
   },
   settings: {
-    phone: '+7 (495) 70-00-00',
+    phone: '+7 (968) 909-96-99',
     email: 'info@rieltorcenter.ru',
-    office_address: 'Moscow, 7 Nikitsky Boulevard, office 4',
-    office_landmark: 'Nikitsky Boulevard, five minutes from Arbatskaya station',
-    working_hours: 'Mon–Fri 10:00–19:00, Sat by arrangement',
+    office_address: '24 Smolensky Boulevard, building 2',
+    office_landmark: 'Moscow, 121002 · entrance 2',
+    working_hours: 'Daily 10:00–20:00 (MSK)',
     telegram: 'https://t.me/grant_dom',
-    whatsapp: 'https://wa.me/74957000000',
+    whatsapp: 'https://wa.me/79689099699',
     vk: 'https://vk.com/grant_dom',
     admin_email: 'info@rieltorcenter.ru',
   },
