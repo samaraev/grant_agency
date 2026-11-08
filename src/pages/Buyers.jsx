@@ -7,14 +7,18 @@ import { useBuildingList } from '@/hooks/useBuildings';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 
 export default function Buyers() {
   const { buildings } = useBuildingList({ limit: 200 });
+  const { lang } = useLang();
 
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.buyers, path: '/pokupatelyam' });
+    return applySeo({ ...t.meta.buyers, path: '/pokupatelyam' });
+  }, [lang]);
+
+  useEffect(() => {
     track(t.track.pageView, { page: 'buyers' });
-    return cleanup;
   }, []);
 
   return (
@@ -42,7 +46,7 @@ export default function Buyers() {
       </section>
 
       <section className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
-        <SectionHeading marker="02 / ВОПРОСЫ" title={t.buyers.questionsTitle} />
+        <SectionHeading marker={t.buyers.questionsMarker} title={t.buyers.questionsTitle} />
         <div className="mt-10 grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
           {t.buyers.questions.map((item, index) => (
             <div key={item.title} className="bg-[#1a2025] p-6">

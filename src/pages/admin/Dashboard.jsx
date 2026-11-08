@@ -2,14 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 
-const TYPE_LABELS = {
-  owner_appraise: 'Оценить квартиру',
-  owner_sell: 'Продать',
-  buyer_buy: 'Купить',
-  buyer_check: 'Проверить дом',
-  general: 'Общий вопрос',
-};
-
 function Metric({ label, value, hint }) {
   return (
     <div className="border border-white/10 bg-[#263033] p-5">
@@ -125,7 +117,7 @@ export default function Dashboard() {
               <div className="mt-3">
                 {Object.keys(stats.byType).length ? (
                   Object.entries(stats.byType).map(([key, value]) => (
-                    <BarRow key={key} label={TYPE_LABELS[key] || key} value={value} max={maxType} />
+                    <BarRow key={key} label={t.lead.types[key] || key} value={value} max={maxType} />
                   ))
                 ) : (
                   <p className="text-[13px] text-[#8f9a9f]">{t.admin.dashboard.noData}</p>

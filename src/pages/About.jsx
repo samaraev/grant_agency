@@ -6,17 +6,21 @@ import { MAP_IMAGE } from '@/lib/sample-buildings';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 
 export default function About() {
   const [team, setTeam] = useState([]);
+  const { lang } = useLang();
 
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.about, path: '/o-nas', image: MAP_IMAGE });
+    return applySeo({ ...t.meta.about, path: '/o-nas', image: MAP_IMAGE });
+  }, [lang]);
+
+  useEffect(() => {
     track(t.track.pageView, { page: 'about' });
     base44.entities.TeamMember.filter({ is_public: true }, { limit: 20 })
       .then((page) => setTeam(page?.items || []))
       .catch(() => setTeam([]));
-    return cleanup;
   }, []);
 
   return (

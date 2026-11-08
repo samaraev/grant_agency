@@ -6,6 +6,7 @@ import { base44 } from '@/api/base44Client';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 import { cn } from '@/lib/utils';
 
 const AUDIENCE_LABEL = { owner: 'forOwner', buyer: 'forBuyer', all: 'audienceAll' };
@@ -57,15 +58,18 @@ export default function Services() {
   const { openLead } = useLead();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { lang } = useLang();
 
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.services, path: '/uslugi' });
+    return applySeo({ ...t.meta.services, path: '/uslugi' });
+  }, [lang]);
+
+  useEffect(() => {
     track(t.track.pageView, { page: 'services' });
     base44.entities.Service.list({ sort: 'sort_order', limit: 50 })
       .then((page) => setServices(page?.items || []))
       .catch(() => setServices([]))
       .finally(() => setLoading(false));
-    return cleanup;
   }, []);
 
   const active = services.filter((item) => item.status !== 'planned');

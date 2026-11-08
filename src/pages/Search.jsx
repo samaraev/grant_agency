@@ -12,6 +12,7 @@ import { useLead } from '@/components/LeadProvider';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 import { cn } from '@/lib/utils';
 
 export default function Search() {
@@ -19,16 +20,18 @@ export default function Search() {
   const { openLead } = useLead();
   const { buildings, loading } = useBuildingList({ limit: 200 });
   const [view, setView] = useState('list');
+  const { lang } = useLang();
 
   const q = params.get('q') || '';
   const district = params.get('district') || '';
   const street = params.get('street') || '';
 
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.search, path: '/search' });
-    track(t.track.pageView, { page: 'search', query: q });
-    return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return applySeo({ ...t.meta.search, path: '/search' });
+  }, [lang]);
+
+  useEffect(() => {
+    track(t.track.pageView, { page: 'search' });
   }, []);
 
   const districts = useMemo(

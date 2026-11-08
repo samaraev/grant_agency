@@ -7,21 +7,25 @@ import LeadForm from '@/components/LeadForm';
 import { applySeo, organizationJsonLd } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 
 const OFFICE = [54.1938, 37.6178];
 
 export default function Contacts() {
   const { settings } = useOutletContext() || {};
+  const { lang } = useLang();
 
   useEffect(() => {
-    const cleanup = applySeo({
+    return applySeo({
       ...t.meta.contacts,
       path: '/kontakty',
       jsonLd: organizationJsonLd(settings || t.settings),
     });
+  }, [settings, lang]);
+
+  useEffect(() => {
     track(t.track.pageView, { page: 'contacts' });
-    return cleanup;
-  }, [settings]);
+  }, []);
 
   const info = settings || t.settings;
 

@@ -11,6 +11,7 @@ import { base44 } from '@/api/base44Client';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 import { cn } from '@/lib/utils';
 
 const DECISIONS = [
@@ -23,6 +24,7 @@ export default function House() {
   const { id } = useParams();
   const { building, loading } = useBuilding(id);
   const { openLead } = useLead();
+  const { lang } = useLang();
   const [activePhoto, setActivePhoto] = useState(0);
   const [notes, setNotes] = useState([]);
 
@@ -68,9 +70,13 @@ export default function House() {
         photo: building.photos || [],
       },
     });
-    track(t.track.buildingView, { building_id: building.id, address: building.address });
     return cleanup;
-  }, [building, loading, id]);
+  }, [building, loading, id, lang]);
+
+  useEffect(() => {
+    if (!building) return;
+    track(t.track.buildingView, { building_id: building.id, address: building.address });
+  }, [building]);
 
   if (loading) {
     return (

@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { applySeo } from '@/lib/seo';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 
 export default function Privacy() {
+  const { lang } = useLang();
+
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.privacy, path: '/politika-konfidencialnosti', robots: 'noindex, follow' });
-    return cleanup;
-  }, []);
+    return applySeo({ ...t.meta.privacy, path: '/politika-konfidencialnosti', robots: 'noindex, follow' });
+  }, [lang]);
 
   return (
     <div className="mx-auto max-w-[820px] px-5 py-14 lg:px-8 lg:py-20">

@@ -258,6 +258,8 @@ const en = {
   },
   owners: {
     marker: 'FOR OWNERS',
+    questionsMarker: '02 / QUESTIONS',
+    honestMarker: '03 / HONESTY',
     title: 'What is happening with your apartment?',
     subtitle:
       'A conversation usually starts with one question. Below are the ones people bring to us most often. If your question sounds different, bring it too.',
@@ -293,6 +295,7 @@ const en = {
   },
   buyers: {
     marker: 'FOR BUYERS',
+    questionsMarker: '02 / QUESTIONS',
     title: 'Buying without surprises',
     subtitle:
       'We are not selling you a building, we explain how it works. The questions buyers bring, and the list of what is worth checking before the deal.',

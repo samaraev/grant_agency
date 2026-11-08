@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import AddressSearch from '@/components/AddressSearch';
 import LeadForm from '@/components/LeadForm';
 import SectionHeading from '@/components/SectionHeading';
@@ -7,14 +7,18 @@ import { useBuildingList } from '@/hooks/useBuildings';
 import { applySeo } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
+import { useLang } from '@/components/LanguageProvider';
 
 export default function Owners() {
   const { buildings } = useBuildingList({ limit: 200 });
+  const { lang } = useLang();
 
   useEffect(() => {
-    const cleanup = applySeo({ ...t.meta.owners, path: '/sobstvennikam' });
+    return applySeo({ ...t.meta.owners, path: '/sobstvennikam' });
+  }, [lang]);
+
+  useEffect(() => {
     track(t.track.pageView, { page: 'owners' });
-    return cleanup;
   }, []);
 
   return (
@@ -42,7 +46,7 @@ export default function Owners() {
       </section>
 
       <section className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
-        <SectionHeading marker="02 / ВОПРОСЫ" title={t.owners.questionsTitle} />
+        <SectionHeading marker={t.owners.questionsMarker} title={t.owners.questionsTitle} />
         <div className="mt-10 grid gap-px bg-white/10 sm:grid-cols-2">
           {t.owners.questions.map((item, index) => (
             <div key={item.title} className="bg-[#1a2025] p-6 lg:p-7">
@@ -76,7 +80,7 @@ export default function Owners() {
       <section className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
-            <div className="eyebrow">03 / ЧЕСТНО</div>
+            <div className="eyebrow">{t.owners.honestMarker}</div>
             <h2 className="mt-4 text-[26px] font-bold leading-tight text-white sm:text-[34px]">
               {t.owners.honest.title}
             </h2>
