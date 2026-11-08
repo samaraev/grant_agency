@@ -121,10 +121,10 @@ const en = {
   home: {
     hero: {
       marker: '01 / PRIVATE PORTFOLIO',
-      title: 'Houses that never appear in advertising.',
-      titleLead: 'Houses that never',
-      titleTail: 'appear',
-      titleAccent: 'in advertising.',
+      title: 'The agency that knows the district from the inside.',
+      titleLead: 'The agency that',
+      titleTail: 'knows the district',
+      titleAccent: 'from the inside.',
       addressesInDb: 'addresses in the portfolio',
       coverage: 'Moscow and the Moscow Region',
       coverCaption: 'A house from our portfolio',

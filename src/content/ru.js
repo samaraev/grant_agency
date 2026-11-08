@@ -123,10 +123,10 @@ const ru = {
   home: {
     hero: {
       marker: '01 / ЧАСТНЫЙ ПУЛ',
-      title: 'Дома, которые не появляются в рекламе.',
-      titleLead: 'Дома, которые',
-      titleTail: 'не появляются',
-      titleAccent: 'в рекламе.',
+      title: 'Агентство, которое знает район изнутри.',
+      titleLead: 'Агентство, которое',
+      titleTail: 'знает район',
+      titleAccent: 'изнутри.',
       addressesInDb: 'адресов в пуле',
       coverage: 'Москва и Московская область',
       coverCaption: 'Дом из нашего пула',
