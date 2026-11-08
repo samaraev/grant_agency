@@ -63,7 +63,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
               {selected.photos?.[0] ? (
                 <Image
                   src={selected.photos[0]}
-                  alt={`Дом по адресу ${selected.address}`}
+                  alt={`${t.common.photoAlt} ${selected.address}`}
                   loading="lazy"
                   className="h-full w-full object-cover"
                 />
@@ -77,7 +77,7 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
               <h3 className="text-[20px] font-bold leading-snug text-white">{selected.address}</h3>
               <p className="mt-2 text-[12px] uppercase tracking-[0.14em] text-[#778287]">
                 {selected.year_built ? `${selected.year_built} · ` : ''}
-                {selected.floors ? `${selected.floors} эт. · ` : ''}
+                {selected.floors ? `${selected.floors} ${t.common.floorShort} · ` : ''}
                 {selected.series_or_type || ''}
               </p>
 

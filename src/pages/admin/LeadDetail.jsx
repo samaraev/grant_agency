@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { base44 } from '@/api/base44Client';
-import { t } from '@/lib/i18n';
+import { dateLocale, t } from '@/lib/i18n';
 
 const FIELD =
   'h-[40px] w-full border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none';
@@ -48,7 +48,7 @@ export default function LeadDetail({ lead, onClose, onSaved }) {
                 {lead.name} · {lead.phone}
               </DialogTitle>
               <p className="mt-1 text-[12px] text-[#8f9a9f]">
-                {new Date(lead.created_date).toLocaleString('ru-RU')} · {lead.source || 'direct'}
+                {new Date(lead.created_date).toLocaleString(dateLocale())} · {lead.source || 'direct'}
               </p>
             </div>
 

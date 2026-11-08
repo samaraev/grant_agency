@@ -70,6 +70,8 @@ const en = {
     floors: 'Floors',
     entrances: 'Entrances',
     apartments: 'Apartments',
+    floorShort: 'fl.',
+    photoAlt: 'Building at',
     series: 'Series / type',
     district: 'District',
     street: 'Street',

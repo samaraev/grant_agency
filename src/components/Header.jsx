@@ -4,16 +4,7 @@ import { Menu, X, Phone } from 'lucide-react';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { useLead } from '@/components/LeadProvider';
-
-const LINKS = [
-  { to: '/', label: t.nav.home, end: true },
-  { to: '/search', label: t.nav.search },
-  { to: '/sobstvennikam', label: t.nav.owners },
-  { to: '/pokupatelyam', label: t.nav.buyers },
-  { to: '/uslugi', label: t.nav.services },
-  { to: '/o-nas', label: t.nav.about },
-  { to: '/kontakty', label: t.nav.contacts },
-];
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header({ settings, onCta }) {
   const [open, setOpen] = useState(false);
@@ -21,23 +12,39 @@ export default function Header({ settings, onCta }) {
   const { openLead } = useLead();
   const handleCta = onCta || (() => openLead({ type: 'owner_appraise' }));
 
+  const links = [
+    { to: '/', label: t.nav.home, end: true },
+    { to: '/search', label: t.nav.search },
+    { to: '/sobstvennikam', label: t.nav.owners },
+    { to: '/pokupatelyam', label: t.nav.buyers },
+    { to: '/uslugi', label: t.nav.services },
+    { to: '/o-nas', label: t.nav.about },
+    { to: '/kontakty', label: t.nav.contacts },
+  ];
+
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#1a2025]/92 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-6 px-5 lg:h-20 lg:px-8">
-        <Link to="/" className="group flex items-center gap-3" aria-label="ГРАНТ — на главную">
+      <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-4 px-5 lg:h-20 lg:gap-6 lg:px-8">
+        <Link
+          to="/"
+          className="group flex items-center gap-3"
+          aria-label={`${t.brand.name} — ${t.nav.home}`}
+        >
           <span className="h-9 w-[3px] bg-[#c8102e]" aria-hidden="true" />
           <span className="flex flex-col leading-none">
-            <span className="text-[19px] font-extrabold tracking-[0.14em] text-white">ГРАНТ</span>
+            <span className="text-[19px] font-extrabold tracking-[0.14em] text-white">
+              {t.brand.name}
+            </span>
             <span className="mt-1 text-[9px] uppercase tracking-[0.28em] text-[#8b969b]">
               {t.brand.sub}
             </span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Основная навигация">
-          {LINKS.map((link) => (
+        <nav className="hidden items-center gap-7 lg:flex" aria-label={t.nav.menu}>
+          {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
@@ -61,7 +68,7 @@ export default function Header({ settings, onCta }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3">
           {settings?.phone ? (
             <a
               href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
@@ -71,6 +78,7 @@ export default function Header({ settings, onCta }) {
               {settings.phone}
             </a>
           ) : null}
+          <LanguageSwitcher />
           <button
             type="button"
             onClick={handleCta}
@@ -92,8 +100,11 @@ export default function Header({ settings, onCta }) {
 
       {open ? (
         <div className="border-t border-white/10 bg-[#1f272c] lg:hidden">
-          <nav className="mx-auto flex max-w-[1240px] flex-col px-5 py-3" aria-label="Мобильная навигация">
-            {LINKS.map((link) => (
+          <nav
+            className="mx-auto flex max-w-[1240px] flex-col px-5 py-3"
+            aria-label={t.nav.menu}
+          >
+            {links.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}

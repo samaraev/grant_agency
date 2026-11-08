@@ -13,7 +13,9 @@ export default function Footer({ settings }) {
             <div className="flex items-center gap-3">
               <span className="h-8 w-[3px] bg-[#c8102e]" aria-hidden="true" />
               <div>
-                <div className="text-[18px] font-extrabold tracking-[0.14em] text-white">ГРАНТ</div>
+                <div className="text-[18px] font-extrabold tracking-[0.14em] text-white">
+                  {t.brand.name}
+                </div>
                 <div className="mt-1 text-[9px] uppercase tracking-[0.28em] text-[#8b969b]">
                   {t.brand.sub}
                 </div>
@@ -96,7 +98,7 @@ export default function Footer({ settings }) {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-[11px] text-[#6f7a7f] sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} ГРАНТ. {t.footer.rights}</span>
+          <span>© {year} {t.brand.name}. {t.footer.rights}</span>
           <span className="uppercase tracking-[0.2em]">rieltorcenter.ru</span>
         </div>
       </div>

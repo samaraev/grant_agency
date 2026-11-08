@@ -11,7 +11,7 @@ export default function BuildingCard({ building }) {
           {building.photos?.[0] ? (
             <Image
               src={building.photos[0]}
-              alt={`Дом по адресу ${building.address}`}
+              alt={`${t.common.photoAlt} ${building.address}`}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
@@ -34,7 +34,7 @@ export default function BuildingCard({ building }) {
         </h3>
         <p className="mt-2 text-[12px] uppercase tracking-[0.14em] text-[#778287]">
           {building.year_built ? `${building.year_built} · ` : ''}
-          {building.floors ? `${building.floors} эт. · ` : ''}
+          {building.floors ? `${building.floors} ${t.common.floorShort} · ` : ''}
           {building.series_or_type || ''}
         </p>
         {building.features?.[0] ? (

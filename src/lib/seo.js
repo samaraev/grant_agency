@@ -1,3 +1,5 @@
+import { t } from '@/lib/i18n';
+
 const SITE_URL = 'https://rieltorcenter.ru';
 
 function upsertMeta(attr, key, content) {
@@ -35,8 +37,8 @@ export function applySeo({ title, description, image, path, jsonLd, robots = 'in
   upsertMeta('property', 'og:title', title);
   upsertMeta('property', 'og:description', description);
   upsertMeta('property', 'og:url', canonical);
-  upsertMeta('property', 'og:locale', 'ru_RU');
-  upsertMeta('property', 'og:site_name', 'ГРАНТ — Дом изнутри');
+  upsertMeta('property', 'og:locale', t.locale === 'en' ? 'en_US' : 'ru_RU');
+  upsertMeta('property', 'og:site_name', `${t.brand.name} — ${t.brand.sub}`);
   upsertMeta('property', 'og:type', 'website');
   upsertMeta('name', 'twitter:card', 'summary_large_image');
   if (image) {
@@ -64,10 +66,9 @@ export function organizationJsonLd(settings) {
   return {
     '@context': 'https://schema.org',
     '@type': ['RealEstateAgent', 'LocalBusiness'],
-    name: 'ГРАНТ — Дом изнутри',
+    name: `${t.brand.name} — ${t.brand.sub}`,
     url: SITE_URL,
-    description:
-      'Агентство недвижимости, которое знает район изнутри: база домов, консультации для собственников и покупателей.',
+    description: t.footer.about,
     telephone: settings?.phone,
     email: settings?.email,
     areaServed: 'Тула и Тульская область',

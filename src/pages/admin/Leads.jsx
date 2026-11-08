@@ -3,7 +3,7 @@ import { Download, Search } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import LeadDetail from '@/pages/admin/LeadDetail';
 import { downloadCsv, toCsv } from '@/lib/csv';
-import { t } from '@/lib/i18n';
+import { dateLocale, t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 const STATUS_CLASS = {
@@ -196,7 +196,7 @@ export default function Leads() {
                   className="cursor-pointer bg-[#1a2025] hover:bg-white/[0.03]"
                 >
                   <td className="whitespace-nowrap px-4 py-3 text-[#8f9a9f]">
-                    {new Date(lead.created_date).toLocaleDateString('ru-RU')}
+                    {new Date(lead.created_date).toLocaleDateString(dateLocale())}
                   </td>
                   <td className="px-4 py-3 text-white">{lead.name}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-[#d7dcde]">{lead.phone}</td>

@@ -15,6 +15,7 @@ const ru = {
     cta: 'Обратиться',
     menu: 'Меню',
     close: 'Закрыть',
+    language: 'Язык',
   },
   meta: {
     home: {
@@ -71,6 +72,8 @@ const ru = {
     floors: 'Этажей',
     entrances: 'Подъездов',
     apartments: 'Квартир',
+    floorShort: 'эт.',
+    photoAlt: 'Дом по адресу',
     series: 'Серия / тип',
     district: 'Район',
     street: 'Улица',

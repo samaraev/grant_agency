@@ -14,21 +14,22 @@ import {
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
-
-const NAV = [
-  { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
-  { to: '/admin/leads', label: t.admin.nav.leads, icon: Inbox },
-  { to: '/admin/buildings', label: t.admin.nav.buildings, icon: Building2 },
-  { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
-  { to: '/admin/team', label: t.admin.nav.team, icon: Users },
-  { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
-  { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
-];
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function AdminLayout() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const nav = [
+    { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
+    { to: '/admin/leads', label: t.admin.nav.leads, icon: Inbox },
+    { to: '/admin/buildings', label: t.admin.nav.buildings, icon: Building2 },
+    { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
+    { to: '/admin/team', label: t.admin.nav.team, icon: Users },
+    { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
+    { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
+  ];
 
   useEffect(() => {
     base44.auth.me()
@@ -79,17 +80,22 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-[#1a2025] lg:flex">
       <aside className="border-b border-white/10 bg-[#1f272b] lg:min-h-screen lg:w-[240px] lg:shrink-0 lg:border-b-0 lg:border-r">
-        <div className="flex items-center gap-3 px-5 py-5">
-          <span className="h-8 w-[3px] bg-[#c8102e]" aria-hidden="true" />
-          <div>
-            <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">ГРАНТ</div>
-            <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#8b969b]">
-              {t.admin.marker}
+        <div className="flex items-center justify-between gap-3 px-5 py-5">
+          <div className="flex items-center gap-3">
+            <span className="h-8 w-[3px] bg-[#c8102e]" aria-hidden="true" />
+            <div>
+              <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">
+                {t.brand.name}
+              </div>
+              <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#8b969b]">
+                {t.admin.marker}
+              </div>
             </div>
           </div>
+          <LanguageSwitcher />
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
