@@ -191,14 +191,14 @@ export const homepageRu = {
   videos: {
     marker: 'ВЗГЛЯД НА РАЙОН',
     title: 'Хамовники в движении.',
-    subtitle: 'Три ролика с действующей главной страницы. Сохранены исходные ссылки, без неподтверждённой привязки к домам.',
-    open: 'Открыть исходное видео',
+    subtitle: 'Три ролика с действующей главной страницы. Файлы размещены на нашем сайте, без неподтверждённой привязки к домам.',
+    open: 'Открыть видео в новой вкладке',
     watch: 'Смотреть',
     note: 'Названия нейтральные: адреса и содержание роликов агентству предстоит уточнить.',
     items: [
-      { title: 'Видеоэкскурсия 1', url: 'https://rieltorcenter.ru/video/0120(1).mp4' },
-      { title: 'Видеоэкскурсия 2', url: 'https://rieltorcenter.ru/video/0126(2).mp4' },
-      { title: 'Видеоэкскурсия 3', url: 'https://rieltorcenter.ru/video/20250119_162042.mp4' },
+      { title: 'Видеоэкскурсия 1', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/252e2e1b0_tour-1.mp4' },
+      { title: 'Видеоэкскурсия 2', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/5a7eacbfe_tour-3.mp4' },
+      { title: 'Видеоэкскурсия 3', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/ebff345a7_tour-2.mp4' },
     ],
   },
   contacts: {
@@ -402,14 +402,14 @@ export const homepageEn = {
   videos: {
     marker: 'A VIEW OF THE NEIGHBOURHOOD',
     title: 'Khamovniki in motion.',
-    subtitle: 'Three videos from the live homepage. The original links are preserved, with no unconfirmed link to any building.',
-    open: 'Open the original video',
+    subtitle: 'Three videos from the live homepage, now hosted on our site, with no unconfirmed link to any building.',
+    open: 'Open the video',
     watch: 'Watch',
     note: 'The titles are neutral: the addresses and content of the videos are yet to be confirmed by the agency.',
     items: [
-      { title: 'Video tour 1', url: 'https://rieltorcenter.ru/video/0120(1).mp4' },
-      { title: 'Video tour 2', url: 'https://rieltorcenter.ru/video/0126(2).mp4' },
-      { title: 'Video tour 3', url: 'https://rieltorcenter.ru/video/20250119_162042.mp4' },
+      { title: 'Video tour 1', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/252e2e1b0_tour-1.mp4' },
+      { title: 'Video tour 2', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/5a7eacbfe_tour-3.mp4' },
+      { title: 'Video tour 3', url: 'https://base44.app/api/apps/6af06e78e36d41720538fd27/files/mp/public/6af06e78e36d41720538fd27/ebff345a7_tour-2.mp4' },
     ],
   },
   contacts: {
