@@ -55,7 +55,7 @@ export default function Home() {
             <h1 className="mt-6 font-heading text-[40px] font-medium leading-[1.05] tracking-[-0.02em] text-white sm:text-[54px] lg:text-[72px]">
               {t.home.hero.titleLead}
               <br className="hidden sm:block" /> {t.home.hero.titleTail}{' '}
-              <span className="text-[#c9b28c]">{t.home.hero.titleAccent}</span>
+              <span className="whitespace-nowrap text-[#c9b28c]">{t.home.hero.titleAccent}</span>
             </h1>
             <p className="mt-6 max-w-[34rem] text-[15px] leading-relaxed text-[#b0b8bc] sm:text-[17px]">
               {t.home.hero.subtitle}
