@@ -55,7 +55,7 @@ const en = {
       description: 'How we process personal data in line with Russian Federal Law No. 152-FZ.',
     },
     house: {
-      suffix: '— GRANT. Inside the house: facts and features',
+      suffix: '— GRANT. Private real estate: the house and its history',
     },
     notFound: { title: 'Page not found — GRANT', description: 'This page does not exist.' },
   },
