@@ -224,7 +224,7 @@ Loads up to 300 leads, the first `AdminSettings` record and up to 200 open tasks
 | `/admin/meetings` | List and calendar (`MeetingsCalendar`), create / edit, results, `.ics` export per meeting |
 | `/admin/reports` | Weekly / monthly reports: period metrics computed automatically, six narrative blocks, save, print / PDF, e-mail the report, send the digest now, history of saved reports |
 | `/admin/tasks` | Today and overdue, "my tasks", filters by assignee / status / priority / overdue, bulk complete or cancel, lead-scoped view (`?lead_id=`), create / edit (`TaskDialog`), manual "send reminders" |
-| `/admin/sequences` | Per sequence and channel: auto-send toggle, delay in hours, template, active switch; 7-day send summary; "send queued" flush |
+| `/admin/sequences` | Per sequence and channel: auto-send toggle, delay in hours, template, active switch; 7-day send summary; "send queued" flush; plus a **Message templates** section (create, edit, delete) showing each template's channel, text and the sequences that use it |
 | `/admin/buildings` | Create / edit / delete (`BuildingForm`), photo upload, coordinate picker on the map, publish / priority / expert flags, homepage placement (`BuildingPlacementFields`), CSV export and import |
 | `/admin/services` | CRUD for `Service`: title, short description, audience, status (`active` / `planned`), order |
 | `/admin/team` | CRUD for `TeamMember`: name, role, local bio, photo, `is_public` |

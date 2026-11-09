@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { SEQUENCE_CHANNELS, SEQUENCE_KEYS } from '@/lib/sequences';
+import TemplatesSection from '@/components/admin/sequences/TemplatesSection';
 
 const FIELD =
   'h-[34px] w-[72px] border border-white/10 bg-[#1f272b] px-2 text-[12.5px] text-white focus:border-[#c8102e] focus:outline-none';
@@ -40,16 +41,34 @@ export default function Sequences() {
   const c = t.admin.sequences;
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [templates, setTemplates] = useState([]);
+  const [templatesLoading, setTemplatesLoading] = useState(true);
   const [savingId, setSavingId] = useState('');
   const [dispatch, setDispatch] = useState(null);
   const [dispatching, setDispatching] = useState(false);
   const [sent, setSent] = useState({ email: 0, sms: 0, whatsapp: 0 });
 
-  useEffect(() => {
-    base44.entities.SequenceSetting.filter({}, { limit: 60 })
+  const loadRows = () => {
+    setLoading(true);
+    return base44.entities.SequenceSetting.filter({}, { limit: 60 })
       .then((page) => setRows([...(page?.items || [])].sort((a, b) => order(a) - order(b))))
       .catch(() => setRows([]))
       .finally(() => setLoading(false));
+  };
+
+  const loadTemplates = () => {
+    setTemplatesLoading(true);
+    return base44.entities.MessageTemplate.list({ limit: 200 })
+      .then((page) => setTemplates(page?.items || []))
+      .catch(() => setTemplates([]))
+      .finally(() => setTemplatesLoading(false));
+  };
+
+  const refreshTemplates = () => Promise.all([loadRows(), loadTemplates()]);
+
+  useEffect(() => {
+    loadRows();
+    loadTemplates();
 
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     base44.entities.Communication.aggregate({
@@ -199,6 +218,13 @@ export default function Sequences() {
           </tbody>
         </table>
       </div>
+
+      <TemplatesSection
+        templates={templates}
+        rows={rows}
+        loading={templatesLoading}
+        onChanged={refreshTemplates}
+      />
     </div>
   );
 }
