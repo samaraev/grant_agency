@@ -694,6 +694,7 @@ const ru = {
       dashboard: 'Дашборд',
       today: 'Сегодня',
       leads: 'Обращения',
+      pipeline: 'Воронка',
       meetings: 'Встречи',
       reports: 'Отчёты',
       tasks: 'Задачи',
@@ -729,6 +730,15 @@ const ru = {
         deal_closed: 'Сделки',
         non_target: 'Нецелевые',
       },
+    },
+    pipeline: {
+      title: 'Воронка',
+      subtitle:
+        'Обращения одной воронки по этапам. Перетаскивайте карточки — правила перехода те же, что в журнале обращений.',
+      open: 'Воронка',
+      backToLeads: 'К журналу обращений',
+      slaOverdue: 'SLA',
+      intents: { low: 'Низкое', medium: 'Среднее', high: 'Высокое' },
     },
     leads: {
       title: 'Обращения',

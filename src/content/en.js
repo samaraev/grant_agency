@@ -692,6 +692,7 @@ const en = {
       dashboard: 'Dashboard',
       today: 'Today',
       leads: 'Requests',
+      pipeline: 'Pipeline',
       meetings: 'Meetings',
       reports: 'Reports',
       tasks: 'Tasks',
@@ -727,6 +728,15 @@ const en = {
         deal_closed: 'Deals',
         non_target: 'Non-target',
       },
+    },
+    pipeline: {
+      title: 'Pipeline',
+      subtitle:
+        'Requests of one pipeline by stage. Drag the cards — the transition rules are the same as in the request log.',
+      open: 'Pipeline',
+      backToLeads: 'Back to requests',
+      slaOverdue: 'SLA',
+      intents: { low: 'Low', medium: 'Medium', high: 'High' },
     },
     leads: {
       title: 'Requests',

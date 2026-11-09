@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Download, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Download, Layers, Search } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import LeadsTable from '@/components/admin/leads/LeadsTable';
 import LeadsKanban from '@/components/admin/leads/LeadsKanban';
@@ -10,6 +11,7 @@ import { leadCommission } from '@/lib/deal';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { STATUS_KEYS, needsTransitionData, reachedQualified, statusQuery } from '@/lib/leadStatus';
+import { pipelineForType } from '@/lib/pipeline';
 
 export default function Leads() {
   const [leads, setLeads] = useState([]);
@@ -199,6 +201,13 @@ export default function Leads() {
               </button>
             ))}
           </div>
+          <Link
+            to={`/admin/pipeline?pipeline=${pipelineForType(type)}`}
+            className="flex min-h-[40px] items-center gap-2 border border-white/15 px-4 text-[12.5px] text-white hover:border-[#c9b28c]"
+          >
+            <Layers className="h-3.5 w-3.5" aria-hidden="true" />
+            {t.admin.pipeline.open}
+          </Link>
           <button
             type="button"
             onClick={exportCsv}

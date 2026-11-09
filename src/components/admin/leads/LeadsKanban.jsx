@@ -4,8 +4,12 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { FUNNEL_STAGES, normalizeStatus } from '@/lib/leadStatus';
+import { pipelineOf } from '@/lib/pipeline';
+import { dealCurrency, formatMoney } from '@/lib/deal';
+import { slaState } from '@/lib/sla';
 
-function LeadCard({ lead }) {
+function LeadCard({ lead, detailed }) {
+  const overdue = detailed ? slaState(lead).overdue : false;
   return (
     <div className="border border-white/10 bg-[#263033] p-3">
       <div className="truncate text-[12.5px] font-semibold text-white">{lead.name || '—'}</div>
@@ -19,11 +23,33 @@ function LeadCard({ lead }) {
           <span className="shrink-0 text-[#c9b28c]">{lead.next_action_date}</span>
         ) : null}
       </div>
+      {detailed ? (
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          {lead.intent_rating ? (
+            <span className="border border-[#c9b28c]/50 px-1.5 py-0.5 text-[10px] text-[#c9b28c]">
+              {t.admin.pipeline.intents[lead.intent_rating] || lead.intent_rating}
+            </span>
+          ) : null}
+          {lead.deal_value ? (
+            <span className="text-[10.5px] font-semibold text-white">
+              {formatMoney(lead.deal_value, dealCurrency(lead))}
+            </span>
+          ) : null}
+          {overdue ? (
+            <span className="border border-[#c8102e]/50 px-1.5 py-0.5 text-[10px] text-[#ff8a96]">
+              {t.admin.pipeline.slaOverdue}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+      {detailed && lead.responsible ? (
+        <div className="mt-1 truncate text-[10.5px] text-[#8f9a9f]">{lead.responsible}</div>
+      ) : null}
     </div>
   );
 }
 
-function Cards({ leads }) {
+function Cards({ leads, detailed }) {
   return leads.map((lead, index) => (
     <Draggable key={lead.id} draggableId={lead.id} index={index}>
       {(provided) => (
@@ -33,14 +59,14 @@ function Cards({ leads }) {
           {...provided.dragHandleProps}
           className="cursor-grab"
         >
-          <LeadCard lead={lead} />
+          <LeadCard lead={lead} detailed={detailed} />
         </div>
       )}
     </Draggable>
   ));
 }
 
-function Column({ status, leads }) {
+function Column({ status, leads, detailed }) {
   return (
     <div className="w-[210px] shrink-0">
       <div className="flex items-center justify-between gap-2 bg-[#1f272b] px-2.5 py-2">
@@ -56,7 +82,7 @@ function Column({ status, leads }) {
             {...provided.droppableProps}
             className={cn('min-h-[140px] space-y-2 p-1.5', snapshot.isDraggingOver && 'bg-white/[0.04]')}
           >
-            <Cards leads={leads} />
+            <Cards leads={leads} detailed={detailed} />
             {provided.placeholder}
           </div>
         )}
@@ -65,7 +91,7 @@ function Column({ status, leads }) {
   );
 }
 
-function RefusalLane({ leads, open, onToggle }) {
+function RefusalLane({ leads, open, onToggle, detailed }) {
   return (
     <div className={cn('shrink-0 border-l border-white/10', open ? 'w-[210px]' : 'w-[44px]')}>
       <button
@@ -90,7 +116,7 @@ function RefusalLane({ leads, open, onToggle }) {
             {...provided.droppableProps}
             className={cn('min-h-[140px] space-y-2 p-1.5', snapshot.isDraggingOver && 'bg-white/[0.04]')}
           >
-            {open ? <Cards leads={leads} /> : null}
+            {open ? <Cards leads={leads} detailed={detailed} /> : null}
             {provided.placeholder}
           </div>
         )}
@@ -99,13 +125,15 @@ function RefusalLane({ leads, open, onToggle }) {
   );
 }
 
-export default function LeadsKanban({ leads, onMove }) {
+export default function LeadsKanban({ leads, onMove, pipeline }) {
   const [laneOpen, setLaneOpen] = useState(false);
+  // Необязательный фильтр воронки: /admin/pipeline его передаёт, /admin/leads — нет.
+  const visible = pipeline ? leads.filter((lead) => pipelineOf(lead) === pipeline) : leads;
   const grouped = { non_target: [] };
   FUNNEL_STAGES.forEach((status) => {
     grouped[status] = [];
   });
-  leads.forEach((lead) => {
+  visible.forEach((lead) => {
     const key = normalizeStatus(lead.status);
     (grouped[key] || grouped.new_inquiry).push(lead);
   });
@@ -113,7 +141,7 @@ export default function LeadsKanban({ leads, onMove }) {
   const handleDragEnd = (result) => {
     const { destination, draggableId } = result;
     if (!destination) return;
-    const lead = leads.find((item) => item.id === draggableId);
+    const lead = visible.find((item) => item.id === draggableId);
     if (!lead || normalizeStatus(lead.status) === destination.droppableId) return;
     onMove(lead, destination.droppableId);
   };
@@ -122,9 +150,14 @@ export default function LeadsKanban({ leads, onMove }) {
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex gap-2 overflow-x-auto pb-3">
         {FUNNEL_STAGES.map((status) => (
-          <Column key={status} status={status} leads={grouped[status]} />
+          <Column key={status} status={status} leads={grouped[status]} detailed={Boolean(pipeline)} />
         ))}
-        <RefusalLane leads={grouped.non_target} open={laneOpen} onToggle={() => setLaneOpen((value) => !value)} />
+        <RefusalLane
+          leads={grouped.non_target}
+          open={laneOpen}
+          onToggle={() => setLaneOpen((value) => !value)}
+          detailed={Boolean(pipeline)}
+        />
       </div>
     </DragDropContext>
   );
