@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { STATUS_KEYS, reachedQualified } from '@/lib/leadStatus';
 import { slaList } from '@/lib/sla';
+import TasksWidget from '@/components/admin/dashboard/TasksWidget';
 
 function Metric({ label, value, hint, tone }) {
   return (
@@ -29,6 +30,8 @@ function BarRow({ label, value, max }) {
 
 export default function Dashboard() {
   const [leads, setLeads] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState(null);
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -36,10 +39,14 @@ export default function Dashboard() {
     Promise.all([
       base44.entities.Lead.list({ sort: '-created_date', limit: 300 }).catch(() => ({ items: [] })),
       base44.entities.AdminSettings.list({ limit: 1 }).catch(() => ({ items: [] })),
+      base44.entities.Task.filter({ status: 'open' }, { sort: 'due_at', limit: 200 }).catch(() => ({ items: [] })),
+      base44.auth.me().catch(() => null),
     ])
-      .then(([leadPage, settingsPage]) => {
+      .then(([leadPage, settingsPage, taskPage, me]) => {
         setLeads(leadPage?.items || []);
         setSettings(settingsPage?.items?.[0] || {});
+        setTasks(taskPage?.items || []);
+        setUser(me);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -139,6 +146,8 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
+
+          <TasksWidget tasks={tasks} userEmail={user?.email || ''} />
 
           <div className="mt-4 border border-white/10 bg-[#263033] p-5">
             <div className="text-[10.5px] uppercase tracking-[0.16em] text-[#778287]">

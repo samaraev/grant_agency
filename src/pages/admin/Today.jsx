@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { normalizeStatus, statusLabel } from '@/lib/leadStatus';
 import { formatWorked, slaList } from '@/lib/sla';
+import TasksPanel from '@/components/admin/today/TasksPanel';
 import { cn } from '@/lib/utils';
 
 const CLOSED = ['non_target', 'deal_closed'];
@@ -66,6 +67,7 @@ export default function Today() {
   const [leads, setLeads] = useState([]);
   const [meetings, setMeetings] = useState([]);
   const [comms, setComms] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [settings, setSettings] = useState({});
   const [user, setUser] = useState(null);
   const [scope, setScope] = useState('all');
@@ -78,13 +80,15 @@ export default function Today() {
       base44.entities.Communication.list({ sort: '-created_date', limit: 200 }).catch(() => ({ items: [] })),
       base44.entities.AdminSettings.list({ limit: 1 }).catch(() => ({ items: [] })),
       base44.auth.me().catch(() => null),
+      base44.entities.Task.filter({ status: 'open' }, { sort: 'due_at', limit: 200 }).catch(() => ({ items: [] })),
     ])
-      .then(([leadPage, meetingPage, commsPage, settingsPage, me]) => {
+      .then(([leadPage, meetingPage, commsPage, settingsPage, me, taskPage]) => {
         setLeads(leadPage?.items || []);
         setMeetings(meetingPage?.items || []);
         setComms(commsPage?.items || []);
         setSettings(settingsPage?.items?.[0] || {});
         setUser(me);
+        setTasks(taskPage?.items || []);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -261,6 +265,8 @@ export default function Today() {
               <p className="text-[12.5px] text-[#8f9a9f]">{copy.empty}</p>
             )}
           </Panel>
+
+          <TasksPanel tasks={tasks} leadById={Object.fromEntries(leads.map((lead) => [lead.id, lead]))} />
 
           <Panel title={copy.noNextTitle} hint={copy.noNextHint} count={data.noNext.length}>
             {data.noNext.length ? (

@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
 import JourneyChecklist from '@/components/admin/lead/JourneyChecklist';
 import DealCard from '@/components/admin/lead/DealCard';
+import LeadTasksCard from '@/components/admin/lead/LeadTasksCard';
 import LeadFunnelPanel from '@/components/admin/LeadFunnelPanel';
 
 const FIELD =
@@ -77,7 +78,10 @@ export default function LeadOverviewTab({ lead, onSaved }) {
         <LeadFunnelPanel lead={lead} onSaved={onSaved} />
       </div>
 
-      <DealCard lead={lead} onSaved={onSaved} />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <DealCard lead={lead} onSaved={onSaved} />
+        <LeadTasksCard lead={lead} />
+      </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title={t.admin.leads.workspace.groups.contacts}>

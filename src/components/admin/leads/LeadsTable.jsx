@@ -20,7 +20,7 @@ function Dash() {
   return <span className="text-[#5f696d]">—</span>;
 }
 
-export default function LeadsTable({ leads, loading, onOpen, showDealValue }) {
+export default function LeadsTable({ leads, loading, onOpen, showDealValue, openTasks }) {
   const columns = [
     {
       key: 'created',
@@ -34,7 +34,19 @@ export default function LeadsTable({ leads, loading, onOpen, showDealValue }) {
     {
       key: 'name',
       label: t.admin.leads.columns.name,
-      cell: (lead) => <td className="px-4 py-3 text-white">{lead.name}</td>,
+      cell: (lead) => (
+        <td className="px-4 py-3 text-white">
+          <span className="whitespace-nowrap">{lead.name}</span>
+          {openTasks?.[lead.id] ? (
+            <span
+              title={t.admin.tasks.title}
+              className="ml-2 inline-flex min-w-[18px] items-center justify-center border border-[#c9b28c]/50 px-1 text-[10.5px] text-[#c9b28c]"
+            >
+              {openTasks[lead.id]}
+            </span>
+          ) : null}
+        </td>
+      ),
     },
     {
       key: 'phone',

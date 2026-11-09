@@ -13,6 +13,7 @@ import { STATUS_KEYS, needsTransitionData, reachedQualified, statusQuery } from 
 
 export default function Leads() {
   const [leads, setLeads] = useState([]);
+  const [tasksByLead, setTasksByLead] = useState({});
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const [type, setType] = useState('');
@@ -57,6 +58,18 @@ export default function Leads() {
 
   useEffect(load, [load]);
   useEffect(loadKpi, [loadKpi]);
+
+  useEffect(() => {
+    base44.entities.Task.filter({ status: 'open' }, { limit: 300 })
+      .then((page) => {
+        const counts = {};
+        (page?.items || []).forEach((task) => {
+          if (task.lead_id) counts[task.lead_id] = (counts[task.lead_id] || 0) + 1;
+        });
+        setTasksByLead(counts);
+      })
+      .catch(() => setTasksByLead({}));
+  }, []);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -296,7 +309,13 @@ export default function Leads() {
 
       <div className="mt-4">
         {view === 'table' ? (
-          <LeadsTable leads={filtered} loading={loading} onOpen={setSelected} showDealValue={showDealValue} />
+          <LeadsTable
+            leads={filtered}
+            loading={loading}
+            onOpen={setSelected}
+            showDealValue={showDealValue}
+            openTasks={tasksByLead}
+          />
         ) : (
           <LeadsKanban leads={filtered} onMove={onMove} />
         )}

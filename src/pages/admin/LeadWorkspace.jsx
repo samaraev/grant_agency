@@ -17,6 +17,7 @@ export default function LeadWorkspace() {
   const { id } = useParams();
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [taskCount, setTaskCount] = useState(0);
   const [missing, setMissing] = useState(false);
   const [tab, setTab] = useState('overview');
 
@@ -30,6 +31,12 @@ export default function LeadWorkspace() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    base44.entities.Task.count({ lead_id: id, status: 'open' })
+      .then(setTaskCount)
+      .catch(() => setTaskCount(0));
+  }, [id]);
 
   if (loading) {
     return <div className="h-40 animate-pulse border border-white/10 bg-[#263033]" />;
@@ -59,8 +66,15 @@ export default function LeadWorkspace() {
       <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="eyebrow">{t.admin.leads.detail.title}</div>
-          <h1 className="mt-2 text-[24px] font-bold text-white">
-            {lead.name} · {lead.phone}
+          <h1 className="mt-2 flex flex-wrap items-center gap-2 text-[24px] font-bold text-white">
+            <span>
+              {lead.name} · {lead.phone}
+            </span>
+            {taskCount ? (
+              <span className="border border-[#c9b28c]/50 px-1.5 py-0.5 text-[11px] font-normal text-[#c9b28c]">
+                {taskCount} {t.admin.tasks.openTasks}
+              </span>
+            ) : null}
           </h1>
           <p className="mt-1 text-[12.5px] text-[#8f9a9f]">
             {new Date(lead.created_date).toLocaleString(dateLocale())} · {lead.source || 'direct'}
