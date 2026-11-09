@@ -34,6 +34,7 @@ import ServicesAdmin from '@/pages/admin/ServicesAdmin';
 import TeamAdmin from '@/pages/admin/TeamAdmin';
 import SettingsAdmin from '@/pages/admin/SettingsAdmin';
 import Analytics from '@/pages/admin/Analytics';
+import Metrica from '@/pages/admin/Metrica';
 import IntegrationsAdmin from '@/pages/admin/IntegrationsAdmin';
 import Today from '@/pages/admin/Today';
 import MeetingsAdmin from '@/pages/admin/MeetingsAdmin';
@@ -104,6 +105,7 @@ const AuthenticatedApp = () => {
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="team" element={<TeamAdmin />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="metrica" element={<Metrica />} />
           <Route path="integrations" element={<IntegrationsAdmin />} />
           <Route path="launch" element={<LaunchChecklist />} />
           <Route path="settings" element={<SettingsAdmin />} />

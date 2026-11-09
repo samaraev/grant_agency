@@ -1,8 +1,14 @@
 import { base44 } from '@/api/base44Client';
+import { getMetricaConfigSync, loadMetricaConfig } from '@/lib/metricaConfig';
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 const COUNTER_KEY = 'grant_metrica';
 const CLIENT_KEY = 'grant_client_id';
+const METRICA_SRC = 'https://mc.yandex.ru/metrika/tag.js';
+const SCRIPT_FLAG = 'data-grant-metrica';
+
+/** События, которые отправляются целью прямо из браузера. */
+const CLIENT_GOALS = ['lead_submit', 'phone_click', 'form_start'];
 
 export function getSessionId() {
   try {
@@ -39,7 +45,7 @@ export function getUtm() {
   }
 }
 
-/** Номер счётчика Метрики приходит из настроек сайта — храним его для целей и ClientID. */
+/** Номер счётчика Метрики — нужен для целей и ClientID. */
 export function setMetricaCounter(id) {
   try {
     if (id) window.sessionStorage.setItem(COUNTER_KEY, String(id));
@@ -98,8 +104,63 @@ export function getClientId() {
 }
 
 /**
+ * Подключает счётчик Метрики, только если он включён в настройках интеграций
+ * и задан номер. Повторный вызов безопасен: скрипт вставляется один раз.
+ */
+export function initMetrica() {
+  return loadMetricaConfig().then((config) => {
+    if (!config?.enabled || !config.counter_id) {
+      setMetricaCounter('');
+      return null;
+    }
+    const counter = String(config.counter_id);
+    setMetricaCounter(counter);
+
+    const init = () => {
+      if (typeof window.ym !== 'function') return;
+      window.ym(counter, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: false,
+      });
+    };
+
+    if (typeof window.ym === 'function') {
+      init();
+      return counter;
+    }
+    if (document.head.querySelector(`script[${SCRIPT_FLAG}]`)) return counter;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = METRICA_SRC;
+    script.setAttribute(SCRIPT_FLAG, counter);
+    script.onload = init;
+    document.head.appendChild(script);
+    return counter;
+  });
+}
+
+/** Цель в Метрике по событию интерфейса, если она сопоставлена в настройках. */
+function reachGoalFor(eventName) {
+  if (!CLIENT_GOALS.includes(eventName)) return;
+  const config = getMetricaConfigSync();
+  if (!config?.enabled) return;
+  const goalId = Number(config.goals?.[eventName]);
+  if (!goalId) return;
+  const counter = getMetricaCounter();
+  if (!counter || typeof window.ym !== 'function') return;
+  try {
+    window.ym(counter, 'reachGoal', goalId);
+  } catch {
+    /* noop */
+  }
+}
+
+/**
  * Единая точка трекинга событий интерфейса: пишет в сущность Events
- * и, если задан счётчик, отправляет цель в Яндекс.Метрику.
+ * и, если цель сопоставлена, отправляет её в Яндекс.Метрику.
  */
 export function track(eventName, props = {}) {
   try {
@@ -116,14 +177,7 @@ export function track(eventName, props = {}) {
     /* трекинг не должен ломать интерфейс */
   }
 
-  const counter = getMetricaCounter();
-  if (counter && typeof window.ym === 'function') {
-    try {
-      window.ym(counter, 'reachGoal', eventName);
-    } catch {
-      /* noop */
-    }
-  }
+  reachGoalFor(eventName);
 }
 
 export function trackPageView() {

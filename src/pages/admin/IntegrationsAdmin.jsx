@@ -3,6 +3,7 @@ import { Copy } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
+import MetricaSection from '@/components/admin/integrations/MetricaSection';
 
 const FIELD =
   'h-[40px] w-full border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none';
@@ -248,6 +249,8 @@ export default function IntegrationsAdmin() {
           </div>
         </Row>
       </div>
+
+      <MetricaSection />
 
       <div className="mt-6 max-w-3xl border border-white/10 bg-[#263033] p-5">
         <div className="grid gap-4 sm:grid-cols-2">

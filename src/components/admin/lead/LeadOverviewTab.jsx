@@ -6,6 +6,7 @@ import JourneyChecklist from '@/components/admin/lead/JourneyChecklist';
 import DealCard from '@/components/admin/lead/DealCard';
 import LeadTasksCard from '@/components/admin/lead/LeadTasksCard';
 import LeadFunnelPanel from '@/components/admin/LeadFunnelPanel';
+import MetricaConversionCard from '@/components/admin/lead/MetricaConversionCard';
 
 const FIELD =
   'h-[38px] w-full border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none';
@@ -81,6 +82,16 @@ export default function LeadOverviewTab({ lead, onSaved }) {
       <div className="grid gap-4 lg:grid-cols-2">
         <DealCard lead={lead} onSaved={onSaved} />
         <LeadTasksCard lead={lead} />
+      </div>
+
+      <div className="mt-4">
+        <MetricaConversionCard
+          lead={lead}
+          onSent={async () => {
+            const fresh = await base44.entities.Lead.get(lead.id).catch(() => null);
+            if (fresh) onSaved(fresh);
+          }}
+        />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">

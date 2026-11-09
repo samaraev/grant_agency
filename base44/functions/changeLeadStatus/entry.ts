@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { CHECKLIST_KEYS, STATUS_KEYS, inferPersonRole } from '../../shared/leadFunnel.ts';
 import { autoSendForStatus } from '../../shared/sequences.ts';
+import { OFFLINE_GOAL_KEYS, sendOfflineConversion } from '../../shared/metrica.ts';
 
 const CONTRACT_TYPES = ['agency', 'exclusive'];
 const PERSON_ROLES = ['owner', 'buyer', 'tenant', 'other'];
@@ -148,6 +149,14 @@ export default async function (req) {
       changed_by: actorEmail,
       note: text(body.note, 500),
     });
+
+    // Офлайн-конверсия в Метрику: отправляем, не дожидаясь ответа, —
+    // сбой Метрики не мешает смене статуса (причина уйдёт в журнал).
+    if (OFFLINE_GOAL_KEYS.includes(status)) {
+      sendOfflineConversion(base44, { lead: updated, goalKey: status, actor: actorEmail }).catch(
+        () => null
+      );
+    }
 
     // Авто-отправка сценариев: сбой очереди не должен отменять смену статуса.
     let sequences = null;

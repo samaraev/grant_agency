@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { STATUS_KEYS, normalizeStatus, reachedQualified, statusIndex } from '@/lib/leadStatus';
@@ -163,6 +164,12 @@ export default function Analytics() {
       <p className="mt-2 text-[13px] text-[#8f9a9f]">
         {copy.subtitle} · {copy.period}
       </p>
+      <Link
+        to="/admin/metrica"
+        className="mt-4 inline-flex min-h-[36px] items-center border border-white/15 px-3 text-[12px] text-white hover:bg-white/5"
+      >
+        {t.admin.metrica.linkFromAnalytics}
+      </Link>
 
       {loading ? (
         <div className="mt-8 h-40 animate-pulse border border-white/10 bg-[#263033]" />

@@ -1,45 +1,12 @@
 import { useEffect } from 'react';
-import { setMetricaCounter } from '@/lib/track';
-
-const METRICA_SRC = 'https://mc.yandex.ru/metrika/tag.js';
 
 /**
- * Подключает внешние счётчики из настроек сайта: Яндекс.Метрику (только если
- * задан номер счётчика) и код подтверждения Google Search Console.
+ * Код подтверждения Google Search Console из настроек сайта.
+ * Счётчик Яндекс.Метрики подключается отдельно — через initMetrica()
+ * в Layout, потому что он включается флагом metrica_enabled.
  */
 export function useThirdPartyTags(settings) {
-  const counterId = settings?.metrica_counter_id ? String(settings.metrica_counter_id).trim() : '';
   const gscVerification = settings?.gsc_verification ? String(settings.gsc_verification).trim() : '';
-
-  useEffect(() => {
-    if (!counterId) return undefined;
-    setMetricaCounter(counterId);
-
-    const init = () => {
-      if (typeof window.ym !== 'function') return;
-      window.ym(counterId, 'init', {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: false,
-      });
-    };
-
-    if (typeof window.ym === 'function') {
-      init();
-      return undefined;
-    }
-
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = METRICA_SRC;
-    script.onload = init;
-    document.head.appendChild(script);
-
-    return () => {
-      script.onload = null;
-    };
-  }, [counterId]);
 
   useEffect(() => {
     if (!gscVerification) return undefined;
