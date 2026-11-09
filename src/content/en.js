@@ -705,6 +705,12 @@ const en = {
       analytics: 'Analytics',
       metrica: 'Metrica',
       launch: 'Project launch',
+      sections: {
+        daily: 'Daily',
+        clients: 'Clients',
+        catalog: 'Catalog',
+        system: 'System',
+      },
     },
     dashboard: {
       weekLeads: 'Requests in the last 7 days',

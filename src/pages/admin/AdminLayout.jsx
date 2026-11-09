@@ -19,6 +19,8 @@ import {
   Plug,
   LogOut,
   Home,
+  Menu,
+  X,
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
@@ -32,25 +34,51 @@ const GATE_DISABLED = true;
 export default function AdminLayout() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const nav = [
-    { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
-    { to: '/admin/today', label: t.admin.nav.today, icon: Sun },
-    { to: '/admin/leads', label: t.admin.nav.leads, icon: Inbox },
-    { to: '/admin/pipeline', label: t.admin.nav.pipeline, icon: GitBranch },
-    { to: '/admin/meetings', label: t.admin.nav.meetings, icon: CalendarDays },
-    { to: '/admin/reports', label: t.admin.nav.reports, icon: FileText },
-    { to: '/admin/tasks', label: t.admin.nav.tasks, icon: ListTodo },
-    { to: '/admin/sequences', label: t.admin.nav.sequences, icon: Send },
-    { to: '/admin/buildings', label: t.admin.nav.buildings, icon: Building2 },
-    { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
-    { to: '/admin/team', label: t.admin.nav.team, icon: Users },
-    { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
-    { to: '/admin/metrica', label: t.admin.nav.metrica, icon: TrendingUp },
-    { to: '/admin/integrations', label: t.admin.nav.integrations, icon: Plug },
-    { to: '/admin/launch', label: t.admin.nav.launch, icon: ListChecks },
-    { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
+  // Навигация сгруппирована по рабочему сценарию: день → клиенты → каталог → система.
+  const sections = [
+    {
+      key: 'daily',
+      label: t.admin.nav.sections.daily,
+      items: [
+        { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
+        { to: '/admin/today', label: t.admin.nav.today, icon: Sun },
+        { to: '/admin/tasks', label: t.admin.nav.tasks, icon: ListTodo },
+        { to: '/admin/leads', label: t.admin.nav.leads, icon: Inbox },
+        { to: '/admin/pipeline', label: t.admin.nav.pipeline, icon: GitBranch },
+      ],
+    },
+    {
+      key: 'clients',
+      label: t.admin.nav.sections.clients,
+      items: [
+        { to: '/admin/meetings', label: t.admin.nav.meetings, icon: CalendarDays },
+        { to: '/admin/sequences', label: t.admin.nav.sequences, icon: Send },
+        { to: '/admin/reports', label: t.admin.nav.reports, icon: FileText },
+      ],
+    },
+    {
+      key: 'catalog',
+      label: t.admin.nav.sections.catalog,
+      items: [
+        { to: '/admin/buildings', label: t.admin.nav.buildings, icon: Building2 },
+        { to: '/admin/services', label: t.admin.nav.services, icon: Wrench },
+        { to: '/admin/team', label: t.admin.nav.team, icon: Users },
+      ],
+    },
+    {
+      key: 'system',
+      label: t.admin.nav.sections.system,
+      items: [
+        { to: '/admin/analytics', label: t.admin.nav.analytics, icon: BarChart3 },
+        { to: '/admin/metrica', label: t.admin.nav.metrica, icon: TrendingUp },
+        { to: '/admin/integrations', label: t.admin.nav.integrations, icon: Plug },
+        { to: '/admin/launch', label: t.admin.nav.launch, icon: ListChecks },
+        { to: '/admin/settings', label: t.admin.nav.settings, icon: Settings },
+      ],
+    },
   ];
 
   useEffect(() => {
@@ -101,62 +129,93 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-[#1a2025] lg:flex">
-      <aside className="border-b border-white/10 bg-[#1f272b] lg:min-h-screen lg:w-[240px] lg:shrink-0 lg:border-b-0 lg:border-r">
-        <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-5">
-          <div className="flex min-w-0 items-center gap-3">
-            <span className="h-8 w-[3px] bg-[#c8102e]" aria-hidden="true" />
-            <div>
-              <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">
+      <aside className="border-b border-[#263033] bg-[#1a2025] lg:flex lg:min-h-screen lg:w-[248px] lg:shrink-0 lg:flex-col lg:border-b-0 lg:border-r">
+        <div className="flex items-center justify-between gap-3 px-5 py-5">
+          <Link to="/admin" className="flex min-w-0 items-center gap-3">
+            <span className="h-9 shrink-0 border-l-2 border-[#c8102e]" aria-hidden="true" />
+            <div className="min-w-0">
+              <div className="font-heading text-[17px] font-semibold uppercase tracking-[0.14em] text-white">
                 {t.brand.name}
               </div>
-              <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#8b969b]">
+              <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#6f7a7f]">
                 {t.admin.marker}
               </div>
             </div>
-          </div>
-          <div className="ml-auto flex shrink-0 items-center gap-2">
+          </Link>
+
+          <div className="flex shrink-0 items-center gap-2">
             <Link
               to="/"
-              className="flex min-h-[40px] items-center gap-2 border border-white/15 px-3 text-[12px] text-white transition-colors hover:bg-white/10"
+              className="hidden min-h-[34px] items-center gap-2 px-2 text-[11.5px] text-[#9aa4a8] transition-colors hover:text-white sm:flex"
             >
               <Home className="h-3.5 w-3.5" aria-hidden="true" />
               {t.admin.toSite}
             </Link>
             <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? t.nav.close : t.nav.menu}
+              className="flex h-9 w-9 items-center justify-center text-[#9aa4a8] transition-colors hover:text-white lg:hidden"
+            >
+              {menuOpen ? (
+                <X className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <Menu className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
-          {nav.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                cn(
-                  'flex min-h-[40px] shrink-0 items-center gap-2.5 px-3 text-[13px] transition-colors',
-                  isActive
-                    ? 'bg-[#c8102e]/15 text-white'
-                    : 'text-[#9aa4a8] hover:bg-white/5 hover:text-white'
-                )
-              }
-            >
-              <item.icon className="h-4 w-4" aria-hidden="true" />
-              {item.label}
-            </NavLink>
+
+        <nav
+          className={cn(
+            'flex-1 overflow-y-auto px-3 pb-4 lg:block',
+            menuOpen ? 'block' : 'hidden'
+          )}
+        >
+          {sections.map((section, index) => (
+            <div key={section.key} className={index === 0 ? '' : 'mt-6'}>
+              <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f7a7f]">
+                {section.label}
+              </div>
+              <div className="space-y-0.5">
+                {section.items.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.end}
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      cn(
+                        'flex min-h-[38px] items-center gap-2.5 border-l-2 py-1.5 pl-3 pr-2 text-[12.5px] transition-colors',
+                        isActive
+                          ? 'border-l-[#c8102e] bg-[#1f272b] text-white'
+                          : 'border-l-transparent text-[#9aa4a8] hover:bg-white/5 hover:text-white'
+                      )
+                    }
+                  >
+                    <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    <span className="truncate">{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
-        <div className="hidden px-3 pb-5 lg:block">
+
+        <div className="hidden border-t border-[#263033] px-3 py-4 lg:block">
           {user && (
             <>
               <button
                 type="button"
                 onClick={logout}
-                className="flex min-h-[38px] w-full items-center gap-2 px-3 text-[12px] text-[#8f9a9f] hover:text-white"
+                className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-[#8f9a9f] transition-colors hover:text-white"
               >
                 <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
                 {t.admin.logout}
               </button>
-              <p className="mt-4 px-3 text-[11px] text-[#6f7a7f]">{user.email}</p>
+              <p className="mt-2 truncate px-3 text-[11px] text-[#6f7a7f]">{user.email}</p>
             </>
           )}
         </div>

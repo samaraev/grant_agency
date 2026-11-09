@@ -707,6 +707,12 @@ const ru = {
       analytics: 'Аналитика',
       metrica: 'Метрика',
       launch: 'Запуск проекта',
+      sections: {
+        daily: 'Каждый день',
+        clients: 'Клиенты',
+        catalog: 'Каталог',
+        system: 'Система',
+      },
     },
     dashboard: {
       weekLeads: 'Обращений за 7 дней',
