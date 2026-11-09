@@ -57,6 +57,20 @@ export const CHECKLIST_KEYS = [
   'terms_fit',
 ];
 
+export const PIPELINE_KEYS = ['owner_sale', 'buyer_search', 'rental'];
+
+/**
+ * Воронка по типу обращения — единственный источник правила:
+ * owner_* → owner_sale, buyer_* → buyer_search, rent → rental, general и пустое → owner_sale.
+ * Используется формой (submitLead), бэкфиллом старых записей и интерфейсом.
+ */
+export function inferPipeline(type) {
+  if (PIPELINE_KEYS.includes(type)) return type;
+  if (type === 'rent') return 'rental';
+  if (type === 'buyer_buy' || type === 'buyer_check') return 'buyer_search';
+  return 'owner_sale';
+}
+
 /** Роль человека по типу обращения; администратор может уточнить её вручную. */
 export function inferPersonRole(type) {
   if (type === 'owner_appraise' || type === 'owner_sell') return 'owner';

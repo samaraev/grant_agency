@@ -10,7 +10,8 @@ export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me().catch((e) => (e.status === 401 ? null : Promise.reject(e)));
-    // ВРЕМЕННО (демо): проверка связи доступна и без входа. Для продакшена вернуть проверку роли.
+    // ВРЕМЕННО (демо): проверка связи доступна и без входа — то же правило, что в base44/shared/guards.ts.
+    // TODO(demo-mode): при включении защиты /admin вернуть строгую проверку роли администратора.
     if (user && user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await req.json().catch(() => ({}));

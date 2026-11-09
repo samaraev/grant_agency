@@ -1,4 +1,8 @@
-/** Воронки (Pipelines): ключи, вывод из типа обращения и подписи. */
+/**
+ * Воронки (Pipelines) для интерфейса: ключи, вывод из типа и подписи.
+ * Правило вывода зеркалит inferPipeline() из base44/shared/leadFunnel.ts —
+ * единственный источник истины для формы, бэкфилла и серверных функций.
+ */
 
 export const PIPELINE_KEYS = ['owner_sale', 'buyer_search', 'rental'];
 

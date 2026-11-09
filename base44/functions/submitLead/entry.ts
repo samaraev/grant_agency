@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
+import { inferPipeline } from '../../shared/leadFunnel.ts';
 
 const ALLOWED_TYPES = ['owner_appraise', 'owner_sell', 'buyer_buy', 'buyer_check', 'general', 'rent'];
 const ALLOWED_CONTACTS = ['phone', 'telegram', 'whatsapp'];
@@ -150,7 +151,7 @@ export default async function (req) {
     const lead = await base44.entities.Lead.create({
       type,
       person_role: TYPE_ROLES[type] || 'other',
-      pipeline: type === 'rent' ? 'rental' : type.startsWith('buyer_') ? 'buyer_search' : 'owner_sale',
+      pipeline: inferPipeline(type),
       area_flag: areaFlag,
       timeframe_hint: timeframeHint,
       cluster,
