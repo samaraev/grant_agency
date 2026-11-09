@@ -108,7 +108,9 @@ export default function LeadCommunicationsTab({ lead, onLeadChange, onMeetings }
                 </span>
                 <span>{copy.directions[item.direction] || item.direction}</span>
                 <span>· {copy.statuses[item.status] || item.status}</span>
-                {item.duration_seconds ? <span>· {item.duration_seconds} с</span> : null}
+                {item.duration_seconds ? (
+                  <span>· {item.duration_seconds} {copy.seconds}</span>
+                ) : null}
                 <span className="ml-auto text-[#6f7a7f]">
                   {new Date(item.created_date).toLocaleString(dateLocale())}
                 </span>

@@ -815,6 +815,8 @@ const ru = {
         nextAction: 'Следующий шаг',
         meaningful: 'Флаг (legacy)',
         dealValue: 'Сумма сделки',
+        timeframe: 'Срок',
+        qualifiedAt: 'Квалифицирован',
       },
       detail: {
         title: 'Обращение',
@@ -970,6 +972,7 @@ const ru = {
           saving: 'Сохраняем…',
           empty: 'Записей пока нет',
           recording: 'Запись разговора',
+          seconds: 'с',
           channels: {
             email: 'Почта',
             sms: 'SMS',

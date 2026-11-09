@@ -807,12 +807,14 @@ const en = {
         status: 'Status',
         agreement: 'Agreement',
         personRole: 'Role',
-        area: 'Area',
+        area: 'Zone',
         intent: 'Intent',
         responsible: 'Owner',
         nextAction: 'Next step',
         meaningful: 'Flag (legacy)',
         dealValue: 'Deal value',
+        timeframe: 'Timeframe',
+        qualifiedAt: 'Qualified at',
       },
       detail: {
         title: 'Request',
@@ -968,6 +970,7 @@ const en = {
           saving: 'Saving…',
           empty: 'No entries yet',
           recording: 'Call recording',
+          seconds: 's',
           channels: {
             email: 'Email',
             sms: 'SMS',
