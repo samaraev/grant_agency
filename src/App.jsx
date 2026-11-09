@@ -85,24 +85,12 @@ const AuthenticatedApp = () => {
         <Route path="/politika-konfidencialnosti" element={<Privacy />} />
       </Route>
 
-      <Route
-        element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}
-      >
-        <Route path="/admin" element={<AdminLayout />}>
+      {/* ВРЕМЕННО: вход в админ-панель отключён. Чтобы вернуть, оберните снова:
+          <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}> */}
+      <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="today" element={<Today />} />
-          <Route path="leads" element={<Leads />} />
-          <Route path="leads/:id" element={<LeadWorkspace />} />
-          <Route path="meetings" element={<MeetingsAdmin />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="launch" element={<LaunchChecklist />} />
-          <Route path="buildings" element={<BuildingsAdmin />} />
-          <Route path="services" element={<ServicesAdmin />} />
-          <Route path="team" element={<TeamAdmin />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="integrations" element={<IntegrationsAdmin />} />
+...
           <Route path="settings" element={<SettingsAdmin />} />
-        </Route>
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
