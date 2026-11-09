@@ -5,6 +5,7 @@ import BuildingForm from '@/components/admin/BuildingForm';
 import { base44 } from '@/api/base44Client';
 import { downloadCsv, parseCsv, toCsv } from '@/lib/csv';
 import { t } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 const CSV_COLUMNS = [
   'address',
@@ -168,7 +169,7 @@ export default function BuildingsAdmin() {
       </div>
 
       <div className="mt-4 overflow-x-auto border border-white/10">
-        <table className="w-full min-w-[720px] text-left">
+        <table className={cn('w-full text-left', !loading && filtered.length ? 'min-w-[720px]' : '')}>
           <thead className="bg-[#1f272b] text-[10.5px] uppercase tracking-[0.14em] text-[#778287]">
             <tr>
               <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.address}</th>
