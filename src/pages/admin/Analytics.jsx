@@ -124,7 +124,7 @@ export default function Analytics() {
     const outside = periodLeads.filter((lead) => lead.area_flag === 'outside').length;
     const rejections = toRows(
       countBy(
-        periodLeads.filter((lead) => lead.status === 'non_target'),
+        periodLeads.filter((lead) => normalizeStatus(lead.status) === 'non_target'),
         (lead) => lead.rejection_reason || '—'
       ),
       10

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
-import { STATUS_KEYS, reachedQualified } from '@/lib/leadStatus';
+import { STATUS_KEYS, normalizeStatus, reachedQualified } from '@/lib/leadStatus';
 import { slaList } from '@/lib/sla';
 import TasksWidget from '@/components/admin/dashboard/TasksWidget';
 
@@ -63,10 +63,11 @@ export default function Dashboard() {
     });
     const owners = leads.filter((lead) => String(lead.type).startsWith('owner')).length;
     const buyers = leads.filter((lead) => String(lead.type).startsWith('buyer')).length;
-    const byStatus = (status) => leads.filter((lead) => lead.status === status).length;
+    const byStatus = (status) =>
+      leads.filter((lead) => normalizeStatus(lead.status) === status).length;
     const funnel = Object.fromEntries(STATUS_KEYS.map((key) => [key, byStatus(key)]));
     const open = leads.filter(
-      (lead) => !['non_target', 'deal_closed'].includes(lead.status)
+      (lead) => !['non_target', 'deal_closed'].includes(normalizeStatus(lead.status))
     );
     return {
       total: leads.length,

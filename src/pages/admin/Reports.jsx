@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t, dateLocale } from '@/lib/i18n';
-import { reachedQualified } from '@/lib/leadStatus';
+import { normalizeStatus, reachedQualified } from '@/lib/leadStatus';
 import { cn } from '@/lib/utils';
 
 const FIELDS = ['done_text', 'implemented_text', 'checked_text', 'data_text', 'blocked_text', 'next_text'];
@@ -85,10 +85,10 @@ export default function Reports() {
       (meeting) => meeting.status === 'held' && inRange(meeting.starts_at, range)
     ).length;
     const contracts = periodLeads.filter((lead) =>
-      ['contract_signed', 'listed_or_search_started', 'deal_closed'].includes(lead.status)
+      ['contract_signed', 'listed_or_search_started', 'deal_closed'].includes(normalizeStatus(lead.status))
     ).length;
-    const deals = periodLeads.filter((lead) => lead.status === 'deal_closed').length;
-    const nonTarget = periodLeads.filter((lead) => lead.status === 'non_target').length;
+    const deals = periodLeads.filter((lead) => normalizeStatus(lead.status) === 'deal_closed').length;
+    const nonTarget = periodLeads.filter((lead) => normalizeStatus(lead.status) === 'non_target').length;
     const khamovniki = periodLeads.filter((lead) => lead.cluster === 'khamovniki').length;
     return {
       leads: periodLeads.length,
