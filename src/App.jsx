@@ -89,7 +89,17 @@ const AuthenticatedApp = () => {
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}> */}
       <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
-...
+          <Route path="today" element={<Today />} />
+          <Route path="leads" element={<Leads />} />
+          <Route path="leads/:id" element={<LeadWorkspace />} />
+          <Route path="meetings" element={<MeetingsAdmin />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="buildings" element={<BuildingsAdmin />} />
+          <Route path="services" element={<ServicesAdmin />} />
+          <Route path="team" element={<TeamAdmin />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="integrations" element={<IntegrationsAdmin />} />
+          <Route path="launch" element={<LaunchChecklist />} />
           <Route path="settings" element={<SettingsAdmin />} />
       </Route>
 
