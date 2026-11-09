@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { CHECKLIST_KEYS, STATUS_KEYS, inferPersonRole } from '../../shared/leadFunnel.ts';
+import { autoSendForStatus } from '../../shared/sequences.ts';
 
 const CONTRACT_TYPES = ['agency', 'exclusive'];
 const PERSON_ROLES = ['owner', 'buyer', 'tenant', 'other'];
@@ -148,7 +149,15 @@ export default async function (req) {
       note: text(body.note, 500),
     });
 
-    return Response.json({ ok: true, lead: updated, suggestions });
+    // Авто-отправка сценариев: сбой очереди не должен отменять смену статуса.
+    let sequences = null;
+    try {
+      sequences = await autoSendForStatus(base44, { lead: updated, actor: actorEmail });
+    } catch (error) {
+      sequences = { error: error.message };
+    }
+
+    return Response.json({ ok: true, lead: updated, suggestions, sequences });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

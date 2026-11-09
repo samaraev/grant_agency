@@ -27,6 +27,7 @@ export function mergeTemplate(templateText, lead) {
     '{адрес}': lead?.address_text || '',
     '{ответственный}': lead?.responsible || '',
     '{телефон}': lead?.phone || '',
+    '{время_встречи}': lead?.next_action_date || '',
   };
   return Object.keys(map).reduce(
     (acc, key) => acc.split(key).join(map[key]),

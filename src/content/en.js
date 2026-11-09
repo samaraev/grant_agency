@@ -696,6 +696,7 @@ const en = {
       meetings: 'Meetings',
       reports: 'Reports',
       tasks: 'Tasks',
+      sequences: 'Sequences',
       buildings: 'Buildings',
       services: 'Services',
       team: 'Team',
@@ -1002,6 +1003,25 @@ const en = {
           saved: 'Saved',
           prefilled: 'The chat opened with a ready text. Log the message after sending.',
         },
+        sequence: {
+          title: 'Suggest a message',
+          hint: 'A ready text for the current status. Sending stays manual, one click per channel.',
+          send: 'Send',
+          sending: 'Sending…',
+          noConsent:
+            'No consent to data processing: marketing messages are blocked. A reply to the enquiry and the meeting confirmation can still be sent.',
+          noTemplate: 'This sequence is missing a template or the client’s address.',
+          hoursTitle: 'Outside working hours',
+          hoursText: 'It is outside working hours (10:00–20:00 MSK). Send anyway?',
+          hoursYes: 'Send anyway',
+          hoursCancel: 'Cancel',
+          manualSms: 'The SMS provider is not configured: send it manually and mark it as sent.',
+          manualWhatsapp:
+            'WhatsApp works as a link: the chat is open. Mark it as sent afterwards and the record goes to the log.',
+          logSent: 'Mark as sent',
+          logged: 'Logged',
+          sent: 'Sent',
+        },
         analysis: {
           hint: 'Manual expert notes only. No automated valuations.',
           price: 'Price guidance (manual)',
@@ -1173,6 +1193,12 @@ const en = {
       emailFrom: 'Email sender name',
       emailRow: 'Email',
       emailNote: 'Built-in email delivery, no keys needed.',
+      emailCaveat:
+        'Until a custom domain is connected, emails are delivered only to registered app users. SMS and WhatsApp go through the provider.',
+      whatsappRow: 'WhatsApp',
+      whatsappNote:
+        'Link mode: the chat opens by link and the send is logged by hand in the request card. API mode is not configured.',
+      openChat: 'Open chat',
       webhook: 'Delivery status webhook',
       webhookHint: 'Give the provider the address with ?token= matching the COMMS_WEBHOOK_TOKEN secret.',
       copy: 'Copy address',
@@ -1311,6 +1337,38 @@ const en = {
         empty: 'No data for the selected period',
         ranges: { 7: '7 days', 30: '30 days', 90: '90 days' },
       },
+    },
+    sequences: {
+      title: 'Message sequences',
+      subtitle:
+        'Sequences tied to request statuses. Each channel is configured separately: auto-send, delay, template.',
+      summary:
+        'Auto-send is currently on for {auto} channels. Sent in the last 7 days: {email} emails / {sms} SMS / {whatsapp} WhatsApp.',
+      caveat:
+        'Until a custom domain is connected, emails are delivered only to registered app users. SMS and WhatsApp go through the provider.',
+      autoHint:
+        'Auto-send fires on a status change. Outside working hours (10:00–20:00 MSK) the message is queued until morning; “Send queued” flushes the queue by hand.',
+      keys: {
+        first_reply: 'First reply',
+        meeting_confirmation: 'Meeting confirmation',
+        no_answer: 'No answer',
+        price_analysis_followup: 'Price review follow-up',
+        thank_you_after_meeting: 'Thank you after the meeting',
+      },
+      channels: { email: 'Email', sms: 'SMS', whatsapp: 'WhatsApp' },
+      columns: {
+        key: 'Sequence',
+        channel: 'Channel',
+        template: 'Template',
+        auto: 'Auto',
+        delay: 'Delay, h',
+        active: 'Active',
+      },
+      dispatch: 'Send queued',
+      dispatching: 'Sending…',
+      dispatched: 'Sent: {sent}, failed: {failed}, awaiting manual send: {manual}',
+      empty: 'No sequences configured',
+      noTemplate: 'Template not found',
     },
     tasks: {
       title: 'Tasks',

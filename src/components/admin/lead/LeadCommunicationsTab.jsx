@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
 import { outsideWorkingHours } from '@/lib/mskTime';
 import CommsQuickActions from '@/components/admin/lead/CommsQuickActions';
+import SequenceSuggestPanel from '@/components/admin/lead/SequenceSuggestPanel';
 
 const CHANNEL_LABEL_KEYS = ['email', 'sms', 'call', 'telegram', 'whatsapp', 'max', 'note'];
 
@@ -63,6 +64,8 @@ export default function LeadCommunicationsTab({ lead, onLeadChange, onMeetings }
           <p className="mt-3 text-[11.5px] text-[#c9b28c]">{comms.mskWarning}</p>
         ) : null}
       </div>
+
+      <SequenceSuggestPanel lead={lead} onLogged={onLogged} />
 
       {offer ? (
         <div className="border border-[#c9b28c]/50 bg-[#1f272b] px-4 py-3">

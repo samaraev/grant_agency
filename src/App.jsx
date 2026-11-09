@@ -39,6 +39,7 @@ import Today from '@/pages/admin/Today';
 import MeetingsAdmin from '@/pages/admin/MeetingsAdmin';
 import Reports from '@/pages/admin/Reports';
 import Tasks from '@/pages/admin/Tasks';
+import Sequences from '@/pages/admin/Sequences';
 import LaunchChecklist from '@/pages/admin/LaunchChecklist';
 // Add page imports here
 
@@ -98,6 +99,7 @@ const AuthenticatedApp = () => {
           <Route path="meetings" element={<MeetingsAdmin />} />
           <Route path="reports" element={<Reports />} />
           <Route path="tasks" element={<Tasks />} />
+          <Route path="sequences" element={<Sequences />} />
           <Route path="buildings" element={<BuildingsAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="team" element={<TeamAdmin />} />

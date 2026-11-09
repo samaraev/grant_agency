@@ -112,6 +112,17 @@ export default function IntegrationsAdmin() {
     }
   };
 
+  // WhatsApp работает как ссылка: тест открывает чат, запись делает админ в карточке обращения.
+  const openWhatsappTest = () => {
+    const digits = String(record?.call_first_number || '').replace(/\D/g, '');
+    if (!digits) return;
+    window.open(
+      `https://wa.me/${digits}?text=${encodeURIComponent('Проверка связи: WhatsApp из админки ГРАНТ.')}`,
+      '_blank',
+      'noopener'
+    );
+  };
+
   const badge = (configured) => (
     <span
       className={cn(
@@ -146,7 +157,7 @@ export default function IntegrationsAdmin() {
       <p className="mt-2 text-[13px] text-[#8f9a9f]">{c.subtitle}</p>
 
       <div className="mt-8 max-w-3xl border border-white/10 bg-[#263033] px-5 py-2">
-        <Row title={c.emailRow} note={c.emailNote} badge={badge(true)}>
+        <Row title={c.emailRow} note={`${c.emailNote} ${c.emailCaveat}`} badge={badge(true)}>
           <button
             type="button"
             onClick={() => test('email')}
@@ -182,6 +193,17 @@ export default function IntegrationsAdmin() {
             </button>
           </div>
           {testResult('sms')}
+        </Row>
+
+        <Row title={c.whatsappRow} note={c.whatsappNote} badge={badge(false)}>
+          <button
+            type="button"
+            onClick={openWhatsappTest}
+            disabled={!record.call_first_number}
+            className="min-h-[36px] border border-white/15 px-3 text-[12px] text-white disabled:opacity-50"
+          >
+            {c.openChat}
+          </button>
         </Row>
 
         <Row title={c.telephonyProvider} badge={badge(Boolean(telephonyConfigured))}>
