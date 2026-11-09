@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { t } from '@/lib/i18n';
@@ -22,6 +23,12 @@ function ActionCard({ to, label, children, sub, urgent }) {
 
 export default function ActionCenter({ sla, slaHint, tasksToday, tasksOverdue, newLeads, urgent, onDone, savingId }) {
   const c = t.admin.dashboard;
+  const [doneIds, setDoneIds] = useState([]);
+
+  const markDone = (task) => {
+    setDoneIds((prev) => [...prev, task.id]);
+    onDone(task);
+  };
 
   return (
     <section className="border border-white/10 border-l-4 border-l-[#c8102e] bg-[#263033] p-6">
@@ -68,31 +75,42 @@ export default function ActionCenter({ sla, slaHint, tasksToday, tasksOverdue, n
 
       {urgent.length ? (
         <ul className="mt-2 divide-y divide-white/8">
-          {urgent.map((task) => (
-            <li key={task.id} className="flex items-center gap-3 py-2">
-              <button
-                type="button"
-                onClick={() => onDone(task)}
-                disabled={savingId === task.id}
-                title={c.markDone}
-                aria-label={c.markDone}
-                className="flex h-5 w-5 shrink-0 items-center justify-center border border-white/25 text-transparent transition-colors hover:border-[#c9b28c] hover:text-[#c9b28c] disabled:opacity-40"
-              >
-                <Check className="h-3.5 w-3.5" aria-hidden="true" />
-              </button>
-              <Link
-                to={task.lead_id ? `/admin/leads/${task.lead_id}` : '/admin/tasks'}
-                className="min-w-0 flex-1 truncate text-[12.5px] text-[#d7dcde] hover:text-white"
-              >
-                {task.title}
-              </Link>
-              <span
-                className={`shrink-0 text-[11.5px] ${isOverdue(task) ? URGENT : 'text-[#8f9a9f]'}`}
-              >
-                {dueLabel(task.due_at)}
-              </span>
-            </li>
-          ))}
+          {urgent.map((task) => {
+            const done = doneIds.includes(task.id);
+            return (
+              <li key={task.id} className="flex items-center gap-3 py-2">
+                <button
+                  type="button"
+                  onClick={() => markDone(task)}
+                  disabled={savingId === task.id}
+                  aria-pressed={done}
+                  title={c.markDone}
+                  aria-label={c.markDone}
+                  className={`flex shrink-0 items-center gap-1.5 border py-1 pl-1.5 pr-2 transition-colors disabled:opacity-40 ${
+                    done
+                      ? 'border-[#c9b28c]/60 text-[#c9b28c]'
+                      : 'border-white/20 text-[#8f9a9f] hover:border-[#c9b28c] hover:text-[#c9b28c]'
+                  }`}
+                >
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span className="text-[10px] uppercase tracking-[0.08em]">{c.doneLabel}</span>
+                </button>
+                <Link
+                  to={task.lead_id ? `/admin/leads/${task.lead_id}` : '/admin/tasks'}
+                  className={`min-w-0 flex-1 truncate text-[12.5px] transition-colors ${
+                    done ? 'text-[#6f7a7f] line-through' : 'text-[#d7dcde] hover:text-white'
+                  }`}
+                >
+                  {task.title}
+                </Link>
+                <span
+                  className={`shrink-0 text-[11.5px] ${isOverdue(task) ? URGENT : 'text-[#8f9a9f]'}`}
+                >
+                  {dueLabel(task.due_at)}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="mt-3 text-[12.5px] text-[#6f7a7f]">{c.noUrgentTasks}</p>

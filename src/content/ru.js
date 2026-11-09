@@ -737,6 +737,7 @@ const ru = {
       urgentTasks: 'Ближайшие задачи',
       allTasks: 'Все задачи',
       markDone: 'Отметить выполненной',
+      doneLabel: 'Выполнено',
       noUrgentTasks: 'Нет задач на сегодня',
       funnelTitle: 'Воронка обращений',
       groupWork: 'В работе',

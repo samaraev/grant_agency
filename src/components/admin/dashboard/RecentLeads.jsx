@@ -28,12 +28,12 @@ export default function RecentLeads({ leads }) {
               <li key={lead.id}>
                 <Link
                   to={`/admin/leads/${lead.id}`}
-                  className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2.5 hover:text-white"
+                  className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 hover:text-white sm:flex-nowrap sm:gap-x-4"
                 >
                   <span className="min-w-0 flex-1 truncate text-[13px] text-[#d7dcde]">
                     {lead.name || '—'}
                   </span>
-                  <span className="w-[38%] truncate text-[11.5px] text-[#8f9a9f] sm:w-[26%]">
+                  <span className="order-last w-full truncate text-[11.5px] text-[#8f9a9f] sm:order-none sm:w-[24%] sm:shrink-0">
                     {t.lead.types[lead.type] || lead.type || '—'}
                   </span>
                   <span
@@ -41,7 +41,7 @@ export default function RecentLeads({ leads }) {
                   >
                     {t.admin.leads.statuses[status]}
                   </span>
-                  <span className="w-12 shrink-0 text-right text-[11.5px] text-[#6f7a7f]">
+                  <span className="w-11 shrink-0 text-right text-[11.5px] text-[#6f7a7f]">
                     {shortDate(lead.created_date)}
                   </span>
                 </Link>

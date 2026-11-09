@@ -735,6 +735,7 @@ const en = {
       urgentTasks: 'Next tasks',
       allTasks: 'All tasks',
       markDone: 'Mark as done',
+      doneLabel: 'Done',
       noUrgentTasks: 'No tasks for today',
       funnelTitle: 'Enquiry funnel',
       groupWork: 'In progress',
