@@ -6,6 +6,7 @@ import LeadsKanban from '@/components/admin/leads/LeadsKanban';
 import StatusTransitionDialog from '@/components/admin/leads/StatusTransitionDialog';
 import LeadDetail from '@/pages/admin/LeadDetail';
 import { downloadCsv, toCsv } from '@/lib/csv';
+import { leadCommission } from '@/lib/deal';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { STATUS_KEYS, needsTransitionData, reachedQualified, statusQuery } from '@/lib/leadStatus';
@@ -21,6 +22,7 @@ export default function Leads() {
   const [source, setSource] = useState('');
   const [sortDesc, setSortDesc] = useState(true);
   const [view, setView] = useState('table');
+  const [showDealValue, setShowDealValue] = useState(false);
   const [selected, setSelected] = useState(null);
   const [transition, setTransition] = useState(null);
   const [qualified, setQualified] = useState(null);
@@ -135,10 +137,18 @@ export default function Leads() {
       { key: 'is_meaningful', label: 'Содержательный (legacy)' },
       { key: 'message', label: 'Сообщение' },
       { key: 'admin_notes', label: 'Заметки' },
+      { key: 'pipeline', label: 'Воронка' },
+      { key: 'deal_value', label: 'Сумма сделки' },
+      { key: 'deal_currency', label: 'Валюта' },
+      { key: 'commission_percent', label: 'Комиссия, %' },
+      { key: 'commission_amount', label: 'Комиссия' },
+      { key: 'expected_close_date', label: 'Ожидаемое закрытие' },
+      { key: 'closed_at', label: 'Закрыто' },
     ];
     const rows = filtered.map((lead) => ({
       ...lead,
       is_meaningful: lead.is_meaningful ? 'да' : 'нет',
+      commission_amount: leadCommission(lead) ?? '',
     }));
     downloadCsv('leads.csv', toCsv(rows, columns));
   };
@@ -269,13 +279,24 @@ export default function Leads() {
           {t.admin.leads.columns.created} {sortDesc ? '↓' : '↑'}
         </button>
         <span className="text-[11.5px] text-[#6f7a7f]">{filtered.length}</span>
+        {view === 'table' ? (
+          <label className="ml-auto flex cursor-pointer items-center gap-2 text-[11.5px] text-[#8f9a9f] hover:text-white">
+            <input
+              type="checkbox"
+              checked={showDealValue}
+              onChange={(event) => setShowDealValue(event.target.checked)}
+              className="h-3.5 w-3.5 accent-[#c8102e]"
+            />
+            {t.admin.leads.showDealValue}
+          </label>
+        ) : null}
       </div>
 
       {error ? <p className="mt-3 border border-[#c9b28c]/40 px-3 py-2 text-[12.5px] text-[#c9b28c]">{error}</p> : null}
 
       <div className="mt-4">
         {view === 'table' ? (
-          <LeadsTable leads={filtered} loading={loading} onOpen={setSelected} />
+          <LeadsTable leads={filtered} loading={loading} onOpen={setSelected} showDealValue={showDealValue} />
         ) : (
           <LeadsKanban leads={filtered} onMove={onMove} />
         )}

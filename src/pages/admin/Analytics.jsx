@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { STATUS_KEYS, normalizeStatus, reachedQualified, statusIndex } from '@/lib/leadStatus';
+import AgentStats from '@/components/admin/analytics/AgentStats';
 
 function List({ title, hint, items, suffix }) {
   return (
@@ -255,6 +256,8 @@ export default function Analytics() {
               </ul>
             </div>
           </div>
+
+          <AgentStats leads={leads} />
         </div>
       )}
     </div>

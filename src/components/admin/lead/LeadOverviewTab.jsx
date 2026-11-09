@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { dateLocale, t } from '@/lib/i18n';
 import JourneyChecklist from '@/components/admin/lead/JourneyChecklist';
+import DealCard from '@/components/admin/lead/DealCard';
 import LeadFunnelPanel from '@/components/admin/LeadFunnelPanel';
 
 const FIELD =
@@ -75,6 +76,8 @@ export default function LeadOverviewTab({ lead, onSaved }) {
         <JourneyChecklist lead={lead} />
         <LeadFunnelPanel lead={lead} onSaved={onSaved} />
       </div>
+
+      <DealCard lead={lead} onSaved={onSaved} />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title={t.admin.leads.workspace.groups.contacts}>

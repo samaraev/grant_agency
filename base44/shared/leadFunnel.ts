@@ -63,6 +63,7 @@ export const PIPELINE_KEYS = ['owner_sale', 'buyer_search', 'rental'];
  * Воронка по типу обращения — единственный источник правила:
  * owner_* → owner_sale, buyer_* → buyer_search, rent → rental, general и пустое → owner_sale.
  * Используется формой (submitLead), бэкфиллом старых записей и интерфейсом.
+ * Держать в синхронизации с src/lib/pipeline.js (фронтенд не может импортировать base44/).
  */
 export function inferPipeline(type) {
   if (PIPELINE_KEYS.includes(type)) return type;
