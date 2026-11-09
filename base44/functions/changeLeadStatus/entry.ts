@@ -19,8 +19,9 @@ export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me().catch((e) => (e.status === 401 ? null : Promise.reject(e)));
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    if (user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+    // ВРЕМЕННО (демо): работаем и без входа. Для продакшена вернуть обязательную авторизацию.
+    if (user && user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+    const actorEmail = user?.email || 'demo@showcase';
 
     const body = await req.json().catch(() => ({}));
     const leadId = text(body.lead_id, 100);
@@ -142,7 +143,7 @@ export default async function (req) {
       lead_id: leadId,
       from_status: lead.status || '',
       to_status: status,
-      changed_by: user.email,
+      changed_by: actorEmail,
       note: text(body.note, 500),
     });
 

@@ -10,8 +10,8 @@ export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me().catch((e) => (e.status === 401 ? null : Promise.reject(e)));
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    if (user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+    // ВРЕМЕННО (демо): проверка связи доступна и без входа. Для продакшена вернуть проверку роли.
+    if (user && user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await req.json().catch(() => ({}));
     const kind = text(body.kind, 20) || 'status';
@@ -27,7 +27,7 @@ export default async function (req) {
     if (kind === 'email') {
       try {
         const result = await base44.asServiceRole.integrations.Core.SendEmail({
-          to: user.email,
+          to: user?.email || text(settings.admin_email, 160),
           subject: 'Проверка связи — ГРАНТ',
           body: 'Это тестовое письмо из админки. Если вы его видите, отправка писем работает.',
           category: 'transactional',
