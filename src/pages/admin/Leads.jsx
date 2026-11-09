@@ -121,7 +121,7 @@ export default function Leads() {
     applyStatus(lead, nextStatus);
   };
 
-  const exportCsv = () => {
+  const exportCsv = async () => {
     const columns = [
       { key: 'created_date', label: 'Дата' },
       { key: 'type', label: 'Тип' },
@@ -165,6 +165,13 @@ export default function Leads() {
       is_meaningful: lead.is_meaningful ? 'да' : 'нет',
       commission_amount: leadCommission(lead) ?? '',
     }));
+
+    // Журналируем выгрузку до скачивания: lead.exported в AuditLog.
+    await base44.functions.invoke('logLeadExport', {
+      count: filtered.length,
+      filters: { search, status, type, cluster, source, from },
+    });
+
     downloadCsv('leads.csv', toCsv(rows, columns));
   };
 
