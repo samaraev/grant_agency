@@ -1144,7 +1144,7 @@ const en = {
       draft: 'Draft',
       homeBadge: 'Homepage',
       searchPlaceholder: 'Search by address',
-      columns: { address: 'Address', district: 'District', year: 'Year', published: 'Status' },
+      columns: { address: 'Address', district: 'District', deal: 'Deal', year: 'Year', published: 'Status' },
       form: {
         createTitle: 'New building',
         editTitle: 'Edit building',

@@ -1146,7 +1146,7 @@ const ru = {
       draft: 'Черновик',
       homeBadge: 'Главная',
       searchPlaceholder: 'Поиск по адресу',
-      columns: { address: 'Адрес', district: 'Район', year: 'Год', published: 'Статус' },
+      columns: { address: 'Адрес', district: 'Район', deal: 'Сделка', year: 'Год', published: 'Статус' },
       form: {
         createTitle: 'Новый дом',
         editTitle: 'Редактирование дома',

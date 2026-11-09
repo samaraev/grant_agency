@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import BuildingForm from '@/components/admin/BuildingForm';
 import { base44 } from '@/api/base44Client';
 import { downloadCsv, parseCsv, toCsv } from '@/lib/csv';
+import { dealLabel, formatPrice } from '@/lib/price';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -174,6 +175,7 @@ export default function BuildingsAdmin() {
             <tr>
               <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.address}</th>
               <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.district}</th>
+              <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.deal}</th>
               <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.year}</th>
               <th className="px-4 py-3 font-medium">{t.admin.buildings.columns.published}</th>
             </tr>
@@ -181,7 +183,7 @@ export default function BuildingsAdmin() {
           <tbody className="divide-y divide-white/8 text-[13px]">
             {loading ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-[#8f9a9f]">
+                <td colSpan={5} className="px-4 py-8 text-center text-[#8f9a9f]">
                   {t.admin.common.loading}
                 </td>
               </tr>
@@ -194,6 +196,12 @@ export default function BuildingsAdmin() {
                 >
                   <td className="px-4 py-3 text-white">{item.address}</td>
                   <td className="px-4 py-3 text-[#b0b8bc]">{item.district || '—'}</td>
+                  <td className="px-4 py-3 text-[#b0b8bc]">
+                    <span className="text-[11px] uppercase tracking-[0.1em] text-[#8f9a9f]">
+                      {dealLabel(item)}
+                    </span>
+                    <span className="ml-2 text-[12.5px] text-white">{formatPrice(item)}</span>
+                  </td>
                   <td className="px-4 py-3 text-[#8f9a9f]">{item.year_built || '—'}</td>
                   <td className="px-4 py-3">
                     <span
@@ -216,7 +224,7 @@ export default function BuildingsAdmin() {
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-[#8f9a9f]">
+                <td colSpan={5} className="px-4 py-10 text-center text-[#8f9a9f]">
                   {t.admin.buildings.empty}
                 </td>
               </tr>

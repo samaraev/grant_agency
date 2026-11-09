@@ -35,7 +35,8 @@ export function useBuilding(id) {
     setLoading(true);
     base44.entities.Building.get(id)
       .then((record) => {
-        if (alive) setBuilding(record || null);
+        // Черновик не открывается по прямой ссылке: снятая с публикации запись для сайта не существует.
+        if (alive) setBuilding(record && record.is_published !== false ? record : null);
       })
       .catch(() => {
         if (alive) setBuilding(null);
