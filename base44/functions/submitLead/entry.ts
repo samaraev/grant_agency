@@ -150,6 +150,7 @@ export default async function (req) {
     const lead = await base44.entities.Lead.create({
       type,
       person_role: TYPE_ROLES[type] || 'other',
+      pipeline: type === 'rent' ? 'rental' : type.startsWith('buyer_') ? 'buyer_search' : 'owner_sale',
       area_flag: areaFlag,
       timeframe_hint: timeframeHint,
       cluster,
