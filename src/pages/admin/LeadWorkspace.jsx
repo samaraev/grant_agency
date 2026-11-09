@@ -10,8 +10,9 @@ import LeadCommunicationsTab from '@/components/admin/lead/LeadCommunicationsTab
 import LeadAnalysisTab from '@/components/admin/lead/LeadAnalysisTab';
 import LeadMeetingsTab from '@/components/admin/lead/LeadMeetingsTab';
 import LeadHistoryTab from '@/components/admin/lead/LeadHistoryTab';
+import LeadDocumentsTab from '@/components/admin/lead/LeadDocumentsTab';
 
-const TABS = ['overview', 'communications', 'analysis', 'meetings', 'history'];
+const TABS = ['overview', 'communications', 'analysis', 'meetings', 'history', 'documents'];
 
 export default function LeadWorkspace() {
   const { id } = useParams();
@@ -116,6 +117,7 @@ export default function LeadWorkspace() {
         {tab === 'analysis' ? <LeadAnalysisTab lead={lead} /> : null}
         {tab === 'meetings' ? <LeadMeetingsTab lead={lead} /> : null}
         {tab === 'history' ? <LeadHistoryTab lead={lead} /> : null}
+        {tab === 'documents' ? <LeadDocumentsTab lead={lead} /> : null}
       </div>
     </div>
   );

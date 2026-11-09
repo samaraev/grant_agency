@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
+import AuditLogPanel from '@/components/admin/settings/AuditLogPanel';
 
 const FIELD =
   'h-[40px] w-full border border-white/10 bg-[#1f272b] px-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none';
@@ -87,6 +88,8 @@ export default function SettingsAdmin() {
           </div>
         </div>
       )}
+
+      <AuditLogPanel />
     </div>
   );
 }
