@@ -94,8 +94,8 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-[#1a2025] lg:flex">
       <aside className="border-b border-white/10 bg-[#1f272b] lg:min-h-screen lg:w-[240px] lg:shrink-0 lg:border-b-0 lg:border-r">
-        <div className="flex items-center justify-between gap-3 px-5 py-5">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-5">
+          <div className="flex min-w-0 items-center gap-3">
             <span className="h-8 w-[3px] bg-[#c8102e]" aria-hidden="true" />
             <div>
               <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">
@@ -106,7 +106,7 @@ export default function AdminLayout() {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <Link
               to="/"
               className="flex min-h-[40px] items-center gap-2 border border-white/15 px-3 text-[12px] text-white transition-colors hover:bg-white/10"
