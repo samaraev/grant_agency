@@ -18,6 +18,11 @@ const preview = (template) => {
   return text.length > 150 ? `${text.slice(0, 150)}…` : text;
 };
 
+// Сетка без горизонтальной прокрутки: на телефоне карточка в столбик, на широком экране — строки таблицы.
+const COLS = 'lg:grid-cols-[minmax(0,1fr)_7rem_minmax(0,1.4fr)_minmax(0,1fr)_6rem] lg:gap-x-3';
+const GRID_HEAD = `hidden border-b border-white/10 px-4 py-3 text-[10.5px] uppercase tracking-[0.14em] text-[#778287] lg:grid ${COLS}`;
+const GRID_ROW = `grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 border-b border-white/8 px-4 py-3 last:border-b-0 lg:items-start ${COLS}`;
+
 /** Шаблоны сообщений: на них ссылаются сценарии по названию и каналу. */
 export default function TemplatesSection({ templates = [], rows = [], loading = false, onChanged }) {
   const c = t.admin.sequences.templates;
@@ -63,88 +68,73 @@ export default function TemplatesSection({ templates = [], rows = [], loading = 
         </button>
       </div>
 
-      <div className="mt-4 overflow-x-auto border border-white/10 bg-[#263033]">
-        <table className="w-full min-w-[760px] text-left">
-          <thead>
-            <tr className="border-b border-white/10 text-[10.5px] uppercase tracking-[0.14em] text-[#778287]">
-              <th className="px-4 py-3 font-medium">{c.columns.name}</th>
-              <th className="px-3 py-3 font-medium">{c.columns.channel}</th>
-              <th className="px-3 py-3 font-medium">{c.columns.body}</th>
-              <th className="px-3 py-3 font-medium">{c.columns.used}</th>
-              <th className="px-3 py-3 text-right font-medium">{c.columns.actions}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-6 text-[13px] text-[#8f9a9f]">
-                  {t.admin.common.loading}
-                </td>
-              </tr>
-            ) : templates.length ? (
-              templates.map((template) => {
-                const usage = usedBy(template);
-                return (
-                  <tr key={template.id} className="border-b border-white/8 last:border-b-0">
-                    <td className="px-4 py-3 align-top text-[13px] text-white">{template.name}</td>
-                    <td className="px-3 py-3 align-top text-[12.5px] text-[#c9b28c]">
-                      {c.channels[template.channel] || template.channel}
-                    </td>
-                    <td className="max-w-[420px] px-3 py-3 align-top text-[12px] leading-relaxed text-[#d7dcde]">
-                      {template.subject ? (
-                        <div className="text-white">{template.subject}</div>
-                      ) : null}
-                      <div className="text-[#8f9a9f]">{preview(template) || '—'}</div>
-                    </td>
-                    <td className="px-3 py-3 align-top text-[12px] text-[#8f9a9f]">
-                      {usage.length
-                        ? usage
-                            .map(
-                              (row) =>
-                                `${t.admin.sequences.keys[row.key] || row.key} · ${
-                                  c.channels[row.channel] || row.channel
-                                }`
-                            )
-                            .join(', ')
-                        : c.unused}
-                    </td>
-                    <td className="px-3 py-3 align-top">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          type="button"
-                          onClick={() => setEditing(template)}
-                          aria-label={`${c.edit}: ${template.name}`}
-                          title={c.edit}
-                          className="flex h-8 w-8 items-center justify-center text-[#9aa4a8] transition-colors hover:text-white"
-                        >
-                          <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setError('');
-                            setRemoving(template);
-                          }}
-                          aria-label={`${c.delete}: ${template.name}`}
-                          title={c.delete}
-                          className="flex h-8 w-8 items-center justify-center text-[#9aa4a8] transition-colors hover:text-[#ff8a96]"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={5} className="px-4 py-6 text-[13px] text-[#8f9a9f]">
-                  {c.empty}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="mt-4 border border-white/10 bg-[#263033]">
+        <div className={GRID_HEAD}>
+          <span>{c.columns.name}</span>
+          <span className="lg:col-start-2">{c.columns.channel}</span>
+          <span className="lg:col-start-3">{c.columns.body}</span>
+          <span className="lg:col-start-4">{c.columns.used}</span>
+          <span className="lg:col-start-5 lg:text-right">{c.columns.actions}</span>
+        </div>
+
+        {loading ? (
+          <p className="px-4 py-6 text-[13px] text-[#8f9a9f]">{t.admin.common.loading}</p>
+        ) : templates.length ? (
+          templates.map((template) => {
+            const usage = usedBy(template);
+            return (
+              <div key={template.id} className={GRID_ROW}>
+                <div className="col-start-1 row-start-1 min-w-0 [overflow-wrap:anywhere] text-[13px] leading-snug text-white">
+                  {template.name}
+                </div>
+                <div className="col-start-1 row-start-2 min-w-0 text-[11.5px] text-[#c9b28c] lg:col-start-2 lg:row-start-1 lg:text-[12.5px]">
+                  {c.channels[template.channel] || template.channel}
+                </div>
+                <div className="col-start-1 row-start-3 min-w-0 text-[12px] leading-relaxed lg:col-start-3 lg:row-start-1">
+                  {template.subject ? <div className="text-white">{template.subject}</div> : null}
+                  <div className="text-[#8f9a9f]">{preview(template) || '—'}</div>
+                </div>
+                <div className="col-start-1 row-start-4 min-w-0 text-[11.5px] text-[#8f9a9f] lg:col-start-4 lg:row-start-1 lg:text-[12px]">
+                  {usage.length
+                    ? usage
+                        .map(
+                          (row) =>
+                            `${t.admin.sequences.keys[row.key] || row.key} · ${
+                              c.channels[row.channel] || row.channel
+                            }`
+                        )
+                        .join(', ')
+                    : c.unused}
+                </div>
+                <div className="col-start-2 row-start-1 flex items-center justify-end gap-1 justify-self-end lg:col-start-5 lg:row-start-1">
+                  <button
+                    type="button"
+                    onClick={() => setEditing(template)}
+                    aria-label={`${c.edit}: ${template.name}`}
+                    title={c.edit}
+                    className="flex h-8 w-8 items-center justify-center text-[#9aa4a8] transition-colors hover:text-white"
+                  >
+                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setError('');
+                      setRemoving(template);
+                    }}
+                    aria-label={`${c.delete}: ${template.name}`}
+                    title={c.delete}
+                    className="flex h-8 w-8 items-center justify-center text-[#9aa4a8] transition-colors hover:text-[#ff8a96]"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p className="px-4 py-6 text-[13px] text-[#8f9a9f]">{c.empty}</p>
+        )}
       </div>
 
       <TemplateDialog
