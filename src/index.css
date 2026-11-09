@@ -1,48 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Палитра темы: #FAF9F6 · #EDECE8 · #D4A373 · #8E4A49 · #2D2A26 */
 @layer base {
-  :root {
-    --background: 205 18% 12%;
-    --foreground: 0 0% 100%;
-    --card: 195 15% 17%;
-    --card-foreground: 0 0% 100%;
-    --popover: 195 15% 17%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 350 85% 42%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 195 14% 21%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 195 14% 21%;
-    --muted-foreground: 197 8% 72%;
-    --accent: 195 14% 24%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 350 85% 42%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 195 12% 25%;
-    --input: 195 12% 27%;
-    --ring: 350 85% 42%;
-    --chart-1: 350 85% 42%;
-    --chart-2: 353 78% 81%;
-    --chart-3: 197 8% 72%;
-    --chart-4: 195 14% 30%;
-    --chart-5: 30 40% 55%;
+  :root,
+  .dark {
+    --background: 34 8% 16%;          /* #2D2A26 */
+    --foreground: 45 29% 97%;         /* #FAF9F6 */
+
+    --card: 33 8% 20%;
+    --card-foreground: 45 29% 97%;
+
+    --popover: 33 8% 20%;
+    --popover-foreground: 45 29% 97%;
+
+    --primary: 1 32% 42%;             /* #8E4A49 */
+    --primary-foreground: 45 29% 97%;
+    --primary-hover: 1 32% 33%;
+    --primary-soft: 5 42% 66%;
+
+    --secondary: 33 8% 24%;
+    --secondary-foreground: 45 29% 97%;
+
+    --muted: 33 8% 24%;
+    --muted-foreground: 40 7% 66%;
+    --subtle-foreground: 40 6% 52%;
+
+    --accent: 30 53% 64%;             /* #D4A373 */
+    --accent-foreground: 34 8% 16%;
+
+    --paper: 48 12% 92%;              /* #EDECE8 */
+
+    --destructive: 4 52% 41%;
+    --destructive-foreground: 45 29% 97%;
+    --destructive-soft: 6 68% 78%;
+
+    --border: 33 8% 26%;
+    --input: 33 8% 28%;
+    --ring: 1 32% 42%;
+
+    --chart-1: 1 32% 42%;
+    --chart-2: 30 53% 64%;
+    --chart-3: 40 7% 66%;
+    --chart-4: 33 8% 30%;
+    --chart-5: 45 29% 90%;
+
     --radius: 0.25rem;
+
     --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sidebar-background: 195 15% 15%;
-    --sidebar-foreground: 197 8% 78%;
-    --sidebar-primary: 350 85% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 195 14% 21%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 195 12% 24%;
-    --sidebar-ring: 350 85% 42%;
+
+    --sidebar-background: 33 8% 18%;
+    --sidebar-foreground: 45 29% 92%;
+    --sidebar-primary: 1 32% 42%;
+    --sidebar-primary-foreground: 45 29% 97%;
+    --sidebar-accent: 33 8% 24%;
+    --sidebar-accent-foreground: 45 29% 97%;
+    --sidebar-border: 33 8% 26%;
+    --sidebar-ring: 1 32% 42%;
+
+    color-scheme: dark;
   }
 }
 
@@ -75,21 +97,21 @@
   }
 
   ::selection {
-    background: #c8102e;
-    color: #fff;
+    background: #8E4A49;
+    color: #FAF9F6;
   }
 
   :focus-visible {
-    outline: 2px solid #c8102e;
+    outline: 2px solid #8E4A49;
     outline-offset: 2px;
   }
 }
 
-/* Hairline rules terminating in a small crimson square */
+/* Hairline rules terminating in a small terracotta square */
 .rule {
   position: relative;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: hsl(var(--border));
 }
 .rule::after {
   content: '';
@@ -98,14 +120,14 @@
   top: -2px;
   width: 5px;
   height: 5px;
-  background: #c8102e;
+  background: hsl(var(--primary));
 }
 
-/* The crimson pulse behind hero areas */
+/* The warm glow behind hero areas */
 .pulse {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle at 50% 50%, rgba(200, 16, 46, 0.22) 0%, rgba(200, 16, 46, 0.09) 55%, rgba(200, 16, 46, 0) 72%);
+  background: radial-gradient(circle at 50% 50%, rgba(142, 74, 73, 0.28) 0%, rgba(142, 74, 73, 0.11) 55%, rgba(142, 74, 73, 0) 72%);
   pointer-events: none;
   animation: pulse-drift 18s ease-in-out infinite;
 }
@@ -121,45 +143,45 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 600;
-  color: #c9b28c;
+  color: hsl(var(--accent));
 }
 
 .link-underline {
   text-decoration: none;
-  border-bottom: 1px solid rgba(201, 178, 140, 0.45);
+  border-bottom: 1px solid hsl(var(--accent) / 0.45);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .link-underline:hover {
-  border-color: #c9b28c;
-  color: #fff;
+  border-color: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
-/* Leaflet tuned to the dark theme */
+/* Leaflet tuned to the theme */
 .leaflet-container {
-  background: #1f272b;
-  font-family: 'Inter', sans-serif;
+  background: hsl(var(--card));
+  font-family: 'Montserrat', sans-serif;
 }
 .leaflet-tile {
   /* CARTO dark tiles are already tuned to the theme: keep them legible */
   filter: saturate(0.85) brightness(1.05);
 }
 .leaflet-control-attribution {
-  background: rgba(26, 32, 37, 0.8) !important;
-  color: #8b969b !important;
+  background: hsl(var(--card) / 0.85) !important;
+  color: hsl(var(--subtle-foreground)) !important;
   font-size: 10px !important;
 }
 .leaflet-control-attribution a {
-  color: #b0b8bc !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 .leaflet-bar a {
-  background: #263033 !important;
-  color: #fff !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: hsl(var(--secondary)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: #263033;
-  color: #fff;
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   border-radius: 2px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -224,4 +246,148 @@
 }
 .fade-up {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ===========================================================================
+   Палитра темы для утилит с прежними значениями цвета.
+   Каждый класс переведён на токен из :root — смена палитры делается
+   только в переменных выше. Варианты (hover/focus/placeholder) усилены
+   префиксом html, чтобы перекрывать правила Tailwind при равной специфичности.
+=========================================================================== */
+
+/* Поверхности */
+.bg-\[\#161c20\],
+.bg-\[\#1a2025\] {
+  background-color: hsl(var(--background));
+}
+.bg-\[\#1a2025\]\/70 { background-color: hsl(var(--background) / 0.7); }
+.bg-\[\#1a2025\]\/85 { background-color: hsl(var(--background) / 0.85); }
+.bg-\[\#1a2025\]\/90 { background-color: hsl(var(--background) / 0.9); }
+.bg-\[\#1a2025\]\/92 { background-color: hsl(var(--background) / 0.92); }
+.bg-\[\#1a2025\]\/95 { background-color: hsl(var(--background) / 0.95); }
+.from-\[\#1a2025\] {
+  --tw-gradient-from: hsl(var(--background)) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--background) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.bg-\[\#1f272b\],
+.bg-\[\#1f272c\] {
+  background-color: hsl(var(--card));
+}
+.bg-\[\#263033\] {
+  background-color: hsl(var(--secondary));
+}
+.bg-\[\#eee7dc\] {
+  background-color: hsl(var(--paper));
+}
+
+/* Основной и акцентный цвет */
+.bg-\[\#c8102e\] {
+  background-color: hsl(var(--primary));
+}
+.bg-\[\#c8102e\]\/10 { background-color: hsl(var(--primary) / 0.1); }
+.bg-\[\#c8102e\]\/12 { background-color: hsl(var(--primary) / 0.12); }
+.bg-\[\#c8102e\]\/15 { background-color: hsl(var(--primary) / 0.15); }
+.bg-\[\#c9b28c\] {
+  background-color: hsl(var(--accent));
+}
+.accent-\[\#c8102e\] {
+  accent-color: hsl(var(--primary));
+}
+
+/* Текст */
+.text-white {
+  color: hsl(var(--foreground));
+}
+.text-\[\#1a2025\] {
+  color: hsl(var(--background));
+}
+.text-\[\#d7dcde\],
+.text-\[\#e6eaec\] {
+  color: hsl(var(--foreground));
+}
+.text-\[\#b0b8bc\],
+.text-\[\#8f9a9f\],
+.text-\[\#9aa4a8\] {
+  color: hsl(var(--muted-foreground));
+}
+.text-\[\#778287\],
+.text-\[\#6f7a7f\],
+.text-\[\#8b969b\],
+.text-\[\#5f696d\],
+.text-\[\#5f6a6f\] {
+  color: hsl(var(--subtle-foreground));
+}
+.text-\[\#c9b28c\] {
+  color: hsl(var(--accent));
+}
+.text-\[\#c8102e\] {
+  color: hsl(var(--primary-soft));
+}
+.text-\[\#ff8a96\] {
+  color: hsl(var(--destructive-soft));
+}
+
+/* Рамки */
+.border-\[\#c9b28c\] {
+  border-color: hsl(var(--accent));
+}
+.border-\[\#c9b28c\]\/40 { border-color: hsl(var(--accent) / 0.4); }
+.border-\[\#c9b28c\]\/50 { border-color: hsl(var(--accent) / 0.5); }
+.border-\[\#c9b28c\]\/60 { border-color: hsl(var(--accent) / 0.6); }
+.border-\[\#c8102e\] {
+  border-color: hsl(var(--primary));
+}
+.border-\[\#c8102e\]\/40 { border-color: hsl(var(--primary) / 0.4); }
+.border-\[\#c8102e\]\/50 { border-color: hsl(var(--primary) / 0.5); }
+.border-t-\[\#c8102e\] { border-top-color: hsl(var(--primary)); }
+.border-b-\[\#c8102e\] { border-bottom-color: hsl(var(--primary)); }
+
+/* Интерактивные состояния */
+html .hover\:bg-\[\#1f272b\]:hover {
+  background-color: hsl(var(--muted));
+}
+html .hover\:bg-\[\#c8102e\]:hover {
+  background-color: hsl(var(--primary));
+}
+html .hover\:bg-\[\#a80d26\]:hover,
+html .hover\:bg-\[\#a90d26\]:hover {
+  background-color: hsl(var(--primary-hover));
+}
+html .hover\:bg-\[\#c9b28c\]:hover {
+  background-color: hsl(var(--accent));
+}
+html .hover\:text-white:hover {
+  color: hsl(var(--foreground));
+}
+html .hover\:text-\[\#1a2025\]:hover {
+  color: hsl(var(--background));
+}
+html .hover\:text-\[\#c9b28c\]:hover {
+  color: hsl(var(--accent));
+}
+html .hover\:border-\[\#c9b28c\]:hover {
+  border-color: hsl(var(--accent));
+}
+html .hover\:border-\[\#c9b28c\]\/40:hover {
+  border-color: hsl(var(--accent) / 0.4);
+}
+html .hover\:border-\[\#c8102e\]:hover {
+  border-color: hsl(var(--primary));
+}
+html .hover\:border-\[\#c8102e\]\/50:hover {
+  border-color: hsl(var(--primary) / 0.5);
+}
+html .hover\:border-\[\#c8102e\]\/60:hover {
+  border-color: hsl(var(--primary) / 0.6);
+}
+html .focus\:border-\[\#c8102e\]:focus {
+  border-color: hsl(var(--primary));
+}
+html .focus\:border-\[\#c9b28c\]:focus {
+  border-color: hsl(var(--accent));
+}
+html .placeholder\:text-\[\#778287\]::placeholder,
+html .placeholder\:text-\[\#6f7a7f\]::placeholder {
+  color: hsl(var(--subtle-foreground));
 }
