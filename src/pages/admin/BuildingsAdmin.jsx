@@ -205,6 +205,12 @@ export default function BuildingsAdmin() {
                     >
                       {item.is_published ? t.admin.buildings.published : t.admin.buildings.draft}
                     </span>
+                    {item.is_featured ? (
+                      <span className="ml-2 bg-[#c9b28c]/15 px-2 py-1 text-[10.5px] uppercase tracking-[0.1em] text-[#c9b28c]">
+                        {t.admin.buildings.homeBadge}
+                        {item.featured_order ? ` ${item.featured_order}` : ''}
+                      </span>
+                    ) : null}
                   </td>
                 </tr>
               ))

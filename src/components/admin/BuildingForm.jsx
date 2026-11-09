@@ -6,6 +6,7 @@ import { Upload, X, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Image } from '@/components/ui/image';
 import { base44 } from '@/api/base44Client';
+import BuildingPlacementFields from '@/components/admin/BuildingPlacementFields';
 import { t } from '@/lib/i18n';
 
 const FIELD =
@@ -34,6 +35,9 @@ const EMPTY = {
   longitude: '',
   is_published: true,
   is_priority: false,
+  is_featured: false,
+  featured_order: '',
+  neighborhood_group: 'other',
   expert_verified: false,
   verified_at: '',
   verified_by: '',
@@ -125,6 +129,11 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
         longitude: draft.longitude ? Number(draft.longitude) : null,
         is_published: Boolean(draft.is_published),
         is_priority: Boolean(draft.is_priority),
+        is_featured: Boolean(draft.is_featured),
+        featured_order: draft.is_featured && draft.featured_order !== ''
+          ? Number(draft.featured_order)
+          : null,
+        neighborhood_group: draft.neighborhood_group || 'other',
         expert_verified: Boolean(draft.expert_verified),
         verified_at: draft.verified_at || '',
         verified_by: draft.verified_by || '',
@@ -416,26 +425,12 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
             </MapContainer>
           </div>
 
-          <label className="flex items-center gap-3 text-[13px] text-[#d7dcde]">
-            <input
-              type="checkbox"
-              checked={Boolean(draft.is_published)}
-              onChange={(event) => setDraft({ ...draft, is_published: event.target.checked })}
-              className="h-4 w-4 accent-[#c8102e]"
-            />
-            {t.admin.buildings.form.published}
-          </label>
+          <BuildingPlacementFields
+            draft={draft}
+            onChange={(patch) => setDraft((current) => ({ ...current, ...patch }))}
+          />
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="flex items-start gap-3 text-[13px] text-[#d7dcde]">
-              <input
-                type="checkbox"
-                checked={Boolean(draft.is_priority)}
-                onChange={(event) => setDraft({ ...draft, is_priority: event.target.checked })}
-                className="mt-0.5 h-4 w-4 accent-[#c8102e]"
-              />
-              {t.admin.buildings.form.isPriority}
-            </label>
             <label className="flex items-start gap-3 text-[13px] text-[#d7dcde]">
               <input
                 type="checkbox"
