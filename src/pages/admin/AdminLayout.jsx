@@ -134,7 +134,7 @@ export default function AdminLayout() {
           <Link to="/admin" className="flex min-w-0 items-center gap-3">
             <span className="h-9 shrink-0 border-l-2 border-[#c8102e]" aria-hidden="true" />
             <div className="min-w-0">
-              <div className="font-heading text-[17px] font-semibold uppercase tracking-[0.14em] text-white">
+              <div className="truncate font-heading text-[17px] font-semibold uppercase tracking-[0.14em] text-white">
                 {t.brand.name}
               </div>
               <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#6f7a7f]">
@@ -144,13 +144,6 @@ export default function AdminLayout() {
           </Link>
 
           <div className="flex shrink-0 items-center gap-2">
-            <Link
-              to="/"
-              className="hidden min-h-[34px] items-center gap-2 px-2 text-[11.5px] text-[#9aa4a8] transition-colors hover:text-white sm:flex"
-            >
-              <Home className="h-3.5 w-3.5" aria-hidden="true" />
-              {t.admin.toSite}
-            </Link>
             <LanguageSwitcher />
             <button
               type="button"
@@ -202,9 +195,25 @@ export default function AdminLayout() {
               </div>
             </div>
           ))}
+
+          <Link
+            to="/"
+            onClick={() => setMenuOpen(false)}
+            className="mt-6 flex min-h-[38px] items-center gap-2.5 border-l-2 border-l-transparent py-1.5 pl-3 pr-2 text-[12.5px] text-[#9aa4a8] transition-colors hover:bg-white/5 hover:text-white lg:hidden"
+          >
+            <Home className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span className="truncate">{t.admin.toSite}</span>
+          </Link>
         </nav>
 
         <div className="hidden border-t border-[#263033] px-3 py-4 lg:block">
+          <Link
+            to="/"
+            className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-[#9aa4a8] transition-colors hover:text-white"
+          >
+            <Home className="h-3.5 w-3.5" aria-hidden="true" />
+            {t.admin.toSite}
+          </Link>
           {user && (
             <>
               <button
