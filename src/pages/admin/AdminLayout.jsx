@@ -90,29 +90,29 @@ export default function AdminLayout() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#1a2025]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-700 border-t-[#c8102e]" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary" />
       </div>
     );
   }
 
   if (!GATE_DISABLED && (!user || user.role !== 'admin')) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#1a2025] px-5">
-        <div className="max-w-md border border-white/10 bg-[#263033] p-8">
+      <div className="flex min-h-screen items-center justify-center bg-background px-5">
+        <div className="max-w-md border border-border bg-card p-8">
           <div className="eyebrow">{t.admin.marker}</div>
-          <h1 className="mt-3 text-[22px] font-bold text-white">{t.admin.notAdminTitle}</h1>
-          <p className="mt-3 text-[13.5px] leading-relaxed text-[#b0b8bc]">{t.admin.notAdminText}</p>
+          <h1 className="mt-3 text-[22px] font-bold text-foreground">{t.admin.notAdminTitle}</h1>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{t.admin.notAdminText}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               to="/login"
-              className="flex min-h-[42px] items-center bg-[#c8102e] px-4 text-[13px] font-semibold text-white"
+              className="flex min-h-[42px] items-center bg-primary px-4 text-[13px] font-semibold text-primary-foreground"
             >
               {t.admin.loginTitle}
             </Link>
             <Link
               to="/"
-              className="flex min-h-[42px] items-center border border-white/15 px-4 text-[13px] text-white"
+              className="flex min-h-[42px] items-center border border-border px-4 text-[13px] text-foreground"
             >
               {t.admin.toSite}
             </Link>
@@ -128,16 +128,16 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a2025] lg:flex">
-      <aside className="border-b border-[#263033] bg-[#1a2025] lg:flex lg:min-h-screen lg:w-[248px] lg:shrink-0 lg:flex-col lg:border-b-0 lg:border-r">
+    <div className="min-h-screen bg-background text-foreground lg:flex">
+      <aside className="border-b border-border bg-background lg:flex lg:min-h-screen lg:w-[248px] lg:shrink-0 lg:flex-col lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between gap-3 px-5 py-5">
           <Link to="/admin" className="flex min-w-0 items-center gap-3">
-            <span className="h-9 shrink-0 border-l-2 border-[#c8102e]" aria-hidden="true" />
+            <span className="h-9 shrink-0 border-l-2 border-primary" aria-hidden="true" />
             <div className="min-w-0">
-              <div className="truncate font-heading text-[17px] font-semibold uppercase tracking-[0.14em] text-white">
+              <div className="truncate font-heading text-[17px] font-semibold uppercase tracking-[0.14em] text-foreground">
                 {t.brand.name}
               </div>
-              <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-[#6f7a7f]">
+              <div className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-subtle">
                 {t.admin.marker}
               </div>
             </div>
@@ -150,7 +150,7 @@ export default function AdminLayout() {
               onClick={() => setMenuOpen((prev) => !prev)}
               aria-expanded={menuOpen}
               aria-label={menuOpen ? t.nav.close : t.nav.menu}
-              className="flex h-9 w-9 items-center justify-center text-[#9aa4a8] transition-colors hover:text-white lg:hidden"
+              className="flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground lg:hidden"
             >
               {menuOpen ? (
                 <X className="h-4 w-4" aria-hidden="true" />
@@ -169,7 +169,7 @@ export default function AdminLayout() {
         >
           {sections.map((section, index) => (
             <div key={section.key} className={index === 0 ? '' : 'mt-6'}>
-              <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f7a7f]">
+              <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-subtle">
                 {section.label}
               </div>
               <div className="space-y-0.5">
@@ -183,8 +183,8 @@ export default function AdminLayout() {
                       cn(
                         'flex min-h-[38px] items-center gap-2.5 border-l-2 py-1.5 pl-3 pr-2 text-[12.5px] transition-colors',
                         isActive
-                          ? 'border-l-[#c8102e] bg-[#1f272b] text-white'
-                          : 'border-l-transparent text-[#9aa4a8] hover:bg-white/5 hover:text-white'
+                          ? 'border-l-primary bg-card text-foreground'
+                          : 'border-l-transparent text-muted-foreground hover:bg-muted hover:text-foreground'
                       )
                     }
                   >
@@ -199,17 +199,17 @@ export default function AdminLayout() {
           <Link
             to="/"
             onClick={() => setMenuOpen(false)}
-            className="mt-6 flex min-h-[38px] items-center gap-2.5 border-l-2 border-l-transparent py-1.5 pl-3 pr-2 text-[12.5px] text-[#9aa4a8] transition-colors hover:bg-white/5 hover:text-white lg:hidden"
+            className="mt-6 flex min-h-[38px] items-center gap-2.5 border-l-2 border-l-transparent py-1.5 pl-3 pr-2 text-[12.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
           >
             <Home className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="truncate">{t.admin.toSite}</span>
           </Link>
         </nav>
 
-        <div className="hidden border-t border-[#263033] px-3 py-4 lg:block">
+        <div className="hidden border-t border-border px-3 py-4 lg:block">
           <Link
             to="/"
-            className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-[#9aa4a8] transition-colors hover:text-white"
+            className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-muted-foreground transition-colors hover:text-foreground"
           >
             <Home className="h-3.5 w-3.5" aria-hidden="true" />
             {t.admin.toSite}
@@ -219,12 +219,12 @@ export default function AdminLayout() {
               <button
                 type="button"
                 onClick={logout}
-                className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-[#8f9a9f] transition-colors hover:text-white"
+                className="flex min-h-[36px] w-full items-center gap-2 px-3 text-[11.5px] text-muted-foreground transition-colors hover:text-foreground"
               >
                 <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
                 {t.admin.logout}
               </button>
-              <p className="mt-2 truncate px-3 text-[11px] text-[#6f7a7f]">{user.email}</p>
+              <p className="mt-2 truncate px-3 text-[11px] text-subtle">{user.email}</p>
             </>
           )}
         </div>

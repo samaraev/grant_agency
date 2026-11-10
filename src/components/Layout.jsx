@@ -18,9 +18,9 @@ export default function Layout() {
 
   return (
     <LeadProvider>
-      <div className="flex min-h-screen flex-col bg-[#1a2025]">
+      <div className="flex min-h-screen flex-col bg-background text-foreground">
         <Header settings={settings} />
-        <main className="flex-1">
+        <main className="flex-1 bg-background">
           <Outlet context={{ settings }} />
         </main>
         <Footer settings={settings} />

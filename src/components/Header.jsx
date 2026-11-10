@@ -27,19 +27,19 @@ export default function Header({ settings, onCta }) {
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#1a2025]/92 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-4 px-5 lg:h-20 lg:gap-6 lg:px-8">
         <Link
           to="/"
           className="group flex items-center gap-3"
           aria-label={`${t.brand.name} — ${t.nav.home}`}
         >
-          <span className="h-9 w-[3px] bg-[#c8102e]" aria-hidden="true" />
+          <span className="h-9 w-[3px] bg-primary" aria-hidden="true" />
           <span className="flex flex-col leading-none">
-            <span className="text-[19px] font-extrabold tracking-[0.14em] text-white">
+            <span className="text-[19px] font-extrabold tracking-[0.14em] text-foreground">
               {t.brand.name}
             </span>
-            <span className="mt-1 text-[9px] uppercase tracking-[0.28em] text-[#8b969b]">
+            <span className="mt-1 text-[9px] uppercase tracking-[0.28em] text-muted-foreground">
               {t.brand.sub}
             </span>
           </span>
@@ -54,7 +54,7 @@ export default function Header({ settings, onCta }) {
               className={({ isActive }) =>
                 cn(
                   'relative text-[13px] tracking-wide transition-colors',
-                  isActive ? 'text-white' : 'text-[#b0b8bc] hover:text-white'
+                  isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 )
               }
             >
@@ -62,7 +62,7 @@ export default function Header({ settings, onCta }) {
                 <>
                   {link.label}
                   {isActive ? (
-                    <span className="absolute -bottom-[26px] left-0 h-[2px] w-full bg-[#c8102e]" />
+                    <span className="absolute -bottom-[26px] left-0 h-[2px] w-full bg-primary" />
                   ) : null}
                 </>
               )}
@@ -75,7 +75,7 @@ export default function Header({ settings, onCta }) {
             <a
               href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
               onClick={() => track(t.track.phoneClick, { place: 'header' })}
-              className="hidden items-center gap-2 text-[13px] text-[#b0b8bc] transition-colors hover:text-white xl:flex"
+              className="hidden items-center gap-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground xl:flex"
             >
               <Phone className="h-3.5 w-3.5" aria-hidden="true" />
               {settings.phone}
@@ -85,7 +85,7 @@ export default function Header({ settings, onCta }) {
             to="/admin"
             aria-label={t.nav.admin}
             title={t.nav.admin}
-            className="flex h-9 w-9 items-center justify-center border border-white/15 text-[#b0b8bc] transition-colors hover:border-white/40 hover:text-white"
+            className="flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-border/80 hover:text-foreground"
           >
             <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -93,14 +93,14 @@ export default function Header({ settings, onCta }) {
           <button
             type="button"
             onClick={handleCta}
-            className="hidden min-h-[44px] items-center bg-[#eee7dc] px-5 text-[13px] font-semibold text-[#1a2025] transition-colors hover:bg-white sm:flex"
+            className="hidden min-h-[44px] items-center bg-paper px-5 text-[13px] font-semibold text-background transition-colors hover:bg-foreground hover:text-paper sm:flex"
           >
             {t.nav.cta}
           </button>
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
-            className="flex h-11 w-11 items-center justify-center border border-white/15 text-white lg:hidden"
+            className="flex h-11 w-11 items-center justify-center border border-border text-foreground lg:hidden"
             aria-label={open ? t.nav.close : t.nav.menu}
             aria-expanded={open}
           >
@@ -110,7 +110,7 @@ export default function Header({ settings, onCta }) {
       </div>
 
       {open ? (
-        <div className="border-t border-white/10 bg-[#1f272c] lg:hidden">
+        <div className="border-t border-border bg-card lg:hidden">
           <nav
             className="mx-auto flex max-w-[1240px] flex-col px-5 py-3"
             aria-label={t.nav.menu}
@@ -119,25 +119,25 @@ export default function Header({ settings, onCta }) {
               <Link
                 key={link.to}
                 to={link.to}
-                className="flex min-h-[48px] items-center border-b border-white/5 text-[15px] text-[#d7dcde] last:border-0"
+                className="flex min-h-[48px] items-center border-b border-border/80 text-[15px] text-foreground last:border-0"
               >
                 {link.label}
               </Link>
             ))}
             <Link
               to="/admin"
-              className="flex min-h-[48px] items-center gap-2 border-b border-white/5 text-[15px] text-[#d7dcde]"
+              className="flex min-h-[48px] items-center gap-2 border-b border-border/80 text-[15px] text-foreground"
             >
-              <LayoutDashboard className="h-4 w-4 text-[#c9b28c]" aria-hidden="true" />
+              <LayoutDashboard className="h-4 w-4 text-primary" aria-hidden="true" />
               {t.nav.admin}
             </Link>
             {settings?.phone ? (
               <a
                 href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
                 onClick={() => track(t.track.phoneClick, { place: 'header-menu' })}
-                className="flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-white"
+                className="flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-foreground"
               >
-                <Phone className="h-4 w-4 text-[#c9b28c]" aria-hidden="true" />
+                <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
                 {settings.phone}
               </a>
             ) : null}
