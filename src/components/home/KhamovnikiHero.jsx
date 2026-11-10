@@ -48,7 +48,7 @@ export default function KhamovnikiHero({ buildings = [], settings, cover }) {
                   track(t.track.ctaClick, { cta: 'hero_owner' });
                   openLead({ type: 'owner_appraise', cluster: 'khamovniki' });
                 }}
-                className="flex min-h-[50px] items-center justify-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white"
+                className="flex min-h-[50px] items-center justify-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-foreground transition-colors hover:bg-white"
               >
                 {c.primaryCta}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -63,6 +63,12 @@ export default function KhamovnikiHero({ buildings = [], settings, cover }) {
               >
                 {c.secondaryCta}
               </button>
+              <a
+                href="#homepage-buildings"
+                className="flex min-h-[50px] items-center justify-center gap-2 border border-white/20 px-6 text-[14px] font-medium text-white transition-colors hover:border-[#c9b28c] hover:text-[#c9b28c]"
+              >
+                {c.catalogCta}
+              </a>
             </div>
 
             {phone ? (

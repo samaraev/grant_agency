@@ -25,7 +25,7 @@ export default function BuildingsDiscoverySection({ buildings = [] }) {
   }, [featured, group, query]);
 
   return (
-    <section className="mx-auto max-w-[1240px] px-5 py-16 lg:px-8 lg:py-20">
+    <section id="homepage-buildings" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 py-16 lg:px-8 lg:py-20">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading marker={d.marker} title={d.title} subtitle={d.subtitle} />
         <div className="flex shrink-0 flex-col gap-2 lg:items-end">
