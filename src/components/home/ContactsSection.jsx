@@ -33,7 +33,7 @@ export default function ContactsSection({ settings }) {
                 track(t.track.ctaClick, { cta: 'contacts_enquiry' });
                 openLead({ type: 'owner_appraise', cluster: 'khamovniki' });
               }}
-              className="mt-7 inline-flex min-h-[50px] items-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-[#1a2025] transition-colors hover:bg-white"
+              className="mt-7 inline-flex min-h-[50px] items-center gap-2 bg-[#eee7dc] px-6 text-[14px] font-semibold text-foreground transition-colors hover:bg-white"
             >
               {c.cta}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
