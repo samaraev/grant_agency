@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import LanguageProvider from '@/components/LanguageProvider';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from '@/components/Layout';
+import JotformChatbot from './components/JotformChatbot';
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import House from '@/pages/House';
@@ -69,29 +70,31 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/mfa" element={<Mfa />} />
+    <>
+      <JotformChatbot />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/mfa" element={<Mfa />} />
 
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/house/:id" element={<House />} />
-        <Route path="/sobstvennikam" element={<Owners />} />
-        <Route path="/khamovniki" element={<Khamovniki />} />
-        <Route path="/pokupatelyam" element={<Buyers />} />
-        <Route path="/o-nas" element={<About />} />
-        <Route path="/uslugi" element={<Services />} />
-        <Route path="/kontakty" element={<Contacts />} />
-        <Route path="/politika-konfidencialnosti" element={<Privacy />} />
-      </Route>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/house/:id" element={<House />} />
+          <Route path="/sobstvennikam" element={<Owners />} />
+          <Route path="/khamovniki" element={<Khamovniki />} />
+          <Route path="/pokupatelyam" element={<Buyers />} />
+          <Route path="/o-nas" element={<About />} />
+          <Route path="/uslugi" element={<Services />} />
+          <Route path="/kontakty" element={<Contacts />} />
+          <Route path="/politika-konfidencialnosti" element={<Privacy />} />
+        </Route>
 
-      {/* ВРЕМЕННО: вход в админ-панель отключён. Чтобы вернуть, оберните снова:
+        {/* ВРЕМЕННО: вход в админ-панель отключён. Чтобы вернуть, оберните снова:
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}> */}
-      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="today" element={<Today />} />
           <Route path="leads" element={<Leads />} />
@@ -109,10 +112,11 @@ const AuthenticatedApp = () => {
           <Route path="integrations" element={<IntegrationsAdmin />} />
           <Route path="launch" element={<LaunchChecklist />} />
           <Route path="settings" element={<SettingsAdmin />} />
-      </Route>
+        </Route>
 
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </>
   );
 };
 

@@ -115,6 +115,8 @@ Public pages render inside the shared shell `components/Layout.jsx` (Header + `L
 | 9 | `VideosSection` | Video tours from `Building.videos` |
 | 10 | `ContactsSection` | Phone, e-mail, hours, office landmark |
 
+The Jotform AI chatbot is injected from its embed script on `/` only. Its widget is hidden on other client-side routes, and the script is added only once per page load.
+
 Data is loaded once in `Home.jsx` with `useBuildingList({ limit: 60 })` (published only) and split by `lib/khamovniki.js`:
 
 - `isKhamovniki(building)` — matches the district/street/cluster fields;
