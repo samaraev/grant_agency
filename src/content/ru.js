@@ -602,14 +602,6 @@ const ru = {
     phoneLabel: 'Телефон',
     phonePlaceholder: '+7 (___) ___-__-__',
     contactLabel: 'Как удобнее связаться',
-    timelineLabel: 'Когда планируете продажу',
-    timeframes: {
-      asap: 'Сразу',
-      '1_3_months': '1–3 месяца',
-      '3_6_months': '3–6 месяцев',
-      later: 'Позже',
-      unknown: 'Не решил',
-    },
     timelines: {
       asap: 'Готов сейчас',
       month: 'В течение месяца',

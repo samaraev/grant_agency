@@ -600,14 +600,6 @@ const en = {
     phoneLabel: 'Phone',
     phonePlaceholder: '+7 (___) ___-__-__',
     contactLabel: 'Preferred way to contact you',
-    timelineLabel: 'When do you plan to sell',
-    timeframes: {
-      asap: 'Now',
-      '1_3_months': '1–3 months',
-      '3_6_months': '3–6 months',
-      later: 'Later',
-      unknown: 'Not decided',
-    },
     timelines: {
       asap: 'Ready now',
       month: 'Within a month',

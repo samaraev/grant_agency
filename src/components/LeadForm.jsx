@@ -8,14 +8,6 @@ import { cn } from '@/lib/utils';
 
 const TYPES = ['owner_appraise', 'owner_sell', 'buyer_buy', 'buyer_check', 'general'];
 const CONTACTS = ['phone', 'telegram', 'whatsapp'];
-const TIMEFRAMES = ['asap', '1_3_months', '3_6_months', 'later', 'unknown'];
-const SELL_BY_TIMEFRAME = {
-  asap: 'asap',
-  '1_3_months': 'month',
-  '3_6_months': 'quarter',
-  later: 'later',
-  unknown: 'undecided',
-};
 
 export function formatPhone(value) {
   let digits = String(value || '').replace(/\D/g, '');
@@ -47,7 +39,6 @@ export default function LeadForm({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [preferred, setPreferred] = useState('phone');
-  const [timeframe, setTimeframe] = useState('');
   const [started, setStarted] = useState(false);
   const [message, setMessage] = useState('');
   const [consent, setConsent] = useState(false);
@@ -86,8 +77,6 @@ export default function LeadForm({
       const response = await base44.functions.invoke('submitLead', {
         type,
         cluster,
-        timeframe_hint: timeframe || null,
-        sell_timeline: SELL_BY_TIMEFRAME[timeframe] || null,
         building_id: matchedBuilding || null,
         address_text: address.trim(),
         name: name.trim(),
@@ -259,29 +248,6 @@ export default function LeadForm({
           ))}
         </div>
       </fieldset>
-
-      {String(type).startsWith('owner') ? (
-        <div className="mt-6">
-          <label htmlFor="lead-timeframe" className="eyebrow mb-2 block">
-            {t.lead.timelineLabel}
-          </label>
-          <select
-            id="lead-timeframe"
-            value={timeframe}
-            onChange={(event) => setTimeframe(event.target.value)}
-            className="h-[46px] w-full border border-white/15 bg-[#1f272b] px-3 text-[14px] text-white focus:border-[#c8102e] focus:outline-none"
-          >
-            <option value="" className="bg-[#1f272b]">
-              —
-            </option>
-            {TIMEFRAMES.map((value) => (
-              <option key={value} value={value} className="bg-[#1f272b]">
-                {t.lead.timeframes[value]}
-              </option>
-            ))}
-          </select>
-        </div>
-      ) : null}
 
       <div className="mt-6">
         <label htmlFor="lead-message" className="eyebrow mb-2 block">
