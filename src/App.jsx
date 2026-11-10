@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/toaster"
+import { useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -44,6 +45,52 @@ import Sequences from '@/pages/admin/Sequences';
 import LaunchChecklist from '@/pages/admin/LaunchChecklist';
 // Add page imports here
 
+const CHATBOT_SCRIPT_SRC = 'https://cdn.jotfor.ms/agent/embedjs/01a1c56d15d8700089923d6ff1f4e9df5bcc/embed.js';
+const CHATBOT_ROOT_ID = 'JotformAgent-01a1c56d15d8700089923d6ff1f4e9df5bcc';
+let homepageChatbotActive = false;
+let homepageChatbotScript = null;
+let homepageChatbotObserver = null;
+
+const updateHomepageChatbotVisibility = () => {
+  const chatbotRoot = document.getElementById(CHATBOT_ROOT_ID);
+  if (chatbotRoot) {
+    chatbotRoot.style.display = homepageChatbotActive ? '' : 'none';
+    homepageChatbotObserver?.disconnect();
+    homepageChatbotObserver = null;
+  }
+};
+
+const HomepageChatbot = () => {
+  useEffect(() => {
+    homepageChatbotActive = true;
+    updateHomepageChatbotVisibility();
+
+    if (!homepageChatbotScript) {
+      homepageChatbotObserver = new MutationObserver(updateHomepageChatbotVisibility);
+      homepageChatbotObserver.observe(document.documentElement, { childList: true, subtree: true });
+
+      homepageChatbotScript = document.createElement('script');
+      homepageChatbotScript.src = CHATBOT_SCRIPT_SRC;
+      homepageChatbotScript.async = true;
+      document.head.appendChild(homepageChatbotScript);
+    }
+
+    return () => {
+      homepageChatbotActive = false;
+      updateHomepageChatbotVisibility();
+    };
+  }, []);
+
+  return null;
+};
+
+const HomePage = () => (
+  <>
+    <Home />
+    <HomepageChatbot />
+  </>
+);
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
@@ -77,7 +124,7 @@ const AuthenticatedApp = () => {
       <Route path="/mfa" element={<Mfa />} />
 
       <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<Search />} />
         <Route path="/house/:id" element={<House />} />
         <Route path="/sobstvennikam" element={<Owners />} />
