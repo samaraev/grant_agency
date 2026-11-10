@@ -26,8 +26,8 @@
     --secondary-foreground: 90 8% 15%;
 
     --muted: 35 16% 93%;              /* #EFEEE7 */
-    --muted-foreground: 90 8% 40%;    /* #666861 */
-    --subtle-foreground: 90 8% 26%;
+    --muted-foreground: 90 8% 30%;     /* #4B4D49 */
+    --subtle-foreground: 90 8% 18%;   /* #2A2C27 */
 
     --accent: 75 8% 75%;              /* #BFC1B7 */
     --accent-foreground: 90 8% 15%;
@@ -313,6 +313,14 @@ html .bg-white,
 html .bg-white\/5,
 html .bg-white\/10 {
   background-color: hsl(var(--paper));
+}
+
+html .text-slate-300,
+html .text-slate-400,
+html .text-slate-500,
+html .text-slate-600,
+html .text-slate-700 {
+  color: hsl(var(--foreground));
 }
 
 /* Основной и акцентный цвет */
