@@ -117,10 +117,10 @@ export const homepageRu = {
     withoutLift: 'без лифта',
   },
   map: {
-    marker: 'ТЕ ЖЕ ДОМА — НА КАРТЕ',
-    title: 'Те же адреса на карте.',
-    subtitle: 'Отметки домов из справочника. Выберите адрес, чтобы увидеть фотографии, видео и обсудить конкретный дом.',
-    note: 'Координаты — OpenStreetMap, точность требует финальной проверки. У выбранных домов пока нет подтверждённых ссылок на видео.',
+    marker: 'ХАМОВНИКИ НА КАРТЕ',
+    title: 'Хамовники на карте.',
+    subtitle: 'Карта района и карточки домов из справочника: фотографии, видео и возможность обсудить конкретный адрес.',
+    note: 'Посмотрите видео о домах Хамовников.',
     videoLink: 'Перейти к видео',
   },
   directions: {
@@ -307,10 +307,10 @@ export const homepageEn = {
     withoutLift: 'no lift',
   },
   map: {
-    marker: 'THE SAME BUILDINGS — ON THE MAP',
-    title: 'The same addresses on the map.',
-    subtitle: 'Marks for buildings from the directory. Choose an address to see photographs, video and discuss a specific building.',
-    note: 'Coordinates come from OpenStreetMap and need final verification. None of the selected buildings has a confirmed video link yet.',
+    marker: 'KHAMOVNIKI ON THE MAP',
+    title: 'Khamovniki on the map.',
+    subtitle: 'A district map alongside building cards with photographs, video and the option to discuss a specific address.',
+    note: 'Watch videos about Khamovniki buildings.',
     videoLink: 'Go to the videos',
   },
   directions: {

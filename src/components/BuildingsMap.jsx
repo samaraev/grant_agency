@@ -1,53 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import MapTiles from '@/components/map/MapTiles';
 import { ArrowRight, Play } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import MapTilerEmbed from '@/components/MapTilerEmbed';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-const DEFAULT_CENTER = [54.1938, 37.6178];
-
 export default function BuildingsMap({ buildings = [], onContact, className, height = 'h-[420px] lg:h-[540px]' }) {
-  const withCoords = buildings.filter((item) => item.latitude && item.longitude);
-  const [selected, setSelected] = useState(withCoords[0] || null);
-  const center = withCoords.length
-    ? [Number(withCoords[0].latitude), Number(withCoords[0].longitude)]
-    : DEFAULT_CENTER;
+  const [selected, setSelected] = useState(buildings[0] || null);
+
+  useEffect(() => {
+    setSelected((current) => buildings.find((building) => building.id === current?.id) || buildings[0] || null);
+  }, [buildings]);
 
   return (
     <div className={cn('grid gap-6 lg:grid-cols-[1fr_360px]', className)}>
       <div className={cn('relative overflow-hidden border border-white/10', height)}>
-        <MapContainer
-          center={center}
-          zoom={13}
-          scrollWheelZoom={false}
-          className="h-full w-full"
-          attributionControl
-        >
-          <MapTiles />
-          {withCoords.map((building) => (
-            <CircleMarker
-              key={building.id}
-              center={[Number(building.latitude), Number(building.longitude)]}
-              radius={selected?.id === building.id ? 11 : 7}
-              pathOptions={{
-                color: '#c8102e',
-                fillColor: selected?.id === building.id ? '#c8102e' : '#c9b28c',
-                fillOpacity: 0.95,
-                weight: 2,
-              }}
-              eventHandlers={{ click: () => setSelected(building) }}
-            >
-              <Tooltip direction="top" offset={[0, -6]}>
-                {building.address}
-              </Tooltip>
-            </CircleMarker>
-          ))}
-        </MapContainer>
-        {withCoords.length === 0 ? (
+        <MapTilerEmbed title={t.home.map.title} />
+        {buildings.length === 0 ? (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#1a2025]/70 text-[13px] text-[#b0b8bc]">
             {t.common.empty}
           </div>
@@ -55,6 +25,28 @@ export default function BuildingsMap({ buildings = [], onContact, className, hei
       </div>
 
       <aside className="flex flex-col border border-white/10 bg-[#263033]">
+        {selected && buildings.length > 1 ? (
+          <div className="border-b border-white/10 p-4">
+            <label htmlFor="building-map-selection" className="sr-only">
+              {t.home.map.selectBuilding}
+            </label>
+            <select
+              id="building-map-selection"
+              value={selected.id}
+              onChange={(event) => {
+                const next = buildings.find((building) => building.id === event.target.value);
+                if (next) setSelected(next);
+              }}
+              className="min-h-11 w-full border border-white/15 bg-[#1f272b] px-3 text-[13px] text-white"
+            >
+              {buildings.map((building) => (
+                <option key={building.id} value={building.id}>
+                  {building.address}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
         {selected ? (
           <>
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1f272b]">

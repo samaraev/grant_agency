@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import MapTiles from '@/components/map/MapTiles';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import LeadForm from '@/components/LeadForm';
+import MapTilerEmbed from '@/components/MapTilerEmbed';
 import { applySeo, organizationJsonLd } from '@/lib/seo';
 import { track } from '@/lib/track';
 import { t } from '@/lib/i18n';
 import { useLang } from '@/components/LanguageProvider';
-
-const OFFICE = [54.1938, 37.6178];
 
 export default function Contacts() {
   const { settings } = useOutletContext() || {};
@@ -121,18 +117,7 @@ export default function Contacts() {
           </div>
 
           <div className="mt-8 h-[280px] overflow-hidden border border-white/10">
-            <MapContainer center={OFFICE} zoom={16} scrollWheelZoom={false} className="h-full w-full">
-              <MapTiles />
-              <CircleMarker
-                center={OFFICE}
-                radius={10}
-                pathOptions={{ color: '#c8102e', fillColor: '#c8102e', fillOpacity: 0.95, weight: 2 }}
-              >
-                <Tooltip direction="top" offset={[0, -6]}>
-                  {info.office_address}
-                </Tooltip>
-              </CircleMarker>
-            </MapContainer>
+            <MapTilerEmbed title={t.contacts.title} />
           </div>
         </div>
 

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { MapContainer, CircleMarker, Tooltip } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import MapTiles from '@/components/map/MapTiles';
 import { ArrowLeft, ArrowRight, MapPin, Play } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import MapTilerEmbed from '@/components/MapTilerEmbed';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLead } from '@/components/LeadProvider';
 import { useBuilding } from '@/hooks/useBuildings';
@@ -336,29 +334,7 @@ export default function House() {
             <section className="mt-10">
               <h2 className="text-[20px] font-bold text-white">{t.house.mapTitle}</h2>
               <div className="mt-4 h-[300px] overflow-hidden border border-white/10">
-                {building.latitude && building.longitude ? (
-                  <MapContainer
-                    center={[Number(building.latitude), Number(building.longitude)]}
-                    zoom={16}
-                    scrollWheelZoom={false}
-                    className="h-full w-full"
-                  >
-                    <MapTiles />
-                    <CircleMarker
-                      center={[Number(building.latitude), Number(building.longitude)]}
-                      radius={10}
-                      pathOptions={{ color: '#c8102e', fillColor: '#c8102e', fillOpacity: 0.95, weight: 2 }}
-                    >
-                      <Tooltip direction="top" offset={[0, -6]}>
-                        {building.address}
-                      </Tooltip>
-                    </CircleMarker>
-                  </MapContainer>
-                ) : (
-                  <div className="flex h-full items-center justify-center text-[13px] text-[#6f7a7f]">
-                    {t.common.empty}
-                  </div>
-                )}
+                <MapTilerEmbed title={t.house.mapTitle} />
               </div>
             </section>
           </div>

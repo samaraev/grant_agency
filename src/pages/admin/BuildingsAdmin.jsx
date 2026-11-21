@@ -24,8 +24,6 @@ const CSV_COLUMNS = [
   'apartments_count',
   'description',
   'features',
-  'latitude',
-  'longitude',
   'is_priority',
   'expert_verified',
   'verified_at',
@@ -100,8 +98,6 @@ export default function BuildingsAdmin() {
             .split(';')
             .map((line) => line.trim())
             .filter(Boolean),
-          latitude: row.latitude ? Number(row.latitude) : null,
-          longitude: row.longitude ? Number(row.longitude) : null,
           ...(row.is_priority ? { is_priority: row.is_priority === 'true' } : {}),
           ...(row.expert_verified ? { expert_verified: row.expert_verified === 'true' } : {}),
           ...(row.verified_at ? { verified_at: row.verified_at } : {}),
@@ -280,8 +276,6 @@ export default function BuildingsAdmin() {
                       apartments_count: 144,
                       description: 'Описание дома',
                       features: 'Первая особенность; Вторая особенность',
-                      latitude: 54.1938,
-                      longitude: 37.6178,
                     },
                   ],
                   CSV_COLUMNS.map((key) => ({ key, label: key }))

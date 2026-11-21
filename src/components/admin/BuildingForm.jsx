@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, CircleMarker, useMapEvents } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import MapTiles from '@/components/map/MapTiles';
 import { Upload, X, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Image } from '@/components/ui/image';
@@ -43,22 +40,6 @@ const EMPTY = {
   verified_by: '',
 };
 
-function ClickPicker({ value, onPick }) {
-  useMapEvents({
-    click(event) {
-      onPick(Number(event.latlng.lat.toFixed(6)), Number(event.latlng.lng.toFixed(6)));
-    },
-  });
-  if (!value || !value[0]) return null;
-  return (
-    <CircleMarker
-      center={value}
-      radius={9}
-      pathOptions={{ color: '#c8102e', fillColor: '#c8102e', fillOpacity: 0.95, weight: 2 }}
-    />
-  );
-}
-
 export default function BuildingForm({ building, open, onOpenChange, onSaved, onDeleted }) {
   const [draft, setDraft] = useState({ ...EMPTY });
   const [featuresText, setFeaturesText] = useState('');
@@ -74,9 +55,6 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
     setVideosText((building.videos || []).join('\n'));
     setError('');
   }, [building]);
-
-  const coords =
-    draft.latitude && draft.longitude ? [Number(draft.latitude), Number(draft.longitude)] : null;
 
   const uploadPhotos = async (files) => {
     if (!files?.length) return;
@@ -380,49 +358,6 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
               rows={2}
               className="w-full resize-none border border-white/10 bg-[#1f272b] p-3 text-[13px] text-white focus:border-[#c8102e] focus:outline-none"
             />
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div>
-              <label htmlFor="b-lat" className="eyebrow mb-2 block">
-                {t.admin.buildings.form.latitude}
-              </label>
-              <input
-                id="b-lat"
-                value={draft.latitude ?? ''}
-                onChange={(event) => setDraft({ ...draft, latitude: event.target.value })}
-                className={FIELD}
-              />
-            </div>
-            <div>
-              <label htmlFor="b-lng" className="eyebrow mb-2 block">
-                {t.admin.buildings.form.longitude}
-              </label>
-              <input
-                id="b-lng"
-                value={draft.longitude ?? ''}
-                onChange={(event) => setDraft({ ...draft, longitude: event.target.value })}
-                className={FIELD}
-              />
-            </div>
-            <div className="flex items-end pb-1 text-[11.5px] text-[#778287]">
-              {t.admin.buildings.form.pickOnMap}
-            </div>
-          </div>
-
-          <div className="h-[240px] overflow-hidden border border-white/10">
-            <MapContainer
-              center={coords || [54.1938, 37.6178]}
-              zoom={coords ? 16 : 13}
-              scrollWheelZoom={false}
-              className="h-full w-full"
-            >
-              <MapTiles />
-              <ClickPicker
-                value={coords}
-                onPick={(lat, lng) => setDraft({ ...draft, latitude: lat, longitude: lng })}
-              />
-            </MapContainer>
           </div>
 
           <BuildingPlacementFields
