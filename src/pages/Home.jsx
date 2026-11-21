@@ -11,7 +11,6 @@ import ClusterContact from '@/components/cluster/ClusterContact';
 import BuildingsDiscoverySection from '@/components/home/BuildingsDiscoverySection';
 import MapSection from '@/components/home/MapSection';
 import ServicesSection from '@/components/home/ServicesSection';
-import PremiumCollections from '@/components/home/PremiumCollections';
 import VideosSection from '@/components/home/VideosSection';
 import ContactsSection from '@/components/home/ContactsSection';
 import { useLang } from '@/components/LanguageProvider';
@@ -59,7 +58,6 @@ export default function Home() {
       <BuildingsDiscoverySection buildings={published} />
       <MapSection buildings={published} />
       <ServicesSection />
-      <PremiumCollections buildings={published} />
       <VideosSection />
       <ContactsSection settings={siteSettings} />
       <ClusterContact settings={siteSettings} />
