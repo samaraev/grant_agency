@@ -13,7 +13,6 @@ import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import House from '@/pages/House';
 import Owners from '@/pages/Owners';
-import Khamovniki from '@/pages/Khamovniki';
 import Buyers from '@/pages/Buyers';
 import About from '@/pages/About';
 import Services from '@/pages/Services';
@@ -81,7 +80,7 @@ const AuthenticatedApp = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/house/:id" element={<House />} />
           <Route path="/sobstvennikam" element={<Owners />} />
-          <Route path="/khamovniki" element={<Khamovniki />} />
+          <Route path="/khamovniki" element={<Navigate to="/" replace />} />
           <Route path="/pokupatelyam" element={<Buyers />} />
           <Route path="/o-nas" element={<About />} />
           <Route path="/uslugi" element={<Services />} />

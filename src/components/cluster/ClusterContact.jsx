@@ -1,5 +1,4 @@
 import { Phone, Send, MessageCircle, Clock } from 'lucide-react';
-import LeadForm from '@/components/LeadForm';
 import { t } from '@/lib/i18n';
 
 export default function ClusterContact({ settings }) {
@@ -9,7 +8,7 @@ export default function ClusterContact({ settings }) {
 
   return (
     <section className="border-t border-white/10 bg-[#1f272b]">
-      <div className="mx-auto grid max-w-[1240px] gap-10 px-5 py-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-20">
         <div>
           <div className="eyebrow">{t.cluster.contact.marker}</div>
           <h2 className="mt-4 text-[26px] font-bold leading-tight text-white sm:text-[34px]">
@@ -52,14 +51,6 @@ export default function ClusterContact({ settings }) {
               </a>
             </div>
             <p className="mt-4 text-[11.5px] leading-relaxed text-[#6f7a7f]">{t.cluster.contact.note}</p>
-          </div>
-        </div>
-
-        <div className="border border-white/10 bg-[#263033] p-5 sm:p-7">
-          <h3 className="text-[22px] font-bold text-white">{t.cluster.formTitle}</h3>
-          <p className="mt-2 text-[13.5px] leading-relaxed text-[#b0b8bc]">{t.cluster.formText}</p>
-          <div className="mt-6">
-            <LeadForm defaultType="owner_sell" cluster="khamovniki" />
           </div>
         </div>
       </div>
