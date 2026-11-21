@@ -9,7 +9,6 @@ export default function MapSection({ buildings = [] }) {
   const m = t.homepage.map;
   const featured = featuredBuildings(buildings);
   const ordered = [...featured, ...buildings.filter((item) => !item.is_featured)];
-  const withCoords = ordered.filter((item) => item.latitude && item.longitude);
 
   return (
     <section id="map" className="border-y border-white/10 bg-[#1f272b]">
@@ -17,7 +16,7 @@ export default function MapSection({ buildings = [] }) {
         <SectionHeading marker={m.marker} title={m.title} subtitle={m.subtitle} />
         <div className="mt-10">
           <BuildingsMap
-            buildings={withCoords.length ? withCoords : ordered}
+            buildings={ordered}
             onContact={(building) =>
               openLead({ type: 'buyer_check', address: building.address, building_id: building.id })
             }

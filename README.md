@@ -51,7 +51,7 @@ These are product rules, not preferences. Changing them is a product decision.
 | UI | React 18, React Router 7, Tailwind CSS, shadcn/ui (Radix primitives), lucide-react |
 | Data fetching | Base44 SDK entities (`@/api/base44Client`) + TanStack Query provider |
 | Charts | recharts |
-| Maps | react-leaflet + CARTO dark basemap (no API key) |
+| Maps | MapTiler iframe on public pages; building coordinates are not editable in the admin portal |
 | Drag & drop | `@hello-pangea/dnd` (Kanban) |
 | Dates | date-fns + moment (legacy helpers) |
 | Documents | jsPDF / html2canvas available; printing uses CSS `@media print` |
@@ -111,7 +111,7 @@ Public pages render inside the shared shell `components/Layout.jsx` (Header + `L
 | 5 | `ClusterProcess` | Request → qualified conversation → agreement → deal |
 | 6 | `ClusterLimits` | Four explicit limits on valuations, promises, new builds and publication without consent |
 | 7 | `BuildingsDiscoverySection` | Discovery card + `FeaturedBuildingCard`s |
-| 8 | `MapSection` | Leaflet map of published buildings |
+| 8 | `MapSection` | MapTiler map of Khamovniki beside published building details |
 | 9 | `ServicesSection` | Services from the `Service` entity |
 | 10 | `PremiumCollections` | Three `PropertyCollection` bands: offices & corporate housing, apartments & penthouses, country houses & estates |
 | 11 | `VideosSection` | Video tours from `Building.videos` |
@@ -154,7 +154,7 @@ Views: **list** (cards) and **map**. `PROPERTY_GROUPS` in `lib/price.js`: `offic
 
 ### 4.5 Building page
 
-Sections in order: facts at a glance (year, floors, entrances, apartments, series, area, price, deal type, ceilings, lift, metro), editorial description, features (`Building.features[]`), apartment notes (`ApartmentNote`: layout type, area range, typical questions, liquidity note), photo gallery, video, Leaflet map, and three decision buttons that open the lead form **pre-filled** with the address and the right request type (`owner_appraise`, `owner_sell`, `buyer_buy`).
+Sections in order: facts at a glance (year, floors, entrances, apartments, series, area, price, deal type, ceilings, lift, metro), editorial description, features (`Building.features[]`), apartment notes (`ApartmentNote`: layout type, area range, typical questions, liquidity note), photo gallery, video, a MapTiler neighborhood map, and three decision buttons that open the lead form **pre-filled** with the address and the right request type (`owner_appraise`, `owner_sell`, `buyer_buy`).
 
 Price formatting (`lib/price.js`): `1 200 000 ₽`, with `per month` appended for `deal_type: "rent"`; an empty price renders `Price on request`.
 
