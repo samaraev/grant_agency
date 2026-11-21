@@ -4,6 +4,10 @@ import KhamovnikiHero from '@/components/home/KhamovnikiHero';
 import AgencySection from '@/components/home/AgencySection';
 import HelpSection from '@/components/home/HelpSection';
 import OwnerFormSection from '@/components/home/OwnerFormSection';
+import ClusterReasons from '@/components/cluster/ClusterReasons';
+import ClusterProcess from '@/components/cluster/ClusterProcess';
+import ClusterLimits from '@/components/cluster/ClusterLimits';
+import ClusterContact from '@/components/cluster/ClusterContact';
 import BuildingsDiscoverySection from '@/components/home/BuildingsDiscoverySection';
 import MapSection from '@/components/home/MapSection';
 import ServicesSection from '@/components/home/ServicesSection';
@@ -48,14 +52,18 @@ export default function Home() {
         cover={featured[0] || published[0]}
       />
       <AgencySection />
+      <ClusterReasons />
       <HelpSection />
-      <OwnerFormSection />
+      <ClusterProcess />
+      <ClusterLimits />
       <BuildingsDiscoverySection buildings={published} />
       <MapSection buildings={published} />
       <ServicesSection />
       <PremiumCollections buildings={published} />
       <VideosSection />
       <ContactsSection settings={siteSettings} />
+      <ClusterContact settings={siteSettings} />
+      <OwnerFormSection />
     </>
   );
 }

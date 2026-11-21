@@ -21,9 +21,9 @@ const en = {
   },
   meta: {
     home: {
-      title: 'GRANT — real estate agency in Khamovniki. Our neighbourhood. Your property.',
+      title: 'GRANT — Khamovniki real estate since 1994. Secondary market.',
       description:
-        'Grant real estate agency, since 1994: Khamovniki, knowledge of specific buildings, work with owners and buyers. A building directory, price and liquidity reviews, plus residential and commercial property, land and investment consulting in Moscow and the Moscow Region.',
+        'GRANT has worked in Khamovniki since 1994. Secondary-market apartments, knowledge of specific buildings, price and liquidity reviews, and work with owners from first enquiry to deal.',
     },
     search: {
       title: 'The portfolio — GRANT',
@@ -34,11 +34,6 @@ const en = {
       title: 'For owners — GRANT. What is happening with your house',
       description:
         'A review of your house and its address: what the price is based on, who the real buyer is, what to restore before a viewing. A private consultation without public advertising.',
-    },
-    cluster: {
-      title: 'Khamovniki — GRANT. Secondary market: a conversation with the owner',
-      description:
-        'The agency’s first cluster: secondary-market apartments in Khamovniki. A specific building, a conversation with the owner, an agency or exclusive agreement — no automated valuations, no promised timelines.',
     },
     buyers: {
       title: 'For buyers — GRANT. Buying with full knowledge of the house',
@@ -390,17 +385,10 @@ const en = {
     searchTitle: 'Find your address',
     primaryCta: 'Get a price and liquidity review of your apartment',
     clusterLink: 'Working in Khamovniki',
-    clusterLinkText: 'Khamovniki is the first district we work systematically. If your apartment is there, start with that page.',
+    clusterLinkText: 'Khamovniki is where we work systematically. Explore the dedicated section on the homepage.',
   },
   cluster: {
     marker: 'CLUSTER 01 / KHAMOVNIKI',
-    title: 'Khamovniki: the secondary market, building by building.',
-    subtitle:
-      'The first district where we work systematically. Secondary-market apartments, from Prechistenka to Usachevka. We start with the owner: one building, one apartment, not an average price for Moscow.',
-    heroCta: 'Talk about selling',
-    kpiNote:
-      'For us a lead is a qualified conversation. An agreement and a deal are the consequence of that conversation, never a promise.',
-    searchTitle: 'Find your address in the database',
     reasonsMarker: '01 / WHY THIS DISTRICT',
     reasonsTitle: 'What working in one cluster gives',
     reasons: [
@@ -439,9 +427,6 @@ const en = {
       hours: 'Daily, 10:00–20:00 (Moscow time)',
       note: 'If we do not pick up, we are on another call. We will come back within working hours, in the channel you chose.',
     },
-    formTitle: 'A conversation about your apartment',
-    formText:
-      'Leave an address and a phone number. Before we talk we look at the building and nearby offers — that is preparation, not a valuation.',
   },
   buyers: {
     marker: 'FOR BUYERS',

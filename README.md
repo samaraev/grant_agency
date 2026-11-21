@@ -78,10 +78,10 @@ npm run preview    # preview the built bundle
 
 | Route | Page file | What it is |
 | --- | --- | --- |
-| `/` | `pages/Home.jsx` | Hero with address search, agency story, owner/buyer paths, owner form, building discovery, map, services, premium collections, video, contacts |
+| `/` | `pages/Home.jsx` | Khamovniki landing page: hero, agency history, cluster principles, price/comparison/analysis, process, limits, contact, building discovery, services, and owner form |
 | `/search` | `pages/Search.jsx` | Portfolio with URL-driven filters, list and map views, capture of unknown addresses |
 | `/house/:id` | `pages/House.jsx` | Building page: facts, features, apartment notes, gallery, video, map, lead actions |
-| `/khamovniki` | `pages/Khamovniki.jsx` | Cluster landing page: why Khamovniki, how the work is organised, limits, contact, form |
+| `/khamovniki` | 301 redirect | Redirects to `/`; use `/#khamovniki` for the homepage cluster section |
 | `/sobstvennikam` | `pages/Owners.jsx` | For owners: what owners ask, how the consultation goes, what we do not do, form |
 | `/pokupatelyam` | `pages/Buyers.jsx` | For buyers: what buyers ask, pre-purchase checklist, form |
 | `/uslugi` | `pages/Services.jsx` | Active and planned services from `Service`, plus the roadmap |
@@ -104,16 +104,22 @@ Public pages render inside the shared shell `components/Layout.jsx` (Header + `L
 
 | # | Section | Purpose |
 | --- | --- | --- |
-| 1 | `KhamovnikiHero` | Marker, headline, address search, primary/secondary CTA, cover photo, trust line, contact strip |
-| 2 | `AgencySection` | Who the agency is; local knowledge framing |
-| 3 | `HelpSection` + `HelpCard` | Two paths: owner and buyer |
-| 4 | `OwnerFormSection` | Owner questions, what the consultation gives, inline lead form |
-| 5 | `BuildingsDiscoverySection` | Discovery card + `FeaturedBuildingCard`s |
-| 6 | `MapSection` | Leaflet map of published buildings |
-| 7 | `ServicesSection` | Services from the `Service` entity |
-| 8 | `PremiumCollections` | Three `PropertyCollection` bands: offices & corporate housing, apartments & penthouses, country houses & estates |
-| 9 | `VideosSection` | Video tours from `Building.videos` |
-| 10 | `ContactsSection` | Phone, e-mail, hours, office landmark |
+| 1 | `KhamovnikiHero` | Headline, address search, CTAs, cover photo and contact strip |
+| 2 | `AgencySection` | Agency history since 1994 and personal connection to Khamovniki |
+| 3 | `ClusterReasons` | `#khamovniki`; building-first, secondary-market, owner-first and single-cluster principles |
+| 4 | `HelpSection` | Three owner-focused lenses: price, comparison and analysis |
+| 5 | `ClusterProcess` | Request → qualified conversation → agreement → deal |
+| 6 | `ClusterLimits` | Four explicit limits on valuations, promises, new builds and publication without consent |
+| 7 | `BuildingsDiscoverySection` | Discovery card + `FeaturedBuildingCard`s |
+| 8 | `MapSection` | Leaflet map of published buildings |
+| 9 | `ServicesSection` | Services from the `Service` entity |
+| 10 | `PremiumCollections` | Three `PropertyCollection` bands: offices & corporate housing, apartments & penthouses, country houses & estates |
+| 11 | `VideosSection` | Video tours from `Building.videos` |
+| 12 | `ContactsSection` | Phone, e-mail, hours, office landmark |
+| 13 | `ClusterContact` | Khamovniki point of contact, Артём |
+| 14 | `OwnerFormSection` | The existing apartment-analysis lead form, at the end of the page |
+
+The Base44 published-site URL redirect keeps `/khamovniki` as a 301 to `/`; internal links target `/#khamovniki`.
 
 Data is loaded once in `Home.jsx` with `useBuildingList({ limit: 60 })` (published only) and split by `lib/khamovniki.js`:
 

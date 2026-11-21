@@ -68,7 +68,7 @@ export default function Owners() {
             </p>
           </div>
           <Link
-            to="/khamovniki"
+            to="/#khamovniki"
             className="flex min-h-[42px] items-center gap-2 border border-[#c9b28c] px-4 text-[12.5px] font-semibold text-[#c9b28c] transition-colors hover:bg-[#c9b28c] hover:text-[#1a2025]"
           >
             {t.nav.cluster}

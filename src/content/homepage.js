@@ -56,48 +56,26 @@ export const homepageRu = {
   help: {
     marker: 'ВАША ЗАДАЧА — НАША РАБОТА',
     title: 'Знаем дом. Видим вашу задачу.',
-    subtitle: 'Опыт становится полезным в конкретной ситуации: когда нужно обосновать цену, найти покупателя или выбрать квартиру для себя.',
+    subtitle: 'Сначала разбираемся в доме, затем — в цене, конкуренции и возможном плане действий.',
     owner: {
-      title: 'Цена, которая имеет основание.',
+      title: 'Три опоры предметного разбора.',
       text: 'Знание дома соединяем с параметрами вашей квартиры и текущей конкуренцией. Объясняем, что влияет на цену и что может мешать продаже.',
       cta: 'Обсудить продажу',
       items: [
         {
           number: '01',
-          title: 'Стоимость и конкуренция',
-          text: 'Какие предложения сравнивать с вашим и какие различия влияют на цену.',
+          title: 'Цена',
+          text: 'Обосновываем стоимость конкретной квартиры с учётом дома, состояния и актуального спроса.',
         },
         {
           number: '02',
-          title: 'Причины долгой продажи',
-          text: 'Цена, подготовка, описание, показы — что стоит проверить в первую очередь.',
+          title: 'Сравнение',
+          text: 'Сопоставляем предложения в доме и рядом: с чем покупатель будет сравнивать вашу квартиру.',
         },
         {
           number: '03',
-          title: 'План действий',
-          text: 'Нужен ли ремонт, как представить квартиру и какие условия продажи обсудить.',
-        },
-      ],
-    },
-    buyer: {
-      title: 'Сравним квартиры. Проверим важные детали.',
-      text: 'Расскажите, какой дом и квартира вас заинтересовали. Сопоставим сведения о здании с параметрами объекта и вашей задачей.',
-      cta: 'Обсудить покупку',
-      items: [
-        {
-          number: '01',
-          title: 'Дом и квартира',
-          text: 'Перекрытия, лифт, этаж, планировка и окна — что нужно уточнить до просмотра.',
-        },
-        {
-          number: '02',
-          title: 'Цена и альтернативы',
-          text: 'Как сравнивать варианты и что проверить в обосновании цены.',
-        },
-        {
-          number: '03',
-          title: 'Покупка и безопасность',
-          text: 'Порядок проверки документов, условия расчётов и сопровождение сделки.',
+          title: 'Анализ',
+          text: 'Разбираем ликвидность, подготовку и возможную стратегию — без автоматических оценок.',
         },
       ],
     },
@@ -268,48 +246,26 @@ export const homepageEn = {
   help: {
     marker: 'YOUR TASK IS OUR WORK',
     title: 'We know the building. We see your task.',
-    subtitle: 'Experience becomes useful in a specific situation: when a price needs grounding, a buyer has to be found, or a flat has to be chosen for yourself.',
+    subtitle: 'We start with the building, then look at price, competition and a practical plan.',
     owner: {
-      title: 'A price with a basis.',
+      title: 'Three parts of a substantive review.',
       text: 'We combine knowledge of the building with the parameters of your flat and the current competition. We explain what affects the price and what may hold a sale back.',
       cta: 'Discuss a sale',
       items: [
         {
           number: '01',
-          title: 'Value and competition',
-          text: 'Which offers to compare yours with and which differences affect the price.',
+          title: 'Price',
+          text: 'We ground the price of a specific flat in the building, its condition and current demand.',
         },
         {
           number: '02',
-          title: 'Reasons a sale takes long',
-          text: 'Price, preparation, description, viewings: what to check first.',
+          title: 'Comparison',
+          text: 'We compare offers in the building and nearby: what a buyer will compare your flat with.',
         },
         {
           number: '03',
-          title: 'A plan of action',
-          text: 'Whether renovation is needed, how to present the flat and which sale terms to discuss.',
-        },
-      ],
-    },
-    buyer: {
-      title: 'We compare flats. We check the important details.',
-      text: 'Tell us which building and flat interested you. We match the building data with the property and with your task.',
-      cta: 'Discuss a purchase',
-      items: [
-        {
-          number: '01',
-          title: 'Building and flat',
-          text: 'Floor slabs, lift, floor level, layout and windows: what to clarify before a viewing.',
-        },
-        {
-          number: '02',
-          title: 'Price and alternatives',
-          text: 'How to compare options and what to check in the reasoning behind a price.',
-        },
-        {
-          number: '03',
-          title: 'Purchase and security',
-          text: 'The order of document checks, payment terms and support through the deal.',
+          title: 'Analysis',
+          text: 'We review liquidity, preparation and a possible strategy — without automated valuations.',
         },
       ],
     },
