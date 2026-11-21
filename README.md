@@ -110,14 +110,13 @@ Public pages render inside the shared shell `components/Layout.jsx` (Header + `L
 | 4 | `HelpSection` | Three owner-focused lenses: price, comparison and analysis |
 | 5 | `ClusterProcess` | Request → qualified conversation → agreement → deal |
 | 6 | `ClusterLimits` | Four explicit limits on valuations, promises, new builds and publication without consent |
-| 7 | `BuildingsDiscoverySection` | Discovery card + `FeaturedBuildingCard`s |
+| 7 | `BuildingsDiscoverySection` | Featured entries from the primary building directory; full listings remain in `/search` |
 | 8 | `MapSection` | MapTiler map of Khamovniki beside published building details |
 | 9 | `ServicesSection` | Services from the `Service` entity |
-| 10 | `PremiumCollections` | Three `PropertyCollection` bands: offices & corporate housing, apartments & penthouses, country houses & estates |
-| 11 | `VideosSection` | Video tours from `Building.videos` |
-| 12 | `ContactsSection` | Phone, e-mail, hours, office landmark |
-| 13 | `ClusterContact` | Khamovniki point of contact, Артём |
-| 14 | `OwnerFormSection` | The existing apartment-analysis lead form, at the end of the page |
+| 10 | `VideosSection` | Video tours from `Building.videos` |
+| 11 | `ContactsSection` | Phone, e-mail, hours, office landmark |
+| 12 | `ClusterContact` | Khamovniki point of contact, Артём |
+| 13 | `OwnerFormSection` | The existing apartment-analysis lead form, at the end of the page |
 
 The Base44 published-site URL redirect keeps `/khamovniki` as a 301 to `/`; internal links target `/#khamovniki`.
 
@@ -559,9 +558,9 @@ public/            robots.txt, sitemap.xml
 src/
   pages/           public pages, auth pages, pages/admin/*
   components/      Header, Footer, Layout, AddressSearch, BuildingCard, BuildingsMap,
-                   PropertyCollection, SectionHeading, LeadDialog / LeadForm / LeadProvider,
+                   MapTilerEmbed, SectionHeading, LeadDialog / LeadForm / LeadProvider,
                    LanguageProvider / LanguageSwitcher, MFA screens,
-                   home/*, cluster/*, map/*, ui/*,
+                   home/*, cluster/*, ui/*,
                    admin/dashboard/*, admin/lead/*, admin/leads/*, admin/meetings/*,
                    admin/tasks/*, admin/today/*, admin/metrica/*, admin/analytics/*,
                    admin/integrations/*, admin/settings/*

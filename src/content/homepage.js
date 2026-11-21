@@ -161,12 +161,6 @@ export const homepageRu = {
     widerNote: 'Наличие объектов и актуальные условия уточняются у агентства.',
     all: 'Все услуги',
   },
-  premium: {
-    marker: 'НЕДВИЖИМОСТЬ И КОНСАЛТИНГ',
-    title: 'Жить. Работать.',
-    titleAccent: 'Инвестировать.',
-    subtitle: 'Жилая и коммерческая недвижимость, земельные участки, инвестиционные консультации и управление доходностью — направления действующего агентства.',
-  },
   videos: {
     marker: 'ВЗГЛЯД НА РАЙОН',
     title: 'Хамовники в движении.',
@@ -350,12 +344,6 @@ export const homepageEn = {
     ],
     widerNote: 'Availability of properties and current terms are confirmed with the agency.',
     all: 'All services',
-  },
-  premium: {
-    marker: 'PROPERTY AND CONSULTING',
-    title: 'Live. Work.',
-    titleAccent: 'Invest.',
-    subtitle: 'Residential and commercial property, land plots, investment consulting and income management: the directions of a working agency.',
   },
   videos: {
     marker: 'A VIEW OF THE NEIGHBOURHOOD',

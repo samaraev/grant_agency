@@ -110,14 +110,13 @@ npm run preview    # просмотр собранного бандла
 | 4 | `HelpSection` | Три аспекта разбора для собственника: цена, сравнение и анализ |
 | 5 | `ClusterProcess` | Обращение → квалифицированная беседа → договор → сделка |
 | 6 | `ClusterLimits` | Ограничения: автоматические оценки, обещания, новостройки и публикация без согласия |
-| 7 | `BuildingsDiscoverySection` | Карточка подбора + `FeaturedBuildingCard` |
+| 7 | `BuildingsDiscoverySection` | Приоритетные записи из основного каталога домов; полный список остаётся в `/search` |
 | 8 | `MapSection` | Карта MapTiler по Хамовникам рядом с карточками опубликованных домов |
 | 9 | `ServicesSection` | Услуги из сущности `Service` |
-| 10 | `PremiumCollections` | Три полосы `PropertyCollection`: офисы и корпоративное жильё, квартиры и пентхаусы, загородные дома и усадьбы |
-| 11 | `VideosSection` | Видеоэкскурсии из `Building.videos` |
-| 12 | `ContactsSection` | Телефон, почта, часы, ориентир офиса |
-| 13 | `ClusterContact` | Единая точка контакта по Хамовникам — Артём |
-| 14 | `OwnerFormSection` | Существующая форма разбора квартиры в конце страницы |
+| 10 | `VideosSection` | Видеоэкскурсии из `Building.videos` |
+| 11 | `ContactsSection` | Телефон, почта, часы, ориентир офиса |
+| 12 | `ClusterContact` | Единая точка контакта по Хамовникам — Артём |
+| 13 | `OwnerFormSection` | Существующая форма разбора квартиры в конце страницы |
 
 На опубликованном сайте Base44 настроен 301-редирект `/khamovniki` → `/`; внутренние ссылки ведут на `/#khamovniki`.
 
@@ -559,9 +558,9 @@ public/            robots.txt, sitemap.xml
 src/
   pages/           публичные страницы, страницы авторизации, pages/admin/*
   components/      Header, Footer, Layout, AddressSearch, BuildingCard, BuildingsMap,
-                   PropertyCollection, SectionHeading, LeadDialog / LeadForm / LeadProvider,
+                   MapTilerEmbed, SectionHeading, LeadDialog / LeadForm / LeadProvider,
                    LanguageProvider / LanguageSwitcher, экраны MFA,
-                   home/*, cluster/*, map/*, ui/*,
+                   home/*, cluster/*, ui/*,
                    admin/dashboard/*, admin/lead/*, admin/leads/*, admin/meetings/*,
                    admin/tasks/*, admin/today/*, admin/metrica/*, admin/analytics/*,
                    admin/integrations/*, admin/settings/*

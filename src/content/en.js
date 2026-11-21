@@ -146,29 +146,6 @@ const en = {
       hoursLabel: 'Opening hours',
       hours: '10:00–20:00, Moscow time',
     },
-    collections: {
-      offices: {
-        marker: 'COMMERCIAL',
-        title: 'Offices and corporate housing',
-        subtitle:
-          'Mansions for company headquarters and residences for executives, for sale and for rent. We show the whole property: services, parking, surroundings.',
-        cta: 'See offices',
-      },
-      residences: {
-        marker: 'RESIDENCES',
-        title: 'Apartments and penthouses',
-        subtitle:
-          'Residences in the historic centre: enfilade layouts, roof terraces and views of the Kremlin. Some addresses are shown on request only.',
-        cta: 'See residences',
-      },
-      estates: {
-        marker: 'OUT OF TOWN',
-        title: 'Country houses and estates',
-        subtitle:
-          'Houses in the forest and estates with a park across the Moscow Region, on the Rublyovo-Uspenskoye, Novorizhskoye and Dmitrovskoye directions, for those a city residence is not enough for.',
-        cta: 'See country houses',
-      },
-    },
     trust: {
       marker: '08 / POSITION',
       items: [
