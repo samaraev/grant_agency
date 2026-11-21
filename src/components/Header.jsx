@@ -17,7 +17,6 @@ export default function Header({ settings, onCta }) {
     { to: '/', label: t.nav.home, end: true },
     { to: '/search', label: t.nav.search },
     { to: '/sobstvennikam', label: t.nav.owners },
-    { to: '/#khamovniki', label: t.nav.cluster, anchor: true, end: true },
     { to: '/pokupatelyam', label: t.nav.buyers },
     { to: '/uslugi', label: t.nav.services },
     { to: '/o-nas', label: t.nav.about },
@@ -51,22 +50,17 @@ export default function Header({ settings, onCta }) {
               key={link.to}
               to={link.to}
               end={link.end}
-              className={({ isActive }) => {
-                const active = link.anchor
-                  ? location.pathname === '/' && location.hash === '#khamovniki'
-                  : isActive;
-                return cn(
+              className={({ isActive }) =>
+                cn(
                   'relative text-[13px] tracking-wide transition-colors',
-                  active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-                );
-              }}
+                  isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                )
+              }
             >
               {({ isActive }) => (
                 <>
                   {link.label}
-                  {(link.anchor
-                    ? location.pathname === '/' && location.hash === '#khamovniki'
-                    : isActive) ? (
+                  {isActive ? (
                     <span className="absolute -bottom-[26px] left-0 h-[2px] w-full bg-primary" />
                   ) : null}
                 </>
