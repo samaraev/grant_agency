@@ -9,7 +9,6 @@ import ScrollToTop from './components/ScrollToTop';
 import LanguageProvider from '@/components/LanguageProvider';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from '@/components/Layout';
-import JotformChatbot from './components/JotformChatbot';
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import House from '@/pages/House';
@@ -70,9 +69,7 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <>
-      <JotformChatbot />
-      <Routes>
+    <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -115,8 +112,7 @@ const AuthenticatedApp = () => {
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </>
+    </Routes>
   );
 };
 
