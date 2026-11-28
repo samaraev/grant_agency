@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { dealLabel, formatArea, formatPrice } from '@/lib/price';
 import { t } from '@/lib/i18n';
 
 export default function FeaturedBuildingCard({ building }) {
@@ -15,7 +16,7 @@ export default function FeaturedBuildingCard({ building }) {
 
   return (
     <article className="group flex flex-col border border-white/10 bg-[#1f272b] transition-colors hover:border-[#c9b28c]/40">
-      <Link to={`/house/${building.id}`} className="block overflow-hidden">
+      <Link to={`/house/${building.id}`} className="relative block overflow-hidden">
         <div className="relative aspect-[4/3] w-full bg-[#263033]">
           {building.photos?.[0] ? (
             <Image
@@ -30,6 +31,9 @@ export default function FeaturedBuildingCard({ building }) {
               {building.year_built} · {d.fromDirectory}
             </span>
           ) : null}
+          <span className="absolute right-0 top-0 border-b border-l border-white/15 bg-[#1a2025]/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white">
+            {dealLabel(building)}
+          </span>
         </div>
       </Link>
 
@@ -39,6 +43,14 @@ export default function FeaturedBuildingCard({ building }) {
             {building.address}
           </Link>
         </h3>
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="text-[15px] font-semibold text-[#c9b28c]">{formatPrice(building)}</span>
+          {building.area ? (
+            <span className="text-[11.5px] uppercase tracking-[0.12em] text-[#778287]">
+              {formatArea(building)}
+            </span>
+          ) : null}
+        </div>
         {meta ? (
           <p className="mt-2 text-[11.5px] uppercase tracking-[0.1em] text-[#8f9a9f]">{meta}</p>
         ) : null}
