@@ -16,7 +16,7 @@ export const STATUS_KEYS = [
 export const STATUS_TONE = {
   new_inquiry: 'bg-blue-500/15 text-blue-300',
   contact_made: 'bg-blue-500/15 text-blue-300',
-  target_inquiry: 'bg-yellow-500/15 text-yellow-300',
+  target_inquiry: 'bg-yellow-500/15 text-[#c8102e]',
   qualified_conversation: 'bg-purple-500/15 text-purple-300',
   meeting_scheduled: 'bg-purple-500/15 text-purple-300',
   meeting_held: 'bg-purple-500/15 text-purple-300',

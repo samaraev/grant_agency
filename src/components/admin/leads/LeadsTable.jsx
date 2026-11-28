@@ -12,7 +12,7 @@ const AGREEMENT_CLASS = {
 
 const INTENT_CLASS = {
   low: 'bg-red-500/15 text-red-300',
-  medium: 'bg-yellow-500/15 text-yellow-300',
+  medium: 'bg-yellow-500/15 text-[#c8102e]',
   high: 'bg-green-500/15 text-green-300',
 };
 

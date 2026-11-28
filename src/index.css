@@ -466,11 +466,11 @@ html .placeholder\:text-\[\#6f7a7f\]::placeholder {
   color: hsl(var(--primary-foreground));
 }
 
-.public-site [class~="text-[#c9b28c]"] {
+html [class~="text-[#c9b28c]"] {
   color: hsl(var(--primary));
 }
 
-.public-site [class~="hover:text-[#c9b28c]"]:hover {
+html [class~="hover:text-[#c9b28c]"]:hover {
   color: hsl(var(--primary));
 }
 
