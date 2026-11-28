@@ -45,7 +45,12 @@ export default function TeamAdmin() {
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+      const { data } = await base44.functions.invoke('adminUpload', {
+        file,
+        visibility: 'public'
+      });
+      const file_url = data?.file_url;
+      if (!file_url) throw new Error('upload_failed');
       setDraft((current) => ({ ...current, photo_url: file_url }));
     } finally {
       setUploading(false);

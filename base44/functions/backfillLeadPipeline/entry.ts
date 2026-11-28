@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { PIPELINE_KEYS, inferPipeline } from '../../shared/leadFunnel.ts';
-import { requireAdminOrDemo } from '../../shared/guards.ts';
+import { requireAdmin } from '../../shared/guards.ts';
 
 /**
  * Проставляет Lead.pipeline существующим обращениям по типу (inferPipeline).
@@ -11,7 +11,7 @@ import { requireAdminOrDemo } from '../../shared/guards.ts';
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
-    const denied = await requireAdminOrDemo(base44);
+    const denied = await requireAdmin(base44, req);
     if (denied) return denied;
 
     const body = await req.json().catch(() => ({}));

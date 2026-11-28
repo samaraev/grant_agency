@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { requireAdminOrDemo } from '../../shared/guards.ts';
+import { requireAdmin } from '../../shared/guards.ts';
 import { currentActor, writeAudit } from '../../shared/audit.ts';
 
 // Временная ссылка на файл живёт 10 минут.
@@ -9,7 +9,7 @@ export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
 
-    const denied = await requireAdminOrDemo(base44);
+    const denied = await requireAdmin(base44, req);
     if (denied) return denied;
 
     const body = await req.json().catch(() => ({}));

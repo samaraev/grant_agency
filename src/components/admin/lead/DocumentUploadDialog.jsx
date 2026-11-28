@@ -47,7 +47,10 @@ export default function DocumentUploadDialog({ open, leadId, userEmail, onClose,
     try {
       let fileRef = '';
       if (file) {
-        const uploaded = await base44.integrations.Core.UploadPrivateFile({ file });
+        const { data: uploaded } = await base44.functions.invoke('adminUpload', {
+          file,
+          visibility: 'private'
+        });
         fileRef = uploaded?.file_uri || '';
         if (!fileRef) throw new Error('upload_failed');
       }

@@ -62,7 +62,12 @@ export default function BuildingForm({ building, open, onOpenChange, onSaved, on
     try {
       const uploaded = [];
       for (const file of Array.from(files)) {
-        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+        const { data } = await base44.functions.invoke('adminUpload', {
+          file,
+          visibility: 'public'
+        });
+        const file_url = data?.file_url;
+        if (!file_url) throw new Error('upload_failed');
         uploaded.push(file_url);
       }
       setDraft((current) => ({ ...current, photos: [...(current.photos || []), ...uploaded] }));

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Sun,
@@ -22,20 +22,18 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { base44, setAdminEntityMode } from '@/api/base44Client';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-
-// ВРЕМЕННО: админ-панель открыта без входа и без проверки роли.
-// Чтобы вернуть защиту, поставьте false.
-const GATE_DISABLED = true;
 
 export default function AdminLayout() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutError, setLogoutError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Навигация сгруппирована по рабочему сценарию: день → клиенты → каталог → система.
   const sections = [
@@ -82,10 +80,31 @@ export default function AdminLayout() {
   ];
 
   useEffect(() => {
-    base44.auth.me()
-      .then(setUser)
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
+    let active = true;
+    base44.functions.invoke('adminAuth', { action: 'session' })
+      .then(({ data }) => {
+        if (!active) return;
+        if (data?.authenticated) {
+          setAdminEntityMode(true);
+          setUser({ role: 'admin', email: '' });
+        } else {
+          setAdminEntityMode(false);
+          setUser(null);
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        setAdminEntityMode(false);
+        setUser(null);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+      setAdminEntityMode(false);
+    };
   }, []);
 
   if (loading) {
@@ -96,35 +115,22 @@ export default function AdminLayout() {
     );
   }
 
-  if (!GATE_DISABLED && (!user || user.role !== 'admin')) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-5">
-        <div className="max-w-md border border-border bg-card p-8">
-          <div className="eyebrow">{t.admin.marker}</div>
-          <h1 className="mt-3 text-[22px] font-bold text-foreground">{t.admin.notAdminTitle}</h1>
-          <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{t.admin.notAdminText}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              to="/login"
-              className="flex min-h-[42px] items-center bg-primary px-4 text-[13px] font-semibold text-primary-foreground"
-            >
-              {t.admin.loginTitle}
-            </Link>
-            <Link
-              to="/"
-              className="flex min-h-[42px] items-center border border-border px-4 text-[13px] text-foreground"
-            >
-              {t.admin.toSite}
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+  if (!user) {
+    const returnTo = `${location.pathname}${location.search}${location.hash}`;
+    return <Navigate to={`/admin/login?returnTo=${encodeURIComponent(returnTo)}`} replace />;
   }
 
   const logout = async () => {
-    await base44.auth.logout();
-    navigate('/');
+    setLogoutError('');
+    try {
+      await base44.functions.invoke('adminAuth', { action: 'logout' });
+    } catch {
+      setLogoutError('Не удалось завершить сеанс. Попробуйте ещё раз.');
+      return;
+    }
+    setAdminEntityMode(false);
+    base44.auth.logout();
+    navigate('/admin/login', { replace: true });
   };
 
   return (
@@ -144,7 +150,7 @@ export default function AdminLayout() {
           </Link>
 
           <div className="flex shrink-0 items-center gap-2">
-            <LanguageSwitcher />
+            <LanguageSwitcher className="" />
             <button
               type="button"
               onClick={() => setMenuOpen((prev) => !prev)}
@@ -224,13 +230,16 @@ export default function AdminLayout() {
                 <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
                 {t.admin.logout}
               </button>
-              <p className="mt-2 truncate px-3 text-[11px] text-subtle">{user.email}</p>
+              <p className="mt-2 truncate px-3 text-[11px] text-subtle">ADMIN</p>
             </>
           )}
         </div>
       </aside>
 
       <main className="flex-1 px-5 py-8 lg:px-10 lg:py-10">
+        {logoutError && (
+          <p role="alert" className="mb-5 text-sm text-destructive">{logoutError}</p>
+        )}
         <Outlet />
       </main>
     </div>

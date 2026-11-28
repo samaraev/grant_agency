@@ -21,11 +21,11 @@ A hyperlocal real-estate agency site **and** back office for **Khamovniki, Mosco
 | --- | --- |
 | **Product** | Hyperlocal real-estate agency for Khamovniki (Moscow): public website + internal CRM |
 | **Primary language** | Russian; English interface available (1 272 dictionary keys per language, in sync) |
-| **Entities** | 24 schemas in `base44/entities/` |
-| **Backend functions** | 18 in `base44/functions/` |
-| **Shared server modules** | 6 in `base44/shared/` |
+| **Entities** | 26 schemas in `base44/entities/` |
+| **Backend functions** | 21 in `base44/functions/` |
+| **Shared server modules** | 8 in `base44/shared/` |
 | **Workflows** | 3 in `base44/workflows/` (2 daily, 1 every 15 minutes) |
-| **Page files** | 35 in `src/pages/` (10 public, 5 auth, 1 platform consent, 19 admin) |
+| **Page files** | 36 in `src/pages/` (10 public, 5 auth, 1 platform consent, 20 admin) |
 | **Frontend** | React 18 + Vite, React Router 7, Tailwind + shadcn/ui, TanStack Query |
 | **Backend** | Base44 entities/functions/auth, Deno runtime, in-app secrets |
 
@@ -368,12 +368,12 @@ Configuration lives in `IntegrationSettings` (single record), edited on `/admin/
 
 - **Client side** — with `metrica_enabled`, `Layout` / `hooks/useThirdPartyTags.js` inject the counter; `lib/track.js` fires interface events and client goals (`lead_submit`, `phone_click`, `form_start`) via `ym('reachGoal')`. Goal IDs come from `metrica_goal_ids` (keys: `lead_submit`, `phone_click`, `form_start`, `qualified_conversation`, `contract_signed`, `deal_closed`). The ClientID is captured on the lead (`client_id`) — it is what makes offline conversions possible.
 - **Offline conversions** — `uploadOfflineConversion` sends `qualified_conversation`, `contract_signed` and `deal_closed` by ClientID (with the deal value for a closed deal). It fires automatically from `changeLeadStatus` and can be sent by hand from the lead overview (`MetricaConversionCard`). `Lead.offline_conversions_sent[]` blocks duplicates; the attempt is audited (`metrica.offline_conversion`, `metrica.offline_conversion_failed`).
-- **Reporting** — `fetchMetricaStats` reads the Metrica Reporting API and caches responses for **10 minutes** for `/admin/metrica`; `metricaConfig` validates the counter, saves settings and reports whether the token is present.
+- **Reporting** — `fetchMetricaStats` reads the Metrica Reporting API and caches responses for **10 minutes** for `/admin/metrica`; `metricaConfig` returns only the public counter ID and browser goal IDs.
 - Without a token the counter, goals and ClientID capture still work; only reporting and offline conversions are unavailable.
 
 ## 16. Audit log
 
-`AuditLog` records `actor` (admin e-mail or `demo`), `action`, `entity`, `entity_id`, `meta`, `at`. It is read-only on `/admin/settings` (`AuditLogPanel`, last 100 entries) and is admin-only at the entity level.
+`AuditLog` records `actor` (native admin e-mail or `admin` for password sessions), `action`, `entity`, `entity_id`, `meta`, `at`. It is read-only on `/admin/settings` (`AuditLogPanel`, last 100 entries) and is admin-only at the entity level.
 
 Actions written today: `document.url_issued`, `document.deleted`, `lead.exported`, `metrica.offline_conversion`, `metrica.offline_conversion_failed`.
 
@@ -432,10 +432,13 @@ Admin screens load one page of records rather than the whole table: leads 300, t
 
 ## 18. Backend functions
 
-All in `base44/functions/*/entry.ts`. Admin-only functions call `requireAdminOrDemo(base44)` from `base44/shared/guards.ts`.
+All in `base44/functions/*/entry.ts`. Admin-only functions call `requireAdmin(base44, req)` from `base44/shared/guards.ts`.
 
 | Function | Access | Purpose |
 | --- | --- | --- |
+| `adminAuth` | public login / admin session | Password-only sign-in, session check and revocation |
+| `adminEntity` | admin | Allowlisted service-role entity operations after server-side authorization |
+| `adminUpload` | admin | Authorized public image and private document uploads |
 | `submitLead` | public | Lead intake: validation, honeypot, IP rate limit, building match, pipeline / cluster / role inference, ClientID + UTM capture, `StatusHistory`, notification e-mail |
 | `changeLeadStatus` | admin | Funnel rules (checklist, contract, rejection reason), timestamps, history, then Metrica conversion and sequence trigger |
 | `sendEmail` | admin | Client e-mail from the lead card: template merge, `Communication` record |
@@ -448,7 +451,7 @@ All in `base44/functions/*/entry.ts`. Admin-only functions call `requireAdminOrD
 | `sendDigest` | admin / workflow | Daily digest (`mode: "digest"`) or a saved report (`mode: "report"`) to the admins |
 | `getDocumentUrl` | admin | Short-lived signed URL for a private document + audit entry |
 | `deleteDocument` | admin | Deletes a document record and writes the audit entry |
-| `metricaConfig` | admin | Reads / saves Metrica settings, reports whether the token is present, checks the counter |
+| `metricaConfig` | public configuration | Returns only the public counter ID and browser goal IDs |
 | `fetchMetricaStats` | admin | Metrica reporting for `/admin/metrica` (visits, users, goals, sources, pages, devices), 10-minute cache |
 | `uploadOfflineConversion` | admin | Offline conversion by ClientID (qualified / contract / deal) |
 | `logLeadExport` | admin | Writes a CSV export of the request log to the audit trail |
@@ -461,7 +464,7 @@ All functions are invoked from the browser through the SDK (`base44.functions.in
 
 | Module | Responsibility |
 | --- | --- |
-| `guards.ts` | `requireAdminOrDemo` — the single access check used by every admin function |
+| `guards.ts` | `requireAdmin` — validates native admin roles or active password sessions for admin functions |
 | `leadFunnel.ts` | Server-side funnel: status keys, checklist requirements, contract and rejection rules, suggestions |
 | `comms.ts` | Channel/provider helpers, consent checks, `Communication` writing |
 | `sequences.ts` | Sequence keys, transactional vs consent-required, working-hours queueing, template rendering, dispatch |
@@ -541,17 +544,18 @@ Rules:
 
 ```
 base44/
-  entities/        24 schemas — Building, ApartmentNote, Lead, StatusHistory, Pipeline,
+  entities/        26 schemas — Building, ApartmentNote, Lead, StatusHistory, Pipeline,
                    OwnerAnalysis, Communication, MessageTemplate, SequenceSetting,
                    RejectionReason, Task, Meeting, Document, AuditLog, Report, LaunchItem,
                    Claim, Service, TeamMember, SiteSettings, AdminSettings,
-                   IntegrationSettings, Events, User
-  functions/       18 functions — submitLead, changeLeadStatus, sendEmail, sendSms, startCall,
+                   IntegrationSettings, Events, User, AdminSession, AdminLoginAttempt
+  functions/       21 functions — adminAuth, adminEntity, adminUpload, submitLead, changeLeadStatus, sendEmail, sendSms, startCall,
                    commsTest, commsWebhook, dispatchSequences, sendTaskReminders, sendDigest,
                    getDocumentUrl, deleteDocument, metricaConfig, fetchMetricaStats,
                    uploadOfflineConversion, logLeadExport, migrateLeadStatuses,
                    backfillLeadPipeline
-  shared/          guards.ts, leadFunnel.ts, comms.ts, sequences.ts, metrica.ts, audit.ts
+  shared/          guards.ts, adminAuthCore.js, adminAuthSession.ts, leadFunnel.ts, comms.ts,
+                   sequences.ts, metrica.ts, audit.ts
   workflows/       DailyDigest, TaskReminders, SequenceDispatcher
   config.jsonc     install / build / serve commands for Base44
 public/            robots.txt, sitemap.xml
@@ -578,15 +582,12 @@ src/
 
 - Sign-in by e-mail and password (`loginWithMfa`, including the MFA step when enabled), Google sign-in, password recovery (`/forgot-password`, `/reset-password?token=…`) and two-factor authentication (`/mfa`, `MfaFlow`, `MfaManage`, `MfaMethodSetup`).
 - New users join through the app's **App Users** page; roles are `admin` and `user`.
-- **Intended model:** `/admin` renders only for `role = "admin"`; lead reads are limited to the author or an admin; catalogue, settings and CRM writes are admin-only.
-- **Current state (demo):** the admin gate is disabled (`GATE_DISABLED = true` in `AdminLayout.jsx`), the `/admin` routes in `App.jsx` are not wrapped in `ProtectedRoute`, `requireAdminOrDemo` lets requests without a session through, and entity `rls` blocks are open. This is for showcasing only — the app behaves as if every visitor were an administrator.
-
-**To restore production access:**
-
-1. Set `GATE_DISABLED = false` in `src/pages/admin/AdminLayout.jsx` and wrap the `/admin` routes in `src/App.jsx` with `<Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>`.
-2. Replace the demo body of `requireAdminOrDemo` in `base44/shared/guards.ts` with a strict `user.role === "admin"` check returning 403 — every admin function calls it.
-3. Tighten the entity `rls` blocks: public read for `Building`, `Service`, `SiteSettings`, `ApartmentNote` and published `TeamMember`; create-only for `Events` and `Lead`; admin-only for leads, communications, documents, tasks, meetings, reports, sequences, pipelines and settings.
-4. Re-check `/admin/today` and the dashboard after the change: they must load for an admin and show the access-denied screen for everyone else.
+- `/admin/login` uses a single password stored as the server-side `ADMIN_PASSWORD` secret. The password itself is never part of the frontend bundle or API response.
+- `ADMIN_SESSION_SECRET` must be a high-entropy secret of at least 32 characters. The admin session is held in an 8-hour signed, revocable `HttpOnly; Secure; SameSite=Strict` cookie.
+- Login attempts are rate-limited per client IP using hashed IP keys and server-side `AdminLoginAttempt` records. Session revocation and expiry are checked on admin API requests.
+- Admin pages send entity operations through the allowlisted `adminEntity` function; admin-only functions validate either an active password session or a native Base44 administrator. Private entities require the Base44 admin role under RLS, while the gateway uses service role only after session verification.
+- Public catalog reads remain available for published buildings, public services, site settings, apartment notes and public team profiles. Public lead intake remains server-side; anonymous entity access to CRM data is closed.
+- Use a temporary development-only `ADMIN_PASSWORD` configured outside source control. Use a strong, unique production value and never put secret values in chat, documentation, source, logs or commits.
 
 ## 27. Local development
 
@@ -675,7 +676,7 @@ Generate a new value in Secrets as `COMMS_WEBHOOK_TOKEN` and update the URL in t
 
 ## 29. Known limitations
 
-- **Demo access**: the admin gate, the route gate and entity RLS are open (see [section 26](#26-authentication-and-access)).
+- **Authentication rollout**: server functions and RLS are defined in this repository; deploy and verify them in the Base44 development environment before production use.
 - **Domain**: SEO canonical, sitemap, robots and `index.html` metadata still use `https://rieltorcenter.ru`.
 - **Contacts** in `SiteSettings` are placeholders — confirm phone, e-mail and office before launch.
 - **Privacy policy** is a structured draft: it needs company details and a legal review.

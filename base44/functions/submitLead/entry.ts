@@ -148,7 +148,7 @@ export default async function (req) {
     const consentAt = clean(body.consent_at, 40) || new Date().toISOString();
     const consentVersion = clean(body.consent_text_version, 60) || '152fz-form-v1';
 
-    const lead = await base44.entities.Lead.create({
+    const lead = await base44.asServiceRole.entities.Lead.create({
       type,
       person_role: TYPE_ROLES[type] || 'other',
       pipeline: inferPipeline(type),

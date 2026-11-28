@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { requireAdminOrDemo } from '../../shared/guards.ts';
+import { requireAdmin } from '../../shared/guards.ts';
 
 /**
  * Напоминания по задачам: открытые задачи без отметки reminder_sent,
@@ -24,7 +24,7 @@ const formatDue = (value) => {
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
-    const denied = await requireAdminOrDemo(base44);
+    const denied = await requireAdmin(base44, req);
     if (denied) return denied;
 
     const now = new Date();

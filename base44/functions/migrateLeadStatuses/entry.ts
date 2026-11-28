@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { LEGACY_MIGRATION, STATUS_KEYS } from '../../shared/leadFunnel.ts';
+import { requireAdmin } from '../../shared/guards.ts';
 
 /**
  * Переносит старые статусы обращений на новую воронку.
@@ -9,9 +10,10 @@ import { LEGACY_MIGRATION, STATUS_KEYS } from '../../shared/leadFunnel.ts';
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
+    const denied = await requireAdmin(base44, req);
+    if (denied) return denied;
     const user = await base44.auth.me().catch((e) => (e.status === 401 ? null : Promise.reject(e)));
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    if (user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+    const actorEmail = user?.email || 'admin';
 
     const body = await req.json().catch(() => ({}));
     const apply = body.apply === true;
@@ -94,7 +96,7 @@ export default async function (req) {
         lead_id: lead.id,
         from_status: lead.status,
         to_status: mapping.to,
-        changed_by: user.email,
+        changed_by: actorEmail,
         note: 'Миграция статусов',
       });
     });
@@ -116,7 +118,7 @@ export default async function (req) {
         lead_id: id,
         from_status: lead.status,
         to_status: 'qualified_conversation',
-        changed_by: user.email,
+        changed_by: actorEmail,
         note: 'Перенос устаревшего флага is_meaningful',
       });
     });

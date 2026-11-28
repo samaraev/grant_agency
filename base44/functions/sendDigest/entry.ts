@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
+import { requireAdmin } from '../../shared/guards.ts';
 
 const MSK_OFFSET_MIN = 180;
 const DAY_MS = 86400000;
@@ -151,9 +152,8 @@ function reportText(report, metrics) {
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me().catch((e) => (e.status === 401 ? null : Promise.reject(e)));
-    // ВРЕМЕННО (демо): дайджест можно отправить и без входа. Для продакшена вернуть проверку роли.
-    if (user && user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+    const denied = await requireAdmin(base44, req);
+    if (denied) return denied;
 
     const body = await req.json().catch(() => ({}));
     const mode = body.mode === 'report' ? 'report' : 'digest';

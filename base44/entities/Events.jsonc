@@ -31,9 +31,9 @@
     "event_name"
   ],
   "rls": {
-    "read": {},
+    "read": { "user_condition": { "role": "admin" } },
     "create": {},
-    "update": {},
-    "delete": {}
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
   }
 }

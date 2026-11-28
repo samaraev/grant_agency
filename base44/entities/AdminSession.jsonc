@@ -1,0 +1,16 @@
+{
+  "name": "AdminSession",
+  "type": "object",
+  "properties": {
+    "session_id": { "type": "string" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "revoked_at": { "type": "string" }
+  },
+  "required": ["session_id", "expires_at"],
+  "rls": {
+    "read": { "user_condition": { "role": "admin" } },
+    "create": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}

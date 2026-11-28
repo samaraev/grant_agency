@@ -1,13 +1,12 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import LanguageProvider from '@/components/LanguageProvider';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from '@/components/Layout';
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
@@ -41,10 +40,13 @@ import Reports from '@/pages/admin/Reports';
 import Tasks from '@/pages/admin/Tasks';
 import Sequences from '@/pages/admin/Sequences';
 import LaunchChecklist from '@/pages/admin/LaunchChecklist';
+import AdminLogin from '@/pages/admin/AdminLogin';
 // Add page imports here
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith('/admin');
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -56,7 +58,7 @@ const AuthenticatedApp = () => {
   }
 
   // Handle authentication errors
-  if (authError) {
+  if (authError && !isAdminPath) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
@@ -88,8 +90,7 @@ const AuthenticatedApp = () => {
           <Route path="/politika-konfidencialnosti" element={<Privacy />} />
         </Route>
 
-        {/* ВРЕМЕННО: вход в админ-панель отключён. Чтобы вернуть, оберните снова:
-          <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}> */}
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="today" element={<Today />} />

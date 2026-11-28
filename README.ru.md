@@ -21,11 +21,11 @@
 | --- | --- |
 | **Продукт** | Гиперлокальное агентство недвижимости в Хамовниках: публичный сайт + внутренняя CRM |
 | **Основной язык** | русский; английский интерфейс доступен (по 1 272 ключа в каждом словаре, наборы совпадают) |
-| **Сущности** | 24 схемы в `base44/entities/` |
-| **Серверные функции** | 18 в `base44/functions/` |
-| **Общие серверные модули** | 6 в `base44/shared/` |
+| **Сущности** | 26 схем в `base44/entities/` |
+| **Серверные функции** | 21 в `base44/functions/` |
+| **Общие серверные модули** | 8 в `base44/shared/` |
 | **Workflow** | 3 в `base44/workflows/` (два ежедневных, один каждые 15 минут) |
-| **Файлы страниц** | 35 в `src/pages/` (10 публичных, 5 авторизации, 1 согласие OAuth, 19 админских) |
+| **Файлы страниц** | 36 в `src/pages/` (10 публичных, 5 авторизации, 1 согласие OAuth, 20 админских) |
 | **Фронтенд** | React 18 + Vite, React Router 7, Tailwind + shadcn/ui, TanStack Query |
 | **Бэкенд** | сущности, функции и авторизация Base44, рантайм Deno, секреты приложения |
 
@@ -368,12 +368,12 @@ npm run preview    # просмотр собранного бандла
 
 - **Клиентская часть** — при включённом `metrica_enabled` `Layout` / `hooks/useThirdPartyTags.js` вставляют счётчик; `lib/track.js` отправляет события интерфейса и клиентские цели (`lead_submit`, `phone_click`, `form_start`) через `ym('reachGoal')`. ID целей берутся из `metrica_goal_ids` (ключи: `lead_submit`, `phone_click`, `form_start`, `qualified_conversation`, `contract_signed`, `deal_closed`). ClientID сохраняется в обращении (`client_id`) — именно он делает возможными офлайн-конверсии.
 - **Офлайн-конверсии** — `uploadOfflineConversion` отправляет `qualified_conversation`, `contract_signed` и `deal_closed` по ClientID (для закрытой сделки — с суммой). Запускается автоматически из `changeLeadStatus` и вручную из обзора обращения (`MetricaConversionCard`). `Lead.offline_conversions_sent[]` защищает от повторов, попытка пишется в журнал (`metrica.offline_conversion`, `metrica.offline_conversion_failed`).
-- **Отчётность** — `fetchMetricaStats` читает Reporting API Метрики и кэширует ответы на **10 минут** для `/admin/metrica`; `metricaConfig` проверяет счётчик, сохраняет настройки и сообщает, есть ли токен.
+- **Отчётность** — `fetchMetricaStats` читает Reporting API Метрики и кэширует ответы на **10 минут** для `/admin/metrica`; `metricaConfig` возвращает только публичный номер счётчика и идентификаторы целей браузера.
 - Без токена счётчик, цели и захват ClientID работают; недоступны только отчётность и офлайн-конверсии.
 
 ## 16. Журнал действий
 
-`AuditLog` фиксирует `actor` (почта администратора или `demo`), `action`, `entity`, `entity_id`, `meta`, `at`. Показывается только для чтения на `/admin/settings` (`AuditLogPanel`, последние 100 записей) и закрыт на уровне сущности для всех, кроме администратора.
+`AuditLog` фиксирует `actor` (почта администратора Base44 или `admin` для парольной сессии), `action`, `entity`, `entity_id`, `meta`, `at`. Показывается только для чтения на `/admin/settings` (`AuditLogPanel`, последние 100 записей) и закрыт на уровне сущности для всех, кроме администратора.
 
 Пишутся действия: `document.url_issued`, `document.deleted`, `lead.exported`, `metrica.offline_conversion`, `metrica.offline_conversion_failed`.
 
@@ -432,10 +432,13 @@ AuditLog / Events                                            — журналы 
 
 ## 18. Серверные функции
 
-Все в `base44/functions/*/entry.ts`. Админские функции вызывают `requireAdminOrDemo(base44)` из `base44/shared/guards.ts`.
+Все в `base44/functions/*/entry.ts`. Админские функции вызывают `requireAdmin(base44, req)` из `base44/shared/guards.ts`.
 
 | Функция | Доступ | Назначение |
 | --- | --- | --- |
+| `adminAuth` | вход / сессия администратора | Парольный вход, проверка и отзыв сессии |
+| `adminEntity` | администратор | Разрешённые операции с сущностями после серверной проверки доступа |
+| `adminUpload` | администратор | Защищённая загрузка публичных изображений и приватных документов |
 | `submitLead` | публичный | Приём обращений: валидация, ловушка, ограничение частоты по IP, сопоставление дома, вывод воронки / кластера / роли, захват ClientID и UTM, `StatusHistory`, письмо-уведомление |
 | `changeLeadStatus` | админ | Правила воронки (чек-лист, договор, причина отказа), отметки времени, история, затем конверсия в Метрику и запуск сценария |
 | `sendEmail` | админ | Письмо клиенту из карточки обращения: подстановки шаблона, запись в `Communication` |
@@ -448,7 +451,7 @@ AuditLog / Events                                            — журналы 
 | `sendDigest` | админ / workflow | Ежедневный дайджест (`mode: "digest"`) или сохранённый отчёт (`mode: "report"`) администраторам |
 | `getDocumentUrl` | админ | Короткоживущая подписанная ссылка на приватный документ + запись в журнал |
 | `deleteDocument` | админ | Удаляет документ и пишет запись в журнал |
-| `metricaConfig` | админ | Читает и сохраняет настройки Метрики, сообщает о наличии токена, проверяет счётчик |
+| `metricaConfig` | публичная конфигурация | Возвращает только публичный номер счётчика и идентификаторы целей браузера |
 | `fetchMetricaStats` | админ | Отчётность Метрики для `/admin/metrica` (визиты, пользователи, цели, источники, страницы, устройства), кэш 10 минут |
 | `uploadOfflineConversion` | админ | Офлайн-конверсия по ClientID (квалификация / договор / сделка) |
 | `logLeadExport` | админ | Записывает выгрузку CSV журнала обращений в журнал действий |
@@ -461,7 +464,7 @@ AuditLog / Events                                            — журналы 
 
 | Модуль | Ответственность |
 | --- | --- |
-| `guards.ts` | `requireAdminOrDemo` — единственная проверка доступа, которую вызывают все админские функции |
+| `guards.ts` | `requireAdmin` — проверяет роль администратора Base44 или активную парольную сессию |
 | `leadFunnel.ts` | Серверная воронка: ключи статусов, требования чек-листа, правила договора и отказа, подсказки |
 | `comms.ts` | Помощники по каналам и провайдерам, проверки согласия, запись `Communication` |
 | `sequences.ts` | Ключи сценариев, транзакционные и требующие согласия, очередь по рабочим часам, подстановка шаблона, отправка |
@@ -541,17 +544,18 @@ AuditLog / Events                                            — журналы 
 
 ```
 base44/
-  entities/        24 схемы — Building, ApartmentNote, Lead, StatusHistory, Pipeline,
+  entities/        26 схем — Building, ApartmentNote, Lead, StatusHistory, Pipeline,
                    OwnerAnalysis, Communication, MessageTemplate, SequenceSetting,
                    RejectionReason, Task, Meeting, Document, AuditLog, Report, LaunchItem,
                    Claim, Service, TeamMember, SiteSettings, AdminSettings,
-                   IntegrationSettings, Events, User
-  functions/       18 функций — submitLead, changeLeadStatus, sendEmail, sendSms, startCall,
+                   IntegrationSettings, Events, User, AdminSession, AdminLoginAttempt
+  functions/       21 функций — adminAuth, adminEntity, adminUpload, submitLead, changeLeadStatus, sendEmail, sendSms, startCall,
                    commsTest, commsWebhook, dispatchSequences, sendTaskReminders, sendDigest,
                    getDocumentUrl, deleteDocument, metricaConfig, fetchMetricaStats,
                    uploadOfflineConversion, logLeadExport, migrateLeadStatuses,
                    backfillLeadPipeline
-  shared/          guards.ts, leadFunnel.ts, comms.ts, sequences.ts, metrica.ts, audit.ts
+  shared/          guards.ts, adminAuthCore.js, adminAuthSession.ts, leadFunnel.ts, comms.ts,
+                   sequences.ts, metrica.ts, audit.ts
   workflows/       DailyDigest, TaskReminders, SequenceDispatcher
   config.jsonc     команды установки, сборки и запуска для Base44
 public/            robots.txt, sitemap.xml
@@ -579,15 +583,11 @@ src/
 
 - Вход по почте и паролю (`loginWithMfa`, включая шаг MFA, если он включён), вход через Google, восстановление пароля (`/forgot-password`, `/reset-password?token=…`) и двухфакторная аутентификация (`/mfa`, `MfaFlow`, `MfaManage`, `MfaMethodSetup`).
 - Новые пользователи приходят через страницу **App Users**; роли — `admin` и `user`.
-- **Задуманная модель:** `/admin` открывается только для `role = "admin"`; чтение обращений ограничено автором или администратором; запись в каталог, настройки и CRM — только администратору.
-- **Текущее состояние (демо):** проверка входа в админку отключена (`GATE_DISABLED = true` в `AdminLayout.jsx`), маршруты `/admin` в `App.jsx` не обёрнуты в `ProtectedRoute`, `requireAdminOrDemo` пропускает запросы без сессии, а блоки `rls` сущностей открыты. Это только для показа — приложение ведёт себя так, будто каждый посетитель администратор.
-
-**Чтобы вернуть продакшн-доступ:**
-
-1. Поставьте `GATE_DISABLED = false` в `src/pages/admin/AdminLayout.jsx` и оберните маршруты `/admin` в `src/App.jsx` компонентом `<Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>`.
-2. Замените демо-тело `requireAdminOrDemo` в `base44/shared/guards.ts` строгой проверкой `user.role === "admin"` с ответом 403 — её вызывают все админские функции.
-3. Ужесточите `rls` сущностей: публичное чтение `Building`, `Service`, `SiteSettings`, `ApartmentNote` и опубликованных `TeamMember`; только создание — `Events` и `Lead`; только администратор — обращения, коммуникации, документы, задачи, встречи, отчёты, сценарии, воронки и настройки.
-4. После изменения перепроверьте `/admin/today` и дашборд: администратор должен их видеть, все остальные — экран отказа в доступе.
+- `/admin/login` использует одно поле пароля; `ADMIN_PASSWORD` хранится только в серверных Secrets и не попадает в сборку клиента или ответы API.
+- `ADMIN_SESSION_SECRET` должен содержать не менее 32 символов случайного секрета. Парольная сессия действует 8 часов и хранится в подписанной, отзываемой cookie `HttpOnly; Secure; SameSite=Strict`.
+- Попытки входа ограничены по IP; в базе хранятся только HMAC-хешированные ключи IP и счётчики попыток. Срок и отзыв сессии проверяются на сервере для административных API.
+- Экраны админки работают через allowlist-функцию `adminEntity`; админские функции проверяют парольную сессию или штатную роль администратора Base44. Приватные сущности закрыты RLS, публичные чтения каталога сохранены.
+- Для изолированной разработки задайте временный `ADMIN_PASSWORD` вне Git. Для production используйте сильное уникальное значение; не размещайте значения секретов в чате, документации, исходном коде, логах или коммитах.
 
 ## 27. Локальный запуск
 
@@ -676,7 +676,7 @@ npm run build       # продакшн-сборка
 
 ## 29. Известные ограничения
 
-- **Демо-доступ**: проверка админки, защита маршрутов и RLS сущностей открыты (см. [раздел 26](#26-авторизация-и-доступ)).
+- **Проверка авторизации**: перед production-развёртыванием проверьте функции и RLS в отдельной среде разработки Base44.
 - **Домен**: canonical, sitemap, robots и метаданные `index.html` всё ещё используют `https://rieltorcenter.ru`.
 - **Контакты** в `SiteSettings` — заглушки: телефон, почта и офис требуют подтверждения до запуска.
 - **Политика конфиденциальности** — структурированный черновик: нужны реквизиты компании и юридическая проверка.

@@ -1,0 +1,17 @@
+{
+  "name": "AdminLoginAttempt",
+  "type": "object",
+  "properties": {
+    "attempt_key": { "type": "string" },
+    "failed_attempts": { "type": "number", "default": 0 },
+    "window_started_at": { "type": "string", "format": "date-time" },
+    "locked_until": { "type": "string" }
+  },
+  "required": ["attempt_key"],
+  "rls": {
+    "read": { "user_condition": { "role": "admin" } },
+    "create": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}
