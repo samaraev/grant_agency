@@ -75,6 +75,7 @@
 
   html {
     scroll-behavior: smooth;
+    font-size: calc(100% + 2pt);
   }
 
   body {
@@ -463,6 +464,14 @@ html .placeholder\:text-\[\#6f7a7f\]::placeholder {
 
 .public-site [class~="bg-[#c8102e]"] {
   color: hsl(var(--primary-foreground));
+}
+
+.public-site [class~="text-[#c9b28c]"] {
+  color: hsl(var(--primary));
+}
+
+.public-site [class~="hover:text-[#c9b28c]"]:hover {
+  color: hsl(var(--primary));
 }
 
 .public-site [class~="border-white/10"],
