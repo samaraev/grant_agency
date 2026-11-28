@@ -44,7 +44,7 @@ export default function Header({ settings, onCta }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-5 lg:flex" aria-label={t.nav.menu}>
+        <nav className="hidden items-center gap-4 xl:flex 2xl:gap-5" aria-label={t.nav.menu}>
           {links.map((link) => (
             <NavLink
               key={link.to}
@@ -52,7 +52,7 @@ export default function Header({ settings, onCta }) {
               end={link.end}
               className={({ isActive }) =>
                 cn(
-                  'relative text-[13px] tracking-wide transition-colors',
+                  'relative whitespace-nowrap text-[12px] tracking-wide transition-colors 2xl:text-[13px]',
                   isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 )
               }
@@ -69,7 +69,7 @@ export default function Header({ settings, onCta }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 lg:gap-3">
+        <div className="flex items-center gap-2 xl:gap-3">
           {settings?.phone ? (
             <a
               href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}
@@ -92,39 +92,53 @@ export default function Header({ settings, onCta }) {
           <button
             type="button"
             onClick={handleCta}
-            className="hidden min-h-[44px] items-center bg-paper px-5 text-[13px] font-semibold text-background transition-colors hover:bg-foreground hover:text-paper sm:flex"
+            className="hidden min-h-[44px] items-center bg-primary px-5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover xl:flex"
           >
             {t.nav.cta}
           </button>
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
-            className="flex h-11 w-11 items-center justify-center border border-border text-foreground lg:hidden"
+            className="flex h-11 w-11 items-center justify-center border border-border text-foreground xl:hidden"
             aria-label={open ? t.nav.close : t.nav.menu}
             aria-expanded={open}
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>
 
       {open ? (
-        <div className="border-t border-border bg-card lg:hidden">
+        <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border bg-card xl:hidden">
           <nav
             className="mx-auto flex max-w-[1240px] flex-col px-5 py-3"
             aria-label={t.nav.menu}
           >
             {links.map((link) => (
-              <Link
+              <NavLink
                 key={link.to}
                 to={link.to}
-                className="flex min-h-[48px] items-center border-b border-border/80 text-[15px] text-foreground last:border-0"
+                end={link.end}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  cn(
+                    'flex min-h-[48px] items-center border-b border-border/80 text-[15px] transition-colors last:border-0',
+                    isActive
+                      ? 'font-semibold text-primary'
+                      : 'text-foreground hover:text-primary'
+                  )
+                }
               >
                 {link.label}
-              </Link>
+              </NavLink>
             ))}
             <Link
               to="/admin"
+              onClick={() => setOpen(false)}
               className="flex min-h-[48px] items-center gap-2 border-b border-border/80 text-[15px] text-foreground"
             >
               <LayoutDashboard className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -140,6 +154,16 @@ export default function Header({ settings, onCta }) {
                 {settings.phone}
               </a>
             ) : null}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                handleCta();
+              }}
+              className="mt-3 flex min-h-[48px] items-center justify-center bg-primary px-5 text-[14px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            >
+              {t.nav.cta}
+            </button>
           </nav>
         </div>
       ) : null}

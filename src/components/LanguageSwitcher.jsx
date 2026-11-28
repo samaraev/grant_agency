@@ -7,7 +7,7 @@ export default function LanguageSwitcher({ className }) {
 
   return (
     <div
-      className={cn('flex items-center border border-white/15', className)}
+      className={cn('flex items-center border border-border', className)}
       role="group"
       aria-label={t.nav.language}
     >
@@ -23,7 +23,9 @@ export default function LanguageSwitcher({ className }) {
             lang={item.code}
             className={cn(
               'h-[36px] min-w-[38px] px-2 text-[11px] font-semibold tracking-[0.14em] transition-colors',
-              active ? 'bg-white/12 text-white' : 'text-[#8b969b] hover:text-white'
+              active
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {item.short}

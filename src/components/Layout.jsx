@@ -17,14 +17,14 @@ export default function Layout() {
   }, []);
 
   return (
-    <LeadProvider>
-      <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className="public-site flex min-h-screen flex-col bg-background text-foreground">
+      <LeadProvider>
         <Header settings={settings} />
         <main className="flex-1 bg-background">
           <Outlet context={{ settings }} />
         </main>
         <Footer settings={settings} />
-      </div>
-    </LeadProvider>
+      </LeadProvider>
+    </div>
   );
 }

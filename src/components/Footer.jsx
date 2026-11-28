@@ -9,7 +9,7 @@ export default function Footer({ settings }) {
   return (
     <footer className="mt-20 border-t border-border bg-background">
       <div className="mx-auto max-w-[1240px] px-5 py-14 lg:px-8 lg:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
+        <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
           <div>
             <div className="flex items-center gap-3">
               <span className="h-8 w-[3px] bg-primary" aria-hidden="true" />

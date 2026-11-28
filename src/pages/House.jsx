@@ -113,7 +113,7 @@ export default function House() {
   const current = photos[activePhoto] || photos[0];
 
   return (
-    <div className="pb-24 lg:pb-0">
+    <div className="pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-0">
       <div className="mx-auto max-w-[1240px] px-5 pt-8 lg:px-8 lg:pt-12">
         <Link
           to="/search"
@@ -376,7 +376,7 @@ export default function House() {
       </div>
 
       {/* STICKY MOBILE CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-[#1a2025]/95 p-3 backdrop-blur lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-[#1a2025]/95 px-3 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         <button
           type="button"
           onClick={() =>

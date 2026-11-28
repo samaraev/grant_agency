@@ -77,8 +77,8 @@ export default function Search() {
         subtitle={t.search.subtitle}
       />
 
-      <div className="mt-10 flex flex-wrap items-end gap-4">
-        <div className="min-w-[240px] flex-1 basis-full lg:basis-[300px]">
+      <div className="mt-10 grid grid-cols-2 items-end gap-x-4 gap-y-5 md:grid-cols-3 lg:flex lg:flex-wrap lg:gap-4">
+        <div className="col-span-2 min-w-0 md:col-span-3 lg:col-span-1 lg:min-w-[280px] lg:flex-1">
           <AddressSearch
             buildings={buildings}
             size="sm"
@@ -87,7 +87,7 @@ export default function Search() {
           />
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="filter-group" className="eyebrow mb-2 block">
             {t.common.type}
           </label>
@@ -95,20 +95,20 @@ export default function Search() {
             id="filter-group"
             value={group}
             onChange={(event) => update('group', event.target.value)}
-            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[230px]"
+            className="h-[44px] w-full border-b border-border bg-transparent text-[14px] text-foreground focus:border-primary focus:outline-none lg:w-[210px]"
           >
-            <option value="" className="bg-[#263033]">
+            <option value="" className="bg-card text-card-foreground">
               {t.search.groupAll}
             </option>
             {Object.entries(t.groups).map(([value, label]) => (
-              <option key={value} value={value} className="bg-[#263033]">
+              <option key={value} value={value} className="bg-card text-card-foreground">
                 {label}
               </option>
             ))}
           </select>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="filter-deal" className="eyebrow mb-2 block">
             {t.common.deal}
           </label>
@@ -116,20 +116,20 @@ export default function Search() {
             id="filter-deal"
             value={deal}
             onChange={(event) => update('deal', event.target.value)}
-            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[180px]"
+            className="h-[44px] w-full border-b border-border bg-transparent text-[14px] text-foreground focus:border-primary focus:outline-none lg:w-[170px]"
           >
-            <option value="" className="bg-[#263033]">
+            <option value="" className="bg-card text-card-foreground">
               {t.search.dealAll}
             </option>
             {Object.entries(t.deals).map(([value, label]) => (
-              <option key={value} value={value} className="bg-[#263033]">
+              <option key={value} value={value} className="bg-card text-card-foreground">
                 {label}
               </option>
             ))}
           </select>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="filter-district" className="eyebrow mb-2 block">
             {t.common.district}
           </label>
@@ -137,20 +137,20 @@ export default function Search() {
             id="filter-district"
             value={district}
             onChange={(event) => update('district', event.target.value)}
-            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[190px]"
+            className="h-[44px] w-full border-b border-border bg-transparent text-[14px] text-foreground focus:border-primary focus:outline-none lg:w-[180px]"
           >
-            <option value="" className="bg-[#263033]">
+            <option value="" className="bg-card text-card-foreground">
               {t.search.districtAll}
             </option>
             {districts.map((value) => (
-              <option key={value} value={value} className="bg-[#263033]">
+              <option key={value} value={value} className="bg-card text-card-foreground">
                 {value}
               </option>
             ))}
           </select>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="filter-street" className="eyebrow mb-2 block">
             {t.common.street}
           </label>
@@ -158,28 +158,28 @@ export default function Search() {
             id="filter-street"
             value={street}
             onChange={(event) => update('street', event.target.value)}
-            className="h-[40px] w-full border-b border-white/25 bg-transparent text-[14px] text-white focus:border-[#c8102e] focus:outline-none lg:w-[210px]"
+            className="h-[44px] w-full border-b border-border bg-transparent text-[14px] text-foreground focus:border-primary focus:outline-none lg:w-[190px]"
           >
-            <option value="" className="bg-[#263033]">
+            <option value="" className="bg-card text-card-foreground">
               {t.search.streetAll}
             </option>
             {streets.map((value) => (
-              <option key={value} value={value} className="bg-[#263033]">
+              <option key={value} value={value} className="bg-card text-card-foreground">
                 {value}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex border border-white/15">
+        <div className="col-span-2 flex items-center gap-2 md:col-span-1">
+          <div className="flex w-full border border-border">
             <button
               type="button"
               onClick={() => setView('list')}
               aria-pressed={view === 'list'}
               className={cn(
-                'flex min-h-[38px] items-center gap-2 px-3 text-[12px] transition-colors',
-                view === 'list' ? 'bg-[#c8102e] text-white' : 'text-[#b0b8bc] hover:text-white'
+                'flex min-h-[42px] flex-1 items-center justify-center gap-2 px-3 text-[12px] transition-colors',
+                view === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
@@ -190,8 +190,8 @@ export default function Search() {
               onClick={() => setView('map')}
               aria-pressed={view === 'map'}
               className={cn(
-                'flex min-h-[38px] items-center gap-2 px-3 text-[12px] transition-colors',
-                view === 'map' ? 'bg-[#c8102e] text-white' : 'text-[#b0b8bc] hover:text-white'
+                'flex min-h-[42px] flex-1 items-center justify-center gap-2 px-3 text-[12px] transition-colors',
+                view === 'map' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <MapIcon className="h-3.5 w-3.5" aria-hidden="true" />

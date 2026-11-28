@@ -433,3 +433,76 @@ html .placeholder\:text-\[\#778287\]::placeholder,
 html .placeholder\:text-\[\#6f7a7f\]::placeholder {
   color: hsl(var(--subtle-foreground));
 }
+
+/* Public pages use a warmer editorial palette without changing the CRM theme. */
+.public-site {
+  --background: 38 34% 96%;
+  --foreground: 28 11% 17%;
+  --card: 38 30% 99%;
+  --card-foreground: 28 11% 17%;
+  --popover: 38 30% 99%;
+  --popover-foreground: 28 11% 17%;
+  --primary: 350 43% 34%;
+  --primary-foreground: 38 35% 98%;
+  --primary-hover: 350 46% 27%;
+  --primary-soft: 350 35% 42%;
+  --secondary: 36 24% 92%;
+  --secondary-foreground: 28 11% 17%;
+  --muted: 36 22% 93%;
+  --muted-foreground: 28 8% 38%;
+  --subtle-foreground: 28 6% 46%;
+  --accent: 34 31% 43%;
+  --accent-foreground: 38 35% 98%;
+  --paper: 38 36% 99%;
+  --border: 35 17% 83%;
+  --input: 38 36% 99%;
+  --ring: 350 43% 34%;
+  color: hsl(var(--foreground));
+  scroll-padding-top: 5rem;
+}
+
+.public-site [class~="bg-[#c8102e]"] {
+  color: hsl(var(--primary-foreground));
+}
+
+.public-site [class~="border-white/10"],
+.public-site [class~="border-white/12"],
+.public-site [class~="border-white/15"],
+.public-site [class~="border-white/20"],
+.public-site [class~="border-white/25"],
+.public-site [class~="border-white/30"] {
+  border-color: hsl(var(--border));
+}
+
+.public-site [class~="hover:border-white/30"]:hover {
+  border-color: hsl(var(--border));
+}
+
+.public-site [class~="divide-white/10"] > :not(:first-child) {
+  border-color: hsl(var(--border));
+}
+
+.public-site [class~="bg-white/5"],
+.public-site [class~="bg-white/10"] {
+  background-color: hsl(var(--secondary));
+}
+
+.public-site [class~="hover:bg-white/5"]:hover {
+  background-color: hsl(var(--secondary));
+}
+
+.public-site .pulse {
+  background: radial-gradient(
+    circle at 50% 50%,
+    hsl(var(--primary) / 0.12) 0%,
+    hsl(var(--primary) / 0.05) 55%,
+    hsl(var(--primary) / 0) 72%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-site .pulse,
+  .public-site .fade-up {
+    animation: none;
+  }
+}
