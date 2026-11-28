@@ -75,7 +75,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-size: calc(100% + 2pt);
+    font-size: calc(100% + 4pt);
   }
 
   body {
